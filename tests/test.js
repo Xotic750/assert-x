@@ -53,7 +53,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -69,7 +73,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -95,7 +103,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -111,7 +123,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -125,7 +141,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -151,7 +171,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -165,7 +189,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -222,7 +250,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -246,7 +278,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -260,7 +296,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -286,7 +326,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -300,7 +344,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -357,7 +405,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -381,7 +433,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -440,7 +496,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -462,7 +522,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -484,7 +548,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -496,7 +564,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -516,7 +588,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -541,7 +617,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -579,7 +659,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
@@ -614,7 +698,11 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.error(e, t.name);
+            t.error(e, e.message, {
+                actual: e.actual,
+                expected: e.expected,
+                error: e
+            });
         }
 
         t.end();
