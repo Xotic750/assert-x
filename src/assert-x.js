@@ -193,9 +193,9 @@
                     } else {
                         theString = [
                             this.name + ':',
-                            truncate(JSON.stringify(this.actual, replacer), 128),
+                            truncate(utilx.jsonStringify(this.actual, replacer), 128),
                             this.operator,
-                            truncate(JSON.stringify(this.expected, replacer), 128)
+                            truncate(utilx.jsonStringify(this.expected, replacer), 128)
                         ].join(' ');
                     }
 
