@@ -1,7 +1,8 @@
+/*jslint sloppy: true */
 /*global require */
 
 (function () {
-    'use strict';
+    //'use strict';
 
     var required = require('./'),
         utilx = required.utilx,
@@ -629,8 +630,6 @@
 
 
     test('assertx - test assertion message', function (t) {
-        var fn;
-
         try {
             testAssertionMessage(undefined, '"undefined"');
             testAssertionMessage(null, 'null');
@@ -646,8 +645,7 @@
             testAssertionMessage([], '[]');
             testAssertionMessage([1, 2, 3], '[1,2,3]');
             testAssertionMessage(/a/, '"/a/"');
-            fn = function f() {};
-            testAssertionMessage(fn, '"' + fn + '"');
+            testAssertionMessage(function f() {}, '"function f() {}"');
             testAssertionMessage({}, '{}');
             testAssertionMessage({
                 a: undefined,
