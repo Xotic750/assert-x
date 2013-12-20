@@ -1,8 +1,7 @@
-/*jslint sloppy: true */
 /*global require */
 
 (function () {
-    //'use strict';
+    'use strict';
 
     var required = require('./'),
         utilx = required.utilx,
