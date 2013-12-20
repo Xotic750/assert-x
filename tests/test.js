@@ -629,6 +629,8 @@
 
 
     test('assertx - test assertion message', function (t) {
+        var fn;
+
         try {
             testAssertionMessage(undefined, '"undefined"');
             testAssertionMessage(null, 'null');
@@ -644,7 +646,8 @@
             testAssertionMessage([], '[]');
             testAssertionMessage([1, 2, 3], '[1,2,3]');
             testAssertionMessage(/a/, '"/a/"');
-            testAssertionMessage(function f() {}, '"function f() {}"');
+            fn = function f() {};
+            testAssertionMessage(fn, '"' + fn + '"');
             testAssertionMessage({}, '{}');
             testAssertionMessage({
                 a: undefined,
