@@ -53,7 +53,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -69,7 +69,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -95,7 +95,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -111,7 +111,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -125,7 +125,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -151,7 +151,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -165,7 +165,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -222,7 +222,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -246,7 +246,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -260,7 +260,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -286,7 +286,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -300,7 +300,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -357,7 +357,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -381,7 +381,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -440,7 +440,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -462,7 +462,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -484,7 +484,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -496,7 +496,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -516,7 +516,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -541,7 +541,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -579,7 +579,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
@@ -614,7 +614,7 @@
 
             t.pass(t.name);
         } catch (e) {
-            t.fail(t.name);
+            t.error(e, t.name);
         }
 
         t.end();
