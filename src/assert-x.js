@@ -5,6 +5,7 @@
  * @copyright @@COPYRIGHT @@AUTHORNAME
  * @license {@link <@@LICLINK> @@LICENSE}
  * @module @@MODULE
+ * @requires util-x
  */
 
 /*
@@ -232,13 +233,8 @@
         }
 
         /**
-         * @namespace assertx
-         */
-
-        /**
          * Throws an exception that displays the values for actual and expected separated by the provided operator.
-         * @memberOf utilx
-         * @function
+         * @function assertx
          * @param {*} actual
          * @param {*} expected
          * @param {string} message
@@ -303,8 +299,8 @@
         utilx.objectDefineProperties(assertx, {
             /**
              * The AssertionError is defined in assert.
-             * @memberOf utilx
-             * @function
+             * @memberOf assertx
+             * @constructor
              * @param {object} opts
              * @return {undefined}
              */
@@ -314,7 +310,7 @@
 
             /**
              * Throws an exception that displays the values for actual and expected.
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {*} actual
              * @param {*} expected
@@ -330,7 +326,7 @@
 
             /**
              * Tests if value is truthy, it is equivalent to assert.equal(!!value, true, message);
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {*} value
              * @param {string} message
@@ -349,7 +345,7 @@
 
             /**
              * Tests shallow, coercive equality with the equal comparison operator ( == ).
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {*} actual
              * @param {*} expected
@@ -367,7 +363,7 @@
 
             /**
              * Tests shallow, coercive non-equality with the not equal comparison operator ( != ).
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {*} actual
              * @param {*} expected
@@ -385,7 +381,7 @@
 
             /**
              * Tests for deep equality, coercive equality with the equal comparison operator ( == ) and equivalent.
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {*} actual
              * @param {*} expected
@@ -403,7 +399,7 @@
 
             /**
              * Tests for deep inequality.
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {*} actual
              * @param {*} expected
@@ -421,7 +417,7 @@
 
             /**
              * Tests for deep strict equality, equality with the strict equal comparison operator ( === ) and equivalent.
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {*} actual
              * @param {*} expected
@@ -439,7 +435,7 @@
 
             /**
              * Tests for deep strict inequality.
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {*} actual
              * @param {*} expected
@@ -457,7 +453,7 @@
 
             /**
              * Tests strict equality, as determined by the strict equality operator ( === ).
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {*} actual
              * @param {*} expected
@@ -475,7 +471,7 @@
 
             /**
              * Tests strict non-equality, as determined by the strict not equal operator ( !== ).
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {*} actual
              * @param {*} expected
@@ -494,7 +490,7 @@
 
             /**
              * Expects block to throw an error. error can be constructor, regexp or validation function.
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {function} block
              * @param {constructor|regexp|function} error
@@ -510,7 +506,7 @@
 
             /**
              * Expects block not to throw an error, see assert.throws for details.
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {function} block
              * @param {constructor|regexp|function} error
@@ -527,7 +523,7 @@
             /**
              * Tests if value is not a falsy value, throws if it is a truthy value.
              * Useful when testing the first argument, error in callbacks.
-             * @memberOf utilx
+             * @memberOf assertx
              * @function
              * @param {*} err
              * @return {undefined}
