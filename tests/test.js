@@ -32,7 +32,7 @@
         try {
             assertx.equal(actual, '');
         } catch (e) {
-            assertx.equal(e.toString(), ['AssertionError:', expected, '==', '""'].join(' '));
+            assertx.equal(e.toString(), ['AssertionError:', utilx.isFunction(expected) ? utilx.jsonStringify(expected.toString()) : expected, '==', '""'].join(' '));
         }
     }
 
