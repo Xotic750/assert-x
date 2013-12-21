@@ -32,7 +32,7 @@
         try {
             assertx.equal(actual, '');
         } catch (e) {
-            assertx.equal(e.toString(), ['AssertionError:', utilx.isFunction(expected) ? utilx.jsonStringify(expected.toString()) : expected, '==', '""'].join(' '));
+            assertx.equal(e.toString(), ['AssertionError:',  expected, '==', '""'].join(' '));
         }
     }
 
@@ -647,7 +647,7 @@
             testAssertionMessage([], '[]');
             testAssertionMessage([1, 2, 3], '[1,2,3]');
             testAssertionMessage(/a/, '"/a/"');
-            testAssertionMessage(f, '"' + String(f) + '"');
+            testAssertionMessage(f, utilx.jsonStringify(f.toString()));
             testAssertionMessage({}, '{}');
             testAssertionMessage({
                 a: undefined,
