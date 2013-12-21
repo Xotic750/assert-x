@@ -105,9 +105,7 @@
             }
         }
 
-        utilx.objectDefineProperty(AssertionError, 'prototype', {
-            value: utilx.objectCreate(Error.prototype)
-        });
+        utilx.inherits(AssertionError, Error);
 
         /**
          * Transforms values and properties encountered while stringifying; used by AssertionError.toString
@@ -128,15 +126,6 @@
         }
 
         utilx.objectDefineProperties(AssertionError.prototype, {
-            /**
-             * Reset to the correct constructor.
-             * @private
-             * @type {function}
-             */
-            constructor: {
-                value: AssertionError
-            },
-
             /**
              * The name of the class.
              * @private
