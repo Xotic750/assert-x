@@ -7,6 +7,7 @@
         utilx = required.utilx,
         test = required.test,
         assertx = required.assertx,
+        rxTest = new RegExp('test'),
 
         // having an identical prototype property
         nbRoot = {
@@ -560,7 +561,7 @@
 
     test('assertx - use a RegExp to validate error message', function (t) {
         try {
-            assertx.throws(makeBlock(thrower, TypeError), /test/);
+            assertx.throws(makeBlock(thrower, TypeError), rxTest);
 
             t.pass(t.name);
         } catch (e) {
@@ -579,7 +580,7 @@
             assertx.throws(makeBlock(thrower, TypeError), function (err) {
                 var result;
 
-                if (utilx.objectInstanceOf(err, TypeError) && /test/.test(err)) {
+                if (utilx.objectInstanceOf(err, TypeError) && rxTest.test(err)) {
                     result = true;
                 }
 
@@ -629,6 +630,8 @@
 
 
     test('assertx - test assertion message', function (t) {
+        function f() {}
+
         try {
             testAssertionMessage(undefined, '"undefined"');
             testAssertionMessage(null, 'null');
@@ -644,7 +647,7 @@
             testAssertionMessage([], '[]');
             testAssertionMessage([1, 2, 3], '[1,2,3]');
             testAssertionMessage(/a/, '"/a/"');
-            testAssertionMessage(function f() {}, '"function f() {}"');
+            testAssertionMessage(f, '"' + String(f) + '"');
             testAssertionMessage({}, '{}');
             testAssertionMessage({
                 a: undefined,
