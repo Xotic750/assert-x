@@ -50,7 +50,7 @@
 
             assertx.throws(makeBlock(assertx, true), assertx.AssertionError, 'assertx(true)');
 
-            assertx.throws(makeBlock(assertx, 'test', 'assertx(\'test\')'));
+            assertx.throws(makeBlock(assertx, 'test'), assertx.AssertionError, 'assertx(\'test\')');
 
             t.pass(t.name);
         } catch (e) {
