@@ -60,27 +60,32 @@
             utilx.objectDefineProperties(this, {
                 message: {
                     value: opts.message,
-                    writable: true
+                    writable: true,
+                    configurable: true
                 },
 
                 actual: {
                     value: opts.actual,
-                    writable: true
+                    writable: true,
+                    configurable: true
                 },
 
                 expected: {
                     value: opts.expected,
-                    writable: true
+                    writable: true,
+                    configurable: true
                 },
 
                 operator: {
                     value: opts.operator,
-                    writable: true
+                    writable: true,
+                    configurable: true
                 },
 
                 stackStartFunction: {
                     value: opts.stackStartFunction,
-                    writable: true
+                    writable: true,
+                    configurable: true
                 }
             });
 
@@ -100,7 +105,8 @@
 
                 utilx.objectDefineProperty(this, 'stack', {
                     value: stk,
-                    writable: true
+                    writable: true,
+                    configurable: true
                 });
             }
         }
