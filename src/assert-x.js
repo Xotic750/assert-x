@@ -94,7 +94,6 @@
             } else {
                 err = Error.call(this, this.message);
                 err.name = this.name;
-                this.message = err.message;
                 if (utilx.isString(err.stack)) {
                     stk = err.stack;
                 } else if (utilx.isString(err.stacktrace)) {
