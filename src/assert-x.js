@@ -30,6 +30,24 @@
 
     function factory(utilx) {
         /**
+         * Transforms values and properties encountered while stringifying; used by AssertionError.toString
+         * @private
+         * @function
+         * @param {*} key
+         * @param {*} value
+         * @return {undefined}
+         */
+        function replacer(key, value) {
+            /*jslint unparam: true */
+            /*jshint unused: true */
+            if (utilx.isUndefined(value) || utilx.isFunction(value) || utilx.isRegExp(value) || (utilx.isNumber(value) && !utilx.numberIsFinite(value))) {
+                return utilx.anyToString(value);
+            }
+
+            return value;
+        }
+
+        /**
          * The AssertionError is defined in assert.
          * @private
          * @constructor
@@ -58,6 +76,12 @@
             }
 
             utilx.objectDefineProperties(this, {
+                name: {
+                    value: 'AssertionError',
+                    writable: true,
+                    configurable: true
+                },
+
                 message: {
                     value: opts.message,
                     writable: true,
@@ -86,6 +110,25 @@
                     value: opts.stackStartFunction,
                     writable: true,
                     configurable: true
+                },
+
+                toString: {
+                    value: function () {
+                        var theString;
+
+                        if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {
+                            theString = this.name + ': ' + this.message;
+                        } else {
+                            theString = this.name + ': ';
+                            theString += utilx.stringTruncate(utilx.jsonStringify(this.actual, replacer), 128) + ' ';
+                            theString += this.operator + ' ';
+                            theString += utilx.stringTruncate(utilx.jsonStringify(this.expected, replacer), 128);
+                        }
+
+                        return theString;
+                    },
+                    writable: true,
+                    configurable: true
                 }
             });
 
@@ -111,58 +154,6 @@
         }
 
         utilx.inherits(AssertionError, Error);
-
-        /**
-         * Transforms values and properties encountered while stringifying; used by AssertionError.toString
-         * @private
-         * @function
-         * @param {*} key
-         * @param {*} value
-         * @return {undefined}
-         */
-        function replacer(key, value) {
-            /*jslint unparam: true */
-            /*jshint unused: true */
-            if (utilx.isUndefined(value) || utilx.isFunction(value) || utilx.isRegExp(value) || (utilx.isNumber(value) && !utilx.numberIsFinite(value))) {
-                return utilx.anyToString(value);
-            }
-
-            return value;
-        }
-
-        utilx.objectDefineProperties(AssertionError.prototype, {
-            /**
-             * The name of the class.
-             * @private
-             * @value {string}
-             */
-            name: {
-                value: 'AssertionError'
-            },
-
-            /**
-             * Returns a string representing the object.
-             * @private
-             * @function
-             * @return {string}
-             */
-            toString: {
-                value: function () {
-                    var theString;
-
-                    if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {
-                        theString = this.name + ': ' + this.message;
-                    } else {
-                        theString = this.name + ': ';
-                        theString += utilx.stringTruncate(utilx.jsonStringify(this.actual, replacer), 128) + ' ';
-                        theString += this.operator + ' ';
-                        theString += utilx.stringTruncate(utilx.jsonStringify(this.expected, replacer), 128);
-                    }
-
-                    return theString;
-                }
-            }
-        });
 
         /**
          * Returns whether an exception is expected. Used by throws.
