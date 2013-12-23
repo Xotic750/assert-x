@@ -30,9 +30,11 @@
 
     function testAssertionMessage(actual, expected) {
         try {
-            assertx.equal(actual, '');
+            assertx.strictEqual(actual, '');
         } catch (e) {
-            assertx.equal(e.toString(), 'AssertionError: ' + expected + ' == ' + '""');
+            /*global console */
+            console.log(e.toString(), 'AssertionError: ' + expected + ' === ' + '""');
+            assertx.strictEqual(e.toString(), 'AssertionError: ' + expected + ' === ' + '""');
         }
     }
 

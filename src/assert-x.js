@@ -153,12 +153,10 @@
                     if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {
                         theString = this.name + ': ' + this.message;
                     } else {
-                        theString = [
-                            this.name + ':',
-                            utilx.stringTruncate(utilx.jsonStringify(this.actual, replacer), 128),
-                            this.operator,
-                            utilx.stringTruncate(utilx.jsonStringify(this.expected, replacer), 128)
-                        ].join(' ');
+                        theString = this.name + ': ';
+                        theString += utilx.stringTruncate(utilx.jsonStringify(this.actual, replacer), 128) + ' ';
+                        theString += this.operator + ' ';
+                        theString += utilx.stringTruncate(utilx.jsonStringify(this.expected, replacer), 128);
                     }
 
                     return theString;
