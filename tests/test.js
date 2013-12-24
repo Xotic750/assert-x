@@ -59,7 +59,7 @@
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
-            if (utilx.isError(e.toString())) {
+            if (utilx.strictEqual(e.toString(), '[object Error]')) {
                 theMessage = stringFromError(e);
             } else {
                 theMessage = e.toString();
