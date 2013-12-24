@@ -59,10 +59,10 @@
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
-            if (utilx.isString(e.toString())) {
-                theMessage = e.toString();
-            } else {
+            if (utilx.isError(e.toString())) {
                 theMessage = stringFromError(e);
+            } else {
+                theMessage = e.toString();
             }
 
             assertx.strictEqual(theMessage.split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
