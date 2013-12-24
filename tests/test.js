@@ -28,11 +28,44 @@
         this.last = last;
     }
 
+    function replacer(key, value) {
+        /*jslint unparam: true */
+        /*jshint unused: true */
+        if (utilx.isUndefined(value) || utilx.isFunction(value) || utilx.isRegExp(value) || (utilx.isNumber(value) && !utilx.numberIsFinite(value))) {
+            return utilx.anyToString(value);
+        }
+
+        return value;
+    }
+
+    function stringFromError(err) {
+        var theString;
+
+        if (utilx.isString(err.message) && !utilx.isEmptyString(err.message)) {
+            theString = err.name + ': ' + err.message;
+        } else {
+            theString = err.name + ': ';
+            theString += utilx.stringTruncate(utilx.jsonStringify(err.actual, replacer), 128) + ' ';
+            theString += err.operator + ' ';
+            theString += utilx.stringTruncate(utilx.jsonStringify(err.expected, replacer), 128);
+        }
+
+        return theString;
+    }
+
     function testAssertionMessage(actual, expected) {
+        var theMessage;
+
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
-            assertx.strictEqual(e.stringify().split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
+            if (utilx.isString(e.toString())) {
+                theMessage = e.toString();
+            } else {
+                theMessage = stringFromError(e);
+            }
+
+            assertx.strictEqual(theMessage.split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
         }
     }
 
