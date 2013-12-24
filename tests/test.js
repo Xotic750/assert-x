@@ -32,9 +32,7 @@
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
-            /*global console */
-            console.log(e.toString(), 'AssertionError: ' + expected + ' === ' + '""');
-            assertx.strictEqual(e.toString(), 'AssertionError: ' + expected + ' === ' + '""');
+            assertx.strictEqual(e.stringify().split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
         }
     }
 
