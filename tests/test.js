@@ -60,7 +60,7 @@
             assertx.strictEqual(actual, '');
         } catch (e) {
             theMessage = e.toString().split('\n')[0];
-            if (utilx.strictEqual(theMessage, '[object Error]')) {
+            if (utilx.strictEqual(theMessage, '"[object Error]"')) {
                 theMessage = stringFromError(e);
             }
 
