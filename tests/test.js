@@ -670,7 +670,7 @@
         try {
             assertx.equal(1, 2);
         } catch (e) {
-            t.equal(e.toString().split('\n')[0], 'AssertionError: 1 == 2');
+            t.equal(e.toString(), 'AssertionError: 1 == 2');
         }
 
         try {
