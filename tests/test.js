@@ -474,12 +474,13 @@
     test('assertx - Testing the throwing', function (t) {
         t.throws(function () {
             makeBlock(thrower, TypeError)();
-        }, TypeError);
+        }, TypeError, 'thrower working');
 
         t.throws(function () {
             makeBlock(thrower, assertx.AssertionError)();
-        }, assertx.AssertionError);
+        }, assertx.AssertionError, 'thrower working');
 
+        // the basic calls work
         t.doesNotThrow(function () {
             assertx.throws(makeBlock(thrower, assertx.AssertionError), assertx.AssertionError, 'message');
         });
@@ -492,33 +493,37 @@
             assertx.throws(makeBlock(thrower, assertx.AssertionError));
         });
 
+        // if not passing an error, catch all.
         t.doesNotThrow(function () {
-            assertx.throws(makeBlock(thrower, TypeError), TypeError);
+            assertx.throws(makeBlock(thrower, TypeError));
         });
 
-        t.doesNotThrow(function () {
-            try {
-                assertx.throws(makeBlock(thrower, TypeError), assertx.AssertionError);
-            } catch (e) {
-                assertx.ok(utilx.objectInstanceOf(e, TypeError), 'type');
-            }
-        }, 'throws with an explicit error is eating extra errors');
+        // when passing a type, only catch errors of the appropriate type
+        try {
+            assertx.throws(makeBlock(thrower, TypeError), assertx.AssertionError);
+            t.fail('throws with an explicit error is eating extra errors');
+        } catch (e) {
+            t.ok(utilx.objectInstanceOf(e, TypeError), 'threw correct constructor');
+            t.pass('throws with an explicit error is not eating extra errors');
+        }
 
-        t.doesNotThrow(function () {
-            try {
-                assertx.doesNotThrow(makeBlock(thrower, TypeError), assertx.AssertionError);
-            } catch (e) {
-                assertx.ok(utilx.objectInstanceOf(e, TypeError));
-            }
-        }, 'doesNotThrow with an explicit error is eating extra errors');
+        // doesNotThrow should pass through all errors
+        try {
+            assertx.doesNotThrow(makeBlock(thrower, TypeError), assertx.AssertionError);
+            t.fail('doesNotThrow with an explicit error is eating extra errors');
+        } catch (e) {
+            t.ok(utilx.objectInstanceOf(e, TypeError), 'threw correct constructor');
+            t.pass('doesNotThrow with an explicit error is not eating extra errors');
+        }
 
-        t.doesNotThrow(function () {
-            try {
-                assertx.doesNotThrow(makeBlock(thrower, TypeError), TypeError);
-            } catch (e) {
-                assertx.ok(utilx.objectInstanceOf(e, assertx.AssertionError));
-            }
-        }, 'doesNotThrow is not catching type matching errors');
+        // key difference is that throwing our correct error makes an assertion error
+        try {
+            assertx.doesNotThrow(makeBlock(thrower, TypeError), TypeError);
+            t.fail('doesNotThrow is not catching type matching errors');
+        } catch (e) {
+            t.ok(utilx.objectInstanceOf(e, assertx.AssertionError), 'threw correct constructor');
+            t.pass('doesNotThrow is catching type matching errors');
+        }
 
         t.end();
     });
@@ -526,25 +531,29 @@
     test('assertx.ifError', function (t) {
         t.throws(function () {
             assertx.ifError(new Error('test error'));
-        }, assertx.AssertionError);
+        }, assertx.AssertionError, 'error does throw');
 
         t.doesNotThrow(function () {
             assertx.ifError(null);
-        }, assertx.AssertionError);
+        }, 'null does not throw');
 
         t.doesNotThrow(function () {
             assertx.ifError();
-        }, assertx.AssertionError);
+        }, 'undefined does not throw');
 
         t.end();
     });
 
     test('assertx - make sure that validating using constructor really works', function (t) {
-        t.throws(function () {
+        try {
             assertx.throws(function () {
                 throw ({});
             }, Array);
-        }, assertx.AssertionError, 'wrong constructor validation');
+
+            t.fail('wrong constructor validation');
+        } catch (e) {
+            t.pass('correct constructor validation');
+        }
 
         t.end();
     });
@@ -580,9 +589,12 @@
         b.b = b;
         c.b = c;
 
-        t.throws(function () {
+        try {
             assertx.deepEqual(b, c);
-        }, assertx.AssertionError, 'Circular');
+            t.fail('cirular did not throw');
+        } catch (e) {
+            t.pass('cirular threw');
+        }
 
         t.end();
     });
@@ -594,9 +606,12 @@
         b.b = b;
         c.b = c;
 
-        t.throws(function () {
-            assertx.deepStrictEqual(b, c);
-        }, assertx.AssertionError, 'Circular');
+        try {
+            assertx.deepStricEqual(b, c);
+            t.fail('cirular did not throw');
+        } catch (e) {
+            t.pass('cirular threw');
+        }
 
         t.end();
     });
@@ -639,19 +654,30 @@
     });
 
     test('assertx - regressions from node.js testcase', function (t) {
-        t.throws(function () {
+        var threw = false;
+
+        try {
             assertx.throws(function () {
                 assertx.ifError(null);
             });
-        }, new RegExp('Missing expected exception..'));
+        } catch (e) {
+            threw = true;
+            assertx.equal(e.message, 'Missing expected exception..');
+        }
 
-        t.throws(function () {
+        t.ok(threw, 'null threw error');
+
+        try {
             assertx.equal(1, 2);
-        }, assertx.AssertionError);
+        } catch (e) {
+            t.equal(e.toString().split('\n')[0], 'AssertionError: 1 == 2');
+        }
 
-        t.throws(function () {
+        try {
             assertx.equal(1, 2, 'oh no');
-        }, assertx.AssertionError);
+        } catch (e) {
+            t.equal(e.toString().split('\n')[0], 'AssertionError: oh no');
+        }
 
         t.end();
     });
