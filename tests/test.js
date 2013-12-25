@@ -36,14 +36,6 @@
         }
     }
 
-    function makeBlock(f) {
-        var args = utilx.argumentsSlice(arguments, 1);
-
-        return function () {
-            return f.apply(null, args);
-        };
-    }
-
     test('assertx', function (t) {
         t.throws(function () {
             assertx(false, false, 'assertx is a throw function');
@@ -465,40 +457,55 @@
         t.end();
     });
 
-    function thrower(ErrorConstructor) {
-        throw new ErrorConstructor('test');
-    }
-
     test('assertx - Testing the throwing', function (t) {
         t.throws(function () {
-            makeBlock(thrower, TypeError)();
+            throw new TypeError('test');
         }, TypeError, 'thrower working');
 
         t.throws(function () {
-            makeBlock(thrower, assertx.AssertionError)();
+            throw new assertx.AssertionError({
+                message: 'test'
+            });
         }, assertx.AssertionError, 'thrower working');
 
         // the basic calls work
         t.doesNotThrow(function () {
-            assertx.throws(makeBlock(thrower, assertx.AssertionError), assertx.AssertionError, 'message');
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    message: 'test'
+                });
+            }, assertx.AssertionError, 'message');
         });
 
         t.doesNotThrow(function () {
-            assertx.throws(makeBlock(thrower, assertx.AssertionError), assertx.AssertionError);
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    message: 'test'
+                });
+            }, assertx.AssertionError);
         });
 
         t.doesNotThrow(function () {
-            assertx.throws(makeBlock(thrower, assertx.AssertionError));
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    message: 'test'
+                });
+            });
         });
 
         // if not passing an error, catch all.
         t.doesNotThrow(function () {
-            assertx.throws(makeBlock(thrower, TypeError));
+            assertx.throws(function () {
+                throw new TypeError('test');
+            });
         });
 
         // when passing a type, only catch errors of the appropriate type
         try {
-            assertx.throws(makeBlock(thrower, TypeError), assertx.AssertionError);
+            assertx.throws(function () {
+                throw new TypeError('test');
+            }, assertx.AssertionError);
+
             t.fail('throws with an explicit error is eating extra errors');
         } catch (e) {
             t.ok(utilx.objectInstanceOf(e, TypeError), 'threw correct constructor');
@@ -507,7 +514,10 @@
 
         // doesNotThrow should pass through all errors
         try {
-            assertx.doesNotThrow(makeBlock(thrower, TypeError), assertx.AssertionError);
+            assertx.doesNotThrow(function () {
+                throw new TypeError('test');
+            }, assertx.AssertionError);
+
             t.fail('doesNotThrow with an explicit error is eating extra errors');
         } catch (e) {
             t.ok(utilx.objectInstanceOf(e, TypeError), 'threw correct constructor');
@@ -516,7 +526,10 @@
 
         // key difference is that throwing our correct error makes an assertion error
         try {
-            assertx.doesNotThrow(makeBlock(thrower, TypeError), TypeError);
+            assertx.doesNotThrow(function () {
+                throw new TypeError('test');
+            }, TypeError);
+
             t.fail('doesNotThrow is not catching type matching errors');
         } catch (e) {
             t.ok(utilx.objectInstanceOf(e, assertx.AssertionError), 'threw correct constructor');
@@ -577,10 +590,28 @@
 
     test('assertx - set a fn to validate error object', function (t) {
         t.doesNotThrow(function () {
-            assertx.throws(makeBlock(thrower, TypeError), function (err) {
+            assertx.throws(function () {
+                throw new TypeError('test');
+            }, function (err) {
                 var result;
 
-                if (utilx.objectInstanceOf(err, TypeError) && rxTest.test(err)) {
+                if (utilx.objectInstanceOf(err, TypeError) && rxTest.test(err.toString())) {
+                    result = true;
+                }
+
+                return result;
+            });
+        });
+
+        t.doesNotThrow(function () {
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    message: 'test'
+                });
+            }, function (err) {
+                var result;
+
+                if (utilx.objectInstanceOf(err, assertx.AssertionError) && rxTest.test(err.toString())) {
                     result = true;
                 }
 
