@@ -28,36 +28,11 @@
         this.last = last;
     }
 
-    function replacer(key, value) {
-        /*jslint unparam: true */
-        /*jshint unused: true */
-        if (utilx.isUndefined(value) || utilx.isFunction(value) || utilx.isRegExp(value) || (utilx.isNumber(value) && !utilx.numberIsFinite(value))) {
-            return utilx.anyToString(value);
-        }
-
-        return value;
-    }
-
-    function stringFromError(err) {
-        var theString;
-
-        if (utilx.isString(err.message) && !utilx.isEmptyString(err.message)) {
-            theString = err.name + ': ' + err.message;
-        } else {
-            theString = err.name + ': ';
-            theString += utilx.stringTruncate(utilx.jsonStringify(err.actual, replacer), 128) + ' ';
-            theString += err.operator + ' ';
-            theString += utilx.stringTruncate(utilx.jsonStringify(err.expected, replacer), 128);
-        }
-
-        return theString;
-    }
-
     function testAssertionMessage(actual, expected) {
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
-            assertx.strictEqual(stringFromError(e).split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
+            assertx.strictEqual(e.toString().split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
         }
     }
 
@@ -583,7 +558,18 @@
 
     test('assertx - use a RegExp to validate error message', function (t) {
         t.doesNotThrow(function () {
-            assertx.throws(makeBlock(thrower, TypeError), rxTest);
+            assertx.throws(function () {
+                throw new TypeError('test');
+            }, rxTest);
+        });
+
+        t.doesNotThrow(function () {
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    message: 'test'
+                });
+
+            }, rxTest);
         });
 
         t.end();
@@ -693,13 +679,13 @@
         try {
             assertx.equal(1, 2);
         } catch (e) {
-            t.equal(stringFromError(e).split('\n')[0], 'AssertionError: 1 == 2');
+            t.equal(e.toString().split('\n')[0], 'AssertionError: 1 == 2');
         }
 
         try {
             assertx.equal(1, 2, 'oh no');
         } catch (e) {
-            t.equal(stringFromError(e).split('\n')[0], 'AssertionError: oh no');
+            t.equal(e.toString().split('\n')[0], 'AssertionError: oh no');
         }
 
         t.end();
