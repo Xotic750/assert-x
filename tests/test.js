@@ -33,9 +33,9 @@
             assertx.strictEqual(actual, '');
         } catch (e) {
             /*global console*/
-            console.log('WHAT TYPE:' + typeof e.toString());
-            console.log('STRING:' + e.toString());
-            assertx.strictEqual(e.toString().split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
+            console.log('WHAT TYPE:' + typeof e.stringify());
+            console.log('STRING:' + e.stringify());
+            assertx.strictEqual(e.stringify().split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
         }
     }
 
