@@ -128,7 +128,11 @@
             }
 
             if (utilx.isRegExp(expected)) {
-                return expected.test(actual.toString.call(actual));
+                if (utilx.objectInstanceOf(actual, Error)) {
+                    return expected.test(actual.constructor.prototype.toString.call(actual));
+                }
+
+                return expected.test(actual.toString());
             }
 
             if (utilx.objectInstanceOf(actual, expected)) {
