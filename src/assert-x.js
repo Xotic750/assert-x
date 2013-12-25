@@ -134,11 +134,13 @@
             }
 
             if (utilx.isRegExp(expected)) {
+                /*
                 if (utilx.objectInstanceOf(actual, AssertionError) && utilx.isFunction(actual.stringify)) {
                     return expected.test(actual.stringify());
                 }
+                */
 
-                return expected.test(actual.toString());
+                return expected.test(AssertionError.prototype.toString.call(actual));
             }
 
             if (utilx.objectInstanceOf(actual, expected)) {
