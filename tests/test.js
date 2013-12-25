@@ -32,6 +32,9 @@
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
+            /*global console*/
+            console.log('WHAT TYPE:', typeof e.toString());
+            console.log('STRING:', e.toString());
             assertx.strictEqual(e.toString().split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
         }
     }

@@ -86,7 +86,7 @@
                 value: 'AssertionError'
             },
 
-            toString: {
+            stringify: {
                 value: function () {
                     function replacer(key, value) {
                         /*jslint unparam: true */
@@ -110,6 +110,12 @@
                     }
 
                     return theString;
+                }
+            },
+
+            toString: {
+                value: function () {
+                    return this.stringify();
                 }
             }
         });
