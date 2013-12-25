@@ -86,7 +86,7 @@
                 value: 'AssertionError'
             },
 
-            stringify: {
+            toString: {
                 value: function () {
                     function replacer(key, value) {
                         /*jslint unparam: true */
@@ -111,12 +111,6 @@
 
                     return theString;
                 }
-            },
-
-            toString: {
-                value: function () {
-                    return this.stringify();
-                }
             }
         });
 
@@ -134,12 +128,6 @@
             }
 
             if (utilx.isRegExp(expected)) {
-                /*
-                if (utilx.objectInstanceOf(actual, AssertionError) && utilx.isFunction(actual.stringify)) {
-                    return expected.test(actual.stringify());
-                }
-                */
-
                 return expected.test(AssertionError.prototype.toString.call(actual));
             }
 
