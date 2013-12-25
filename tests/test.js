@@ -32,9 +32,6 @@
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
-            /*global console*/
-            console.log('WHAT TYPE:' + typeof e.stringify());
-            console.log('STRING:' + e.stringify());
             assertx.strictEqual(e.stringify().split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
         }
     }
@@ -713,13 +710,13 @@
         try {
             assertx.equal(1, 2);
         } catch (e) {
-            t.equal(e.toString().split('\n')[0], 'AssertionError: 1 == 2');
+            t.equal(e.stringify().split('\n')[0], 'AssertionError: 1 == 2');
         }
 
         try {
             assertx.equal(1, 2, 'oh no');
         } catch (e) {
-            t.equal(e.toString().split('\n')[0], 'AssertionError: oh no');
+            t.equal(e.stringify().split('\n')[0], 'AssertionError: oh no');
         }
 
         t.end();
