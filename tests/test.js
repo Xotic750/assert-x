@@ -622,7 +622,7 @@
         t.end();
     });
 
-    test('assertx - Make sure deepStricEqual doesn\'t loop forever on circular refs', function (t) {
+    test('assertx - Make sure deepStrictEqual doesn\'t loop forever on circular refs', function (t) {
         var b = {},
             c = {};
 
@@ -693,13 +693,13 @@
         try {
             assertx.equal(1, 2);
         } catch (e) {
-            t.equal(e.toString().split('\n')[0], 'AssertionError: 1 == 2');
+            t.equal(stringFromError(e).split('\n')[0], 'AssertionError: 1 == 2');
         }
 
         try {
             assertx.equal(1, 2, 'oh no');
         } catch (e) {
-            t.equal(e.toString().split('\n')[0], 'AssertionError: oh no');
+            t.equal(stringFromError(e).split('\n')[0], 'AssertionError: oh no');
         }
 
         t.end();
