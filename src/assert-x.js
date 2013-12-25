@@ -30,24 +30,6 @@
 
     function factory(utilx) {
         /**
-         * Transforms values and properties encountered while stringifying; used by AssertionError.toString
-         * @private
-         * @function
-         * @param {*} key
-         * @param {*} value
-         * @return {undefined}
-         */
-        function replacer(key, value) {
-            /*jslint unparam: true */
-            /*jshint unused: true */
-            if (utilx.isUndefined(value) || utilx.isFunction(value) || utilx.isRegExp(value) || (utilx.isNumber(value) && !utilx.numberIsFinite(value))) {
-                return utilx.anyToString(value);
-            }
-
-            return value;
-        }
-
-        /**
          * The AssertionError is defined in assert.
          * @private
          * @constructor
@@ -106,6 +88,16 @@
 
             toString: {
                 value: function () {
+                    function replacer(key, value) {
+                        /*jslint unparam: true */
+                        /*jshint unused: true */
+                        if (utilx.isUndefined(value) || utilx.isFunction(value) || utilx.isRegExp(value) || (utilx.isNumber(value) && !utilx.numberIsFinite(value))) {
+                            return utilx.anyToString(value);
+                        }
+
+                        return value;
+                    }
+
                     var theString;
 
                     if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {
