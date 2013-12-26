@@ -77,6 +77,34 @@
 
         utilx.inherits(AssertionError, Error);
 
+        AssertionError.prototype.toString = null;
+        delete AssertionError.prototype.toString;
+
+        function replacer(key, value) {
+            /*jslint unparam: true */
+            /*jshint unused: true */
+            if (utilx.isUndefined(value) || utilx.isFunction(value) || utilx.isRegExp(value) || (utilx.isNumber(value) && !utilx.numberIsFinite(value))) {
+                return utilx.anyToString(value);
+            }
+
+            return value;
+        }
+
+        function errorString(obj) {
+            var theString;
+
+            if (utilx.isString(obj.message) && !utilx.isEmptyString(obj.message)) {
+                theString = obj.name + ': ' + obj.message;
+            } else if (utilx.objectInstanceOf(obj, AssertionError)) {
+                theString = obj.name + ': ';
+                theString += utilx.stringTruncate(utilx.jsonStringify(obj.actual, replacer), 128) + ' ';
+                theString += obj.operator + ' ';
+                theString += utilx.stringTruncate(utilx.jsonStringify(obj.expected, replacer), 128);
+            }
+
+            return theString;
+        }
+
         utilx.objectDefineProperties(AssertionError.prototype, {
             constructor: {
                 value: AssertionError
@@ -88,28 +116,7 @@
 
             toString: {
                 value: function () {
-                    function replacer(key, value) {
-                        /*jslint unparam: true */
-                        /*jshint unused: true */
-                        if (utilx.isUndefined(value) || utilx.isFunction(value) || utilx.isRegExp(value) || (utilx.isNumber(value) && !utilx.numberIsFinite(value))) {
-                            return utilx.anyToString(value);
-                        }
-
-                        return value;
-                    }
-
-                    var theString;
-
-                    if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {
-                        theString = this.name + ': ' + this.message;
-                    } else {
-                        theString = this.name + ': ';
-                        theString += utilx.stringTruncate(utilx.jsonStringify(this.actual, replacer), 128) + ' ';
-                        theString += this.operator + ' ';
-                        theString += utilx.stringTruncate(utilx.jsonStringify(this.expected, replacer), 128);
-                    }
-
-                    return theString;
+                    return errorString(this);
                 }
             }
         });
@@ -127,23 +134,15 @@
                 return false;
             }
 
-            if (utilx.isRegExp(expected)) {
-                if (utilx.objectInstanceOf(actual, AssertionError)) {
-                    return expected.test(AssertionError.prototype.toString.call(actual));
-                }
-
-                if (utilx.objectInstanceOf(actual, Error)) {
-                    return expected.test(actual.constructor.prototype.toString.call(actual));
-                }
-
-                return expected.test(actual.toString());
+            if (utilx.isRegExp(expected) && utilx.objectInstanceOf(actual, Error)) {
+                return expected.test(errorString(actual));
             }
 
             if (utilx.objectInstanceOf(actual, expected)) {
                 return true;
             }
 
-            if (utilx.isTrue(expected.call({}, actual))) {
+            if (utilx.isFunction(expected) && utilx.isTrue(expected.call({}, actual))) {
                 return true;
             }
 

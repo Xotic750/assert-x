@@ -32,7 +32,7 @@
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
-            assertx.strictEqual(e.constructor.prototype.toString.call(e).split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
+            assertx.strictEqual(e.toString().split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
         }
     }
 
@@ -710,13 +710,13 @@
         try {
             assertx.equal(1, 2);
         } catch (e) {
-            t.equal(e.constructor.prototype.toString.call(e).split('\n')[0], 'AssertionError: 1 == 2');
+            t.equal(e.toString().split('\n')[0], 'AssertionError: 1 == 2');
         }
 
         try {
             assertx.equal(1, 2, 'oh no');
         } catch (e) {
-            t.equal(e.constructor.prototype.toString.call(e).split('\n')[0], 'AssertionError: oh no');
+            t.equal(e.toString().split('\n')[0], 'AssertionError: oh no');
         }
 
         t.end();
