@@ -77,9 +77,6 @@
 
         utilx.inherits(AssertionError, Error);
 
-        AssertionError.prototype.toString = null;
-        delete AssertionError.prototype.toString;
-
         function replacer(key, value) {
             /*jslint unparam: true */
             /*jshint unused: true */
@@ -104,6 +101,13 @@
 
             return theString;
         }
+
+        AssertionError.prototype.constructor = null;
+        delete AssertionError.prototype.constructor;
+        AssertionError.prototype.name = null;
+        delete AssertionError.prototype.name;
+        AssertionError.prototype.toString = null;
+        delete AssertionError.prototype.toString;
 
         utilx.objectDefineProperties(AssertionError.prototype, {
             constructor: {
