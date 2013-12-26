@@ -87,27 +87,24 @@
             return value;
         }
 
-        function errorString(obj) {
-            var theString;
+        utilx.objectDefineProperty(AssertionError, 'errorToString', {
+            value: function (err) {
+                var theString;
 
-            if (utilx.isString(obj.message) && !utilx.isEmptyString(obj.message)) {
-                theString = obj.name + ': ' + obj.message;
-            } else if (utilx.objectInstanceOf(obj, AssertionError)) {
-                theString = obj.name + ': ';
-                theString += utilx.stringTruncate(utilx.jsonStringify(obj.actual, replacer), 128) + ' ';
-                theString += obj.operator + ' ';
-                theString += utilx.stringTruncate(utilx.jsonStringify(obj.expected, replacer), 128);
+                if (utilx.objectInstanceOf(err, Error)) {
+                    if (utilx.isString(err.message) && !utilx.isEmptyString(err.message)) {
+                        theString = err.name + ': ' + err.message;
+                    } else if (utilx.objectInstanceOf(err, AssertionError)) {
+                        theString = err.name + ': ';
+                        theString += utilx.stringTruncate(utilx.jsonStringify(err.actual, replacer), 128) + ' ';
+                        theString += err.operator + ' ';
+                        theString += utilx.stringTruncate(utilx.jsonStringify(err.expected, replacer), 128);
+                    }
+                }
+
+                return theString;
             }
-
-            return theString;
-        }
-
-        AssertionError.prototype.constructor = null;
-        delete AssertionError.prototype.constructor;
-        AssertionError.prototype.name = null;
-        delete AssertionError.prototype.name;
-        AssertionError.prototype.toString = null;
-        delete AssertionError.prototype.toString;
+        });
 
         utilx.objectDefineProperties(AssertionError.prototype, {
             constructor: {
@@ -120,7 +117,7 @@
 
             toString: {
                 value: function () {
-                    return errorString(this);
+                    return AssertionError.errorToString(this);
                 }
             }
         });
@@ -139,7 +136,7 @@
             }
 
             if (utilx.isRegExp(expected) && utilx.objectInstanceOf(actual, Error)) {
-                return expected.test(errorString(actual));
+                return expected.test(AssertionError.errorToString(actual));
             }
 
             if (utilx.objectInstanceOf(actual, expected)) {
