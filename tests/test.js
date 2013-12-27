@@ -7,6 +7,7 @@
         utilx = required.utilx,
         test = required.test,
         assertx = required.assertx,
+        rxSplit = new RegExp('[\\r\\n]'),
         rxTest = new RegExp('test'),
 
         // having an identical prototype property
@@ -32,22 +33,83 @@
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
-            assertx.strictEqual(assertx.AssertionError.errorToString(e).split('\n')[0], 'AssertionError: ' + expected + ' === ' + '""');
+            assertx.strictEqual(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)), 'AssertionError: ' + expected + ' === ' + '""');
         }
     }
 
-    test('assertx', function (t) {
+    test('AssertionError', function (t) {
         t.throws(function () {
-            assertx(false, false, 'assertx is a throw function');
-        }, assertx.AssertionError, 'assertx(false)');
+            throw new assertx.AssertionError({
+                actual: false,
+                expected: false,
+                message: 'assertx.AssertionError is an Error function'
+            });
+        }, assertx.AssertionError, 'assertx.AssertionError');
 
         t.throws(function () {
-            assertx(true, true, 'assertx is a throw function');
-        }, assertx.AssertionError, 'assertx(true)');
+            throw new assertx.AssertionError({
+                actual: true,
+                expected: true,
+                message: 'assertx.AssertionError is an Error function'
+            });
+        }, assertx.AssertionError, 'assertx.AssertionError');
 
         t.throws(function () {
-            assertx('test', 'test', 'assertx is a throw function');
-        }, assertx.AssertionError, 'assertx(\'test\')');
+            throw new assertx.AssertionError({
+                actual: true,
+                expected: false,
+                message: 'assertx.AssertionError is an Error function'
+            });
+        }, assertx.AssertionError, 'assertx.AssertionError');
+
+        t.throws(function () {
+            throw new assertx.AssertionError({
+                actual: false,
+                expected: true,
+                message: 'assertx.AssertionError is an Error function'
+            });
+        }, assertx.AssertionError, 'assertx.AssertionError');
+
+        t.throws(function () {
+            throw new assertx.AssertionError({
+                actual: '',
+                expected: 'test',
+                message: 'assertx.AssertionError is an Error function'
+            });
+        }, assertx.AssertionError, 'assertx.AssertionError');
+
+        t.throws(function () {
+            throw new assertx.AssertionError({
+                actual: 'test',
+                expected: '',
+                message: 'assertx.AssertionError is an Error function'
+            });
+        }, assertx.AssertionError, 'assertx.AssertionError');
+
+        t.throws(function () {
+            throw new assertx.AssertionError({
+                actual: 'test',
+                expected: 'test',
+                message: 'assertx.AssertionError is an Error function'
+            });
+        }, assertx.AssertionError, 'assertx.AssertionError');
+
+        t.throws(function () {
+            throw new assertx.AssertionError({
+                message: 'assertx.AssertionError is an Error function'
+            });
+        }, assertx.AssertionError, 'assertx.AssertionError');
+
+        t.throws(function () {
+            throw new assertx.AssertionError({
+                actual: 'assertx.AssertionError',
+                expected: 'is an Error function'
+            });
+        }, assertx.AssertionError, 'assertx.AssertionError');
+
+        t.throws(function () {
+            throw new assertx.AssertionError();
+        }, assertx.AssertionError, 'assertx.AssertionError');
 
         t.end();
     });
@@ -710,13 +772,13 @@
         try {
             assertx.equal(1, 2);
         } catch (e) {
-            t.equal(assertx.AssertionError.errorToString(e).split('\n')[0], 'AssertionError: 1 == 2');
+            t.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)), 'AssertionError: 1 == 2');
         }
 
         try {
             assertx.equal(1, 2, 'oh no');
         } catch (e) {
-            t.equal(assertx.AssertionError.errorToString(e).split('\n')[0], 'AssertionError: oh no');
+            t.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)), 'AssertionError: oh no');
         }
 
         t.end();

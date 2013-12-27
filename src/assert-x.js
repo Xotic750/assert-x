@@ -1,5 +1,5 @@
 /**
- * @file {@link @@HOMEPAGE AstroDate}. @@DESCRIPTION.
+ * @file {@link @@HOMEPAGE @@MODULE}. @@DESCRIPTION.
  * @version @@VERSION
  * @author @@AUTHORNAME <@@AUTHOREMAIL>
  * @copyright @@COPYRIGHT @@AUTHORNAME
@@ -30,8 +30,13 @@
 
     function factory(utilx) {
         /**
-         * The AssertionError is defined in assert.
-         * @private
+         * @namespace assertx
+         */
+        var assertx = {};
+
+        /**
+         * The AssertionError constructor.
+         * @memberOf assertx
          * @constructor
          * @augments Error
          * @param {object} opts
@@ -119,6 +124,12 @@
                 value: function () {
                     return AssertionError.errorToString(this);
                 }
+            },
+
+            toStringX: {
+                value: function () {
+                    return AssertionError.errorToString(this);
+                }
             }
         });
 
@@ -152,7 +163,8 @@
 
         /**
          * Throws an exception that displays the values for actual and expected separated by the provided operator.
-         * @function assertx
+         * @private
+         * @function
          * @param {*} actual
          * @param {*} expected
          * @param {string} message
@@ -160,9 +172,9 @@
          * @param {function} [stackStartFunction]
          * @return {undefined}
          */
-        function assertx(actual, expected, message, operator, stackStartFunction) {
+        function throwAssertionError(actual, expected, message, operator, stackStartFunction) {
             if (!utilx.isFunction(stackStartFunction)) {
-                stackStartFunction = assertx;
+                stackStartFunction = throwAssertionError;
             }
 
             throw new AssertionError({
@@ -194,7 +206,7 @@
                     stackStartFunction = message;
                     message = utilx.privateUndefined;
                 } else {
-                    stackStartFunction = utilx.privateUndefined;
+                    stackStartFunction = throws;
                 }
             }
 
@@ -212,11 +224,11 @@
             wasExceptionExpected = expectedException(actual, expected);
             message = (expected && utilx.isString(expected.name) && utilx.isEmptyString(expected.name) ? ' (' + expected.name + ').' : '.') + (message ? ' ' + message : '.');
             if (utilx.isTrue(shouldThrow) && !actual) {
-                assertx(actual, expected, 'Missing expected exception' + message, utilx.privateUndefined, stackStartFunction);
+                throwAssertionError(actual, expected, 'Missing expected exception' + message, utilx.privateUndefined, stackStartFunction);
             }
 
             if (utilx.isFalse(shouldThrow) && utilx.isTrue(wasExceptionExpected)) {
-                assertx(actual, expected, 'Got unwanted exception' + message, utilx.privateUndefined, stackStartFunction);
+                throwAssertionError(actual, expected, 'Got unwanted exception' + message, utilx.privateUndefined, stackStartFunction);
             }
 
             if ((utilx.isTrue(shouldThrow) && actual && expected && utilx.isFalse(wasExceptionExpected)) || (utilx.isFalse(shouldThrow) && actual)) {
@@ -225,13 +237,6 @@
         }
 
         utilx.objectDefineProperties(assertx, {
-            /**
-             * The AssertionError is defined in assert.
-             * @memberOf assertx
-             * @constructor
-             * @param {object} opts
-             * @return {undefined}
-             */
             AssertionError: {
                 value: AssertionError
             },
@@ -248,7 +253,7 @@
              */
             fail: {
                 value: function (actual, expected, message, stackStartFunction) {
-                    assertx(actual, expected, message, 'fail', stackStartFunction);
+                    throwAssertionError(actual, expected, message, 'fail', stackStartFunction);
                 }
             },
 
@@ -266,7 +271,7 @@
                     var pass = utilx.toBoolean(value);
 
                     if (utilx.isFalse(pass)) {
-                        assertx(pass, true, message, 'ok', stackStartFunction);
+                        throwAssertionError(pass, true, message, 'ok', stackStartFunction);
                     }
                 }
             },
@@ -284,7 +289,7 @@
             equal: {
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.notEqual(actual, expected)) {
-                        assertx(actual, expected, message, '==', stackStartFunction);
+                        throwAssertionError(actual, expected, message, '==', stackStartFunction);
                     }
                 }
             },
@@ -302,7 +307,7 @@
             notEqual: {
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.equal(actual, expected)) {
-                        assertx(actual, expected, message, '!=', stackStartFunction);
+                        throwAssertionError(actual, expected, message, '!=', stackStartFunction);
                     }
                 }
             },
@@ -320,7 +325,7 @@
             deepEqual: {
                 value: function (actual, expected, message, stackStartFunction) {
                     if (!utilx.deepEqual(actual, expected)) {
-                        assertx(actual, expected, message, 'deepEqual', stackStartFunction);
+                        throwAssertionError(actual, expected, message, 'deepEqual', stackStartFunction);
                     }
                 }
             },
@@ -338,7 +343,7 @@
             notDeepEqual: {
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.deepEqual(actual, expected)) {
-                        assertx(actual, expected, message, 'notDeepEqual', stackStartFunction);
+                        throwAssertionError(actual, expected, message, 'notDeepEqual', stackStartFunction);
                     }
                 }
             },
@@ -356,7 +361,7 @@
             deepStrictEqual: {
                 value: function (actual, expected, message, stackStartFunction) {
                     if (!utilx.deepEqual(actual, expected, {strict: true})) {
-                        assertx(actual, expected, message, 'deepStrictEqual', stackStartFunction);
+                        throwAssertionError(actual, expected, message, 'deepStrictEqual', stackStartFunction);
                     }
                 }
             },
@@ -374,7 +379,7 @@
             notDeepStrictEqual: {
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.deepEqual(actual, expected, {strict: true})) {
-                        assertx(actual, expected, message, 'notDeepStrictEqual', stackStartFunction);
+                        throwAssertionError(actual, expected, message, 'notDeepStrictEqual', stackStartFunction);
                     }
                 }
             },
@@ -392,7 +397,7 @@
             strictEqual: {
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.notStrictEqual(actual, expected)) {
-                        assertx(actual, expected, message, '===', stackStartFunction);
+                        throwAssertionError(actual, expected, message, '===', stackStartFunction);
                     }
                 }
             },
@@ -411,7 +416,7 @@
             notStrictEqual: {
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.strictEqual(actual, expected)) {
-                        assertx(actual, expected, message, '!==', stackStartFunction);
+                        throwAssertionError(actual, expected, message, '!==', stackStartFunction);
                     }
                 }
             },

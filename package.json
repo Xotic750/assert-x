@@ -54,7 +54,7 @@
         "jsdoc": "latest",
         "tape-compact": "latest",
         "grunt-cli": "latest",
-        "grunt-contrib-jshint": "~0.7.0",
+        "grunt-contrib-jshint": "~0.7.2",
         "grunt-contrib-uglify": "latest",
         "grunt-contrib-watch": "latest",
         "grunt-lib-legacyhelpers": "latest",
@@ -65,7 +65,7 @@
         "coveralls": "latest",
         "grunt-shell": "latest",
         "istanbul": "latest",
-        "browserify": "~2.36.1"
+        "browserify": "latest"
     },
     "optionalDependencies": {
         "uglify-js": "latest",
@@ -74,7 +74,7 @@
         "jsdoc": "latest",
         "tape-compact": "latest",
         "grunt-cli": "latest",
-        "grunt-contrib-jshint": "~0.7.0",
+        "grunt-contrib-jshint": "~0.7.2",
         "grunt-contrib-uglify": "latest",
         "grunt-contrib-watch": "latest",
         "grunt-lib-legacyhelpers": "latest",
@@ -85,7 +85,7 @@
         "coveralls": "latest",
         "grunt-shell": "latest",
         "istanbul": "latest",
-        "browserify": "~2.36.1"
+        "browserify": "latest"
     },
     "scripts": {
         "test": "./node_modules/tape-compact/bin/tape-compact tests/*.js"
