@@ -1,6 +1,6 @@
 {
     "name": "assert-x",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "A Javascript assertion library.",
     "homepage": "http://xotic750.github.io/assert-x/",
     "author": {
@@ -52,7 +52,8 @@
         "grunt": "latest",
         "js-beautify": "latest",
         "jsdoc": "latest",
-        "tape-compact": "latest",
+        "mocha": "latest",
+        "mocha-lcov-reporter": "latest",
         "grunt-cli": "latest",
         "grunt-contrib-jshint": "~0.7.2",
         "grunt-contrib-uglify": "latest",
@@ -72,7 +73,8 @@
         "grunt": "latest",
         "js-beautify": "latest",
         "jsdoc": "latest",
-        "tape-compact": "latest",
+        "mocha": "latest",
+        "mocha-lcov-reporter": "latest",
         "grunt-cli": "latest",
         "grunt-contrib-jshint": "~0.7.2",
         "grunt-contrib-uglify": "latest",
@@ -87,10 +89,30 @@
         "istanbul": "latest",
         "browserify": "latest"
     },
+    "browser": {
+        "../lib/assert-x.min": false,
+        "uglify-js": false,
+        "grunt": false,
+        "js-beautify": false,
+        "jsdoc": false,
+        "grunt-cli": false,
+        "grunt-contrib-jshint": false,
+        "grunt-contrib-uglify": false,
+        "grunt-contrib-watch": false,
+        "grunt-lib-legacyhelpers": false,
+        "grunt-contrib-clean": false,
+        "grunt-jsdoc": false,
+        "grunt-jsbeautifier": false,
+        "grunt-replace": false,
+        "coveralls": false,
+        "grunt-shell": false,
+        "istanbul": false
+    },
     "scripts": {
-        "test": "./node_modules/tape-compact/bin/tape-compact tests/*.js"
+        "test": "./node_modules/mocha/bin/mocha --check-leaks -u bdd -t 10000 -b -R tap tests/*.js"
     },
     "testling": {
+        "harness": "mocha",
         "files": "tests/*.js",
         "browsers": [
             "iexplore/6.0..latest",

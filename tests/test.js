@@ -1,11 +1,10 @@
-/*global require */
+/*global require, describe, it */
 
 (function () {
     'use strict';
 
     var required = require('./'),
         utilx = required.utilx,
-        test = required.test,
         assertx = required.assertx,
         rxSplit = new RegExp('[\\r\\n]'),
         rxTest = new RegExp('test'),
@@ -37,279 +36,243 @@
         }
     }
 
-    test('AssertionError', function (t) {
-        t.throws(function () {
-            throw new assertx.AssertionError({
-                actual: false,
-                expected: false,
-                message: 'assertx.AssertionError is an Error function'
-            });
-        }, assertx.AssertionError, 'assertx.AssertionError');
+    describe('AssertionError', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    actual: false,
+                    expected: false,
+                    message: 'assertx.AssertionError is an Error function'
+                });
+            }, assertx.AssertionError, 'assertx.AssertionError');
 
-        t.throws(function () {
-            throw new assertx.AssertionError({
-                actual: true,
-                expected: true,
-                message: 'assertx.AssertionError is an Error function'
-            });
-        }, assertx.AssertionError, 'assertx.AssertionError');
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    actual: true,
+                    expected: true,
+                    message: 'assertx.AssertionError is an Error function'
+                });
+            }, assertx.AssertionError, 'assertx.AssertionError');
 
-        t.throws(function () {
-            throw new assertx.AssertionError({
-                actual: true,
-                expected: false,
-                message: 'assertx.AssertionError is an Error function'
-            });
-        }, assertx.AssertionError, 'assertx.AssertionError');
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    actual: true,
+                    expected: false,
+                    message: 'assertx.AssertionError is an Error function'
+                });
+            }, assertx.AssertionError, 'assertx.AssertionError');
 
-        t.throws(function () {
-            throw new assertx.AssertionError({
-                actual: false,
-                expected: true,
-                message: 'assertx.AssertionError is an Error function'
-            });
-        }, assertx.AssertionError, 'assertx.AssertionError');
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    actual: false,
+                    expected: true,
+                    message: 'assertx.AssertionError is an Error function'
+                });
+            }, assertx.AssertionError, 'assertx.AssertionError');
 
-        t.throws(function () {
-            throw new assertx.AssertionError({
-                actual: '',
-                expected: 'test',
-                message: 'assertx.AssertionError is an Error function'
-            });
-        }, assertx.AssertionError, 'assertx.AssertionError');
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    actual: '',
+                    expected: 'test',
+                    message: 'assertx.AssertionError is an Error function'
+                });
+            }, assertx.AssertionError, 'assertx.AssertionError');
 
-        t.throws(function () {
-            throw new assertx.AssertionError({
-                actual: 'test',
-                expected: '',
-                message: 'assertx.AssertionError is an Error function'
-            });
-        }, assertx.AssertionError, 'assertx.AssertionError');
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    actual: 'test',
+                    expected: '',
+                    message: 'assertx.AssertionError is an Error function'
+                });
+            }, assertx.AssertionError, 'assertx.AssertionError');
 
-        t.throws(function () {
-            throw new assertx.AssertionError({
-                actual: 'test',
-                expected: 'test',
-                message: 'assertx.AssertionError is an Error function'
-            });
-        }, assertx.AssertionError, 'assertx.AssertionError');
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    actual: 'test',
+                    expected: 'test',
+                    message: 'assertx.AssertionError is an Error function'
+                });
+            }, assertx.AssertionError, 'assertx.AssertionError');
 
-        t.throws(function () {
-            throw new assertx.AssertionError({
-                message: 'assertx.AssertionError is an Error function'
-            });
-        }, assertx.AssertionError, 'assertx.AssertionError');
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    message: 'assertx.AssertionError is an Error function'
+                });
+            }, assertx.AssertionError, 'assertx.AssertionError');
 
-        t.throws(function () {
-            throw new assertx.AssertionError({
-                actual: 'assertx.AssertionError',
-                expected: 'is an Error function'
-            });
-        }, assertx.AssertionError, 'assertx.AssertionError');
+            assertx.throws(function () {
+                throw new assertx.AssertionError({
+                    actual: 'assertx.AssertionError',
+                    expected: 'is an Error function'
+                });
+            }, assertx.AssertionError, 'assertx.AssertionError');
 
-        t.throws(function () {
-            throw new assertx.AssertionError();
-        }, assertx.AssertionError, 'assertx.AssertionError');
-
-        t.end();
+            assertx.throws(function () {
+                throw new assertx.AssertionError();
+            }, assertx.AssertionError, 'assertx.AssertionError');
+        });
     });
 
-    test('assertx.ok', function (t) {
-        t.throws(function () {
-            assertx.ok(false);
-        }, assertx.AssertionError, 'ok(false)');
+    describe('assertx.ok', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.ok(false);
+            }, assertx.AssertionError, 'ok(false)');
+        });
 
-        t.doesNotThrow(function () {
-            assertx.ok(true);
-        }, assertx.AssertionError, 'ok(true)');
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.ok(true);
+            }, assertx.AssertionError, 'ok(true)');
 
-        t.doesNotThrow(function () {
-            assertx.ok('test');
-        }, 'ok(\'test\')');
-
-        t.end();
+            assertx.doesNotThrow(function () {
+                assertx.ok('test');
+            }, 'ok(\'test\')');
+        });
     });
 
-    test('assertx.equal', function (t) {
-        t.throws(function () {
-            assertx.equal(true, false);
-        }, assertx.AssertionError, 'equal');
+    describe('assertx.equal', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.equal(true, false);
+            }, assertx.AssertionError, 'equal');
 
-        t.doesNotThrow(function () {
-            assertx.equal(null, null);
-        }, 'equal');
+            assertx.throws(function () {
+                assertx.notEqual(true, true);
+            }, assertx.AssertionError, 'notEqual');
+        });
 
-        t.doesNotThrow(function () {
-            assertx.equal(undefined, undefined);
-        }, 'equal');
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.equal(null, null);
+            }, 'equal');
 
-        t.doesNotThrow(function () {
-            assertx.equal(null, undefined);
-        }, 'equal');
+            assertx.doesNotThrow(function () {
+                assertx.equal(undefined, undefined);
+            }, 'equal');
 
-        t.doesNotThrow(function () {
-            assertx.equal(true, true);
-        }, 'equal');
+            assertx.doesNotThrow(function () {
+                assertx.equal(null, undefined);
+            }, 'equal');
 
-        t.doesNotThrow(function () {
-            assertx.equal(2, '2');
-        }, 'equal');
+            assertx.doesNotThrow(function () {
+                assertx.equal(true, true);
+            }, 'equal');
 
-        t.doesNotThrow(function () {
-            assertx.notEqual(true, false);
-        }, 'notEqual');
+            assertx.doesNotThrow(function () {
+                assertx.equal(2, '2');
+            }, 'equal');
 
-        t.throws(function () {
-            assertx.notEqual(true, true);
-        }, assertx.AssertionError, 'notEqual');
-
-        t.end();
+            assertx.doesNotThrow(function () {
+                assertx.notEqual(true, false);
+            }, 'notEqual');
+        });
     });
 
-    test('assertx.strictEqual', function (t) {
-        t.throws(function () {
-            assertx.strictEqual(2, '2');
-        }, assertx.AssertionError, 'strictEqual');
+    describe('assertx.strictEqual', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.strictEqual(2, '2');
+            }, assertx.AssertionError, 'strictEqual');
 
-        t.throws(function () {
-            assertx.strictEqual(null, undefined);
-        }, assertx.AssertionError, 'strictEqual');
+            assertx.throws(function () {
+                assertx.strictEqual(null, undefined);
+            }, assertx.AssertionError, 'strictEqual');
+        });
 
-        t.doesNotThrow(function () {
-            assertx.notStrictEqual(2, '2');
-        }, 'notStrictEqual');
-
-        t.end();
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.notStrictEqual(2, '2');
+            }, 'notStrictEqual');
+        });
     });
 
-    test('assertx.deepEqual - 7.2', function (t) {
-        t.doesNotThrow(function () {
-            assertx.deepEqual(new Date(2000, 3, 14), new Date(2000, 3, 14));
-        }, 'deepEqual date');
+    describe('assertx.deepEqual - 7.2', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.deepEqual(new Date(), new Date(2000, 3, 14));
+            }, assertx.AssertionError, 'deepEqual date');
+        });
 
-        t.throws(function () {
-            assertx.deepEqual(new Date(), new Date(2000, 3, 14));
-        }, assertx.AssertionError, 'deepEqual date');
-
-        t.end();
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual(new Date(2000, 3, 14), new Date(2000, 3, 14));
+            }, 'deepEqual date');
+        });
     });
 
-    test('assertx.deepEqual - 7.3', function (t) {
-        t.doesNotThrow(function () {
-            assertx.deepEqual(/a/, /a/);
-        });
+    describe('assertx.deepEqual - 7.3', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.deepEqual(/ab/, /a/);
+            });
 
-        t.doesNotThrow(function () {
-            assertx.deepEqual(/a/g, /a/g);
-        });
+            assertx.throws(function () {
+                assertx.deepEqual(/a/g, /a/);
+            });
 
-        t.doesNotThrow(function () {
-            assertx.deepEqual(/a/i, /a/i);
-        });
+            assertx.throws(function () {
+                assertx.deepEqual(/a/i, /a/);
+            });
 
-        t.doesNotThrow(function () {
-            assertx.deepEqual(/a/m, /a/m);
-        });
+            assertx.throws(function () {
+                assertx.deepEqual(/a/m, /a/);
+            });
 
-        t.doesNotThrow(function () {
-            assertx.deepEqual(/a/igm, /a/igm);
-        });
+            assertx.throws(function () {
+                assertx.deepEqual(/a/igm, /a/im);
+            });
 
-        t.throws(function () {
-            assertx.deepEqual(/ab/, /a/);
-        });
+            var re1 = /a/;
 
-        t.throws(function () {
-            assertx.deepEqual(/a/g, /a/);
-        });
-
-        t.throws(function () {
-            assertx.deepEqual(/a/i, /a/);
-        });
-
-        t.throws(function () {
-            assertx.deepEqual(/a/m, /a/);
-        });
-
-        t.throws(function () {
-            assertx.deepEqual(/a/igm, /a/im);
-        });
-
-        var re1 = /a/;
-
-        re1.lastIndex = 3;
-        t.throws(function () {
-            assertx.deepEqual(re1, /a/);
-        });
-
-
-        t.end();
-    });
-
-    test('assertx.deepEqual - 7.4', function (t) {
-        t.doesNotThrow(function () {
-            assertx.deepEqual(4, '4');
-        }, 'deepEqual == check');
-
-        t.doesNotThrow(function () {
-            assertx.deepEqual(true, 1);
-        }, 'deepEqual == check');
-
-        t.throws(function () {
-            assertx.deepEqual(4, '5');
-        }, assertx.AssertionError, 'deepEqual == check');
-
-        t.end();
-    });
-
-    test('assertx.deepEqual - 7.5', function (t) {
-        t.doesNotThrow(function () {
-            assertx.deepEqual({
-                a: 4
-            }, {
-                a: 4
+            re1.lastIndex = 3;
+            assertx.throws(function () {
+                assertx.deepEqual(re1, /a/);
             });
         });
 
-        t.doesNotThrow(function () {
-            assertx.deepEqual({
-                a: 4,
-                b: '2'
-            }, {
-                a: 4,
-                b: '2'
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual(/a/, /a/);
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual(/a/g, /a/g);
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual(/a/i, /a/i);
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual(/a/m, /a/m);
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual(/a/igm, /a/igm);
             });
         });
+    });
 
-        t.doesNotThrow(function () {
-            assertx.deepEqual([4], ['4']);
+    describe('assertx.deepEqual - 7.4', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.deepEqual(4, '5');
+            }, assertx.AssertionError, 'deepEqual == check');
         });
 
-        t.throws(function () {
-            assertx.deepEqual({
-                a: 4
-            }, {
-                a: 4,
-                b: true
-            });
-        }, assertx.AssertionError);
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual(4, '4');
+            }, 'deepEqual == check');
 
-        t.doesNotThrow(function () {
-            assertx.deepEqual(['a'], {
-                0: 'a'
-            });
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual(true, 1);
+            }, 'deepEqual == check');
         });
+    });
 
-        t.doesNotThrow(function () {
-            assertx.deepEqual({
-                a: 4,
-                b: '1'
-            }, {
-                b: '1',
-                a: 4
-            });
-        });
-
+    describe('assertx.deepEqual - 7.5', function () {
         var a1 = [1, 2, 3],
             a2 = [1, 2, 3];
 
@@ -317,167 +280,179 @@
         a1.b = true;
         a2.b = true;
         a2.a = 'test';
-        t.throws(function () {
-            assertx.deepEqual(utilx.objectKeys(a1), utilx.objectKeys(a2));
-        }, assertx.AssertionError);
 
-        t.doesNotThrow(function () {
-            assertx.deepEqual(a1, a2);
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.deepEqual({
+                    a: 4
+                }, {
+                    a: 4,
+                    b: true
+                });
+            }, assertx.AssertionError);
+
+            assertx.throws(function () {
+                assertx.deepEqual(utilx.objectKeys(a1), utilx.objectKeys(a2));
+            }, assertx.AssertionError);
         });
 
-        t.end();
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual({
+                    a: 4
+                }, {
+                    a: 4
+                });
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual({
+                    a: 4,
+                    b: '2'
+                }, {
+                    a: 4,
+                    b: '2'
+                });
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual([4], ['4']);
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual(['a'], {
+                    0: 'a'
+                });
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual({
+                    a: 4,
+                    b: '1'
+                }, {
+                    b: '1',
+                    a: 4
+                });
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual(a1, a2);
+            });
+        });
     });
 
-    test('assertx.deepEqual - instances', function (t) {
-        NameBuilder2.prototype = nbRoot;
+    describe('assertx.deepEqual - instances', function () {
+        it('should throw an error in each case', function () {
+            NameBuilder2.prototype = Object;
 
-        var nb1 = new NameBuilder('John', 'Smith'),
-            nb2 = new NameBuilder2('John', 'Smith');
+            var nb1 = new NameBuilder('John', 'Smith'),
+                nb2 = new NameBuilder2('John', 'Smith');
 
-        t.doesNotThrow(function () {
-            assertx.deepEqual(nb1, nb2);
+            assertx.throws(function () {
+                assertx.deepEqual(nb1, nb2);
+            }, assertx.AssertionError);
+
+            assertx.throws(function () {
+                assertx.deepEqual('a', {});
+            }, assertx.AssertionError);
         });
 
-        NameBuilder2.prototype = Object;
-        nb2 = new NameBuilder2('John', 'Smith');
-        t.throws(function () {
-            assertx.deepEqual(nb1, nb2);
-        }, assertx.AssertionError);
+        it('should not throw an error in each case', function () {
+            NameBuilder2.prototype = nbRoot;
 
-        t.throws(function () {
-            assertx.deepEqual('a', {});
-        }, assertx.AssertionError);
+            var nb1 = new NameBuilder('John', 'Smith'),
+                nb2 = new NameBuilder2('John', 'Smith');
 
-        t.end();
+            assertx.doesNotThrow(function () {
+                assertx.deepEqual(nb1, nb2);
+            });
+        });
     });
 
-    test('assertx.deepStrictEqual', function (t) {
-        t.doesNotThrow(function () {
-            assertx.deepStrictEqual(new Date(2000, 3, 14), new Date(2000, 3, 14));
-        }, 'deepStrictEqual date');
+    describe('assertx.deepStrictEqual', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.deepStrictEqual(new Date(), new Date(2000, 3, 14));
+            }, assertx.AssertionError, 'deepStrictEqual date');
+        });
 
-        t.throws(function () {
-            assertx.deepStrictEqual(new Date(), new Date(2000, 3, 14));
-        }, assertx.AssertionError, 'deepStrictEqual date');
-
-        t.end();
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.deepStrictEqual(new Date(2000, 3, 14), new Date(2000, 3, 14));
+            }, 'deepStrictEqual date');
+        });
     });
 
-    test('assertx.deepStrictEqual', function (t) {
-        t.doesNotThrow(function () {
-            assertx.deepStrictEqual(/a/, /a/);
-        });
+    describe('assertx.deepStrictEqual', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.deepStrictEqual(/ab/, /a/);
+            });
 
-        t.doesNotThrow(function () {
-            assertx.deepStrictEqual(/a/g, /a/g);
-        });
+            assertx.throws(function () {
+                assertx.deepStrictEqual(/a/g, /a/);
+            });
 
-        t.doesNotThrow(function () {
-            assertx.deepStrictEqual(/a/i, /a/i);
-        });
+            assertx.throws(function () {
+                assertx.deepStrictEqual(/a/i, /a/);
+            });
 
-        t.doesNotThrow(function () {
-            assertx.deepStrictEqual(/a/m, /a/m);
-        });
+            assertx.throws(function () {
+                assertx.deepStrictEqual(/a/m, /a/);
+            });
 
-        t.doesNotThrow(function () {
-            assertx.deepStrictEqual(/a/igm, /a/igm);
-        });
+            assertx.throws(function () {
+                assertx.deepStrictEqual(/a/igm, /a/im);
+            });
 
-        t.throws(function () {
-            assertx.deepStrictEqual(/ab/, /a/);
-        });
+            var re1 = /a/;
 
-        t.throws(function () {
-            assertx.deepStrictEqual(/a/g, /a/);
-        });
-
-        t.throws(function () {
-            assertx.deepStrictEqual(/a/i, /a/);
-        });
-
-        t.throws(function () {
-            assertx.deepStrictEqual(/a/m, /a/);
-        });
-
-        t.throws(function () {
-            assertx.deepStrictEqual(/a/igm, /a/im);
-        });
-
-        var re1 = /a/;
-
-        re1.lastIndex = 3;
-        t.throws(function () {
-            assertx.deepStrictEqual(re1, /a/);
-        });
-
-        t.end();
-    });
-
-    test('assertx.deepStrictEqual', function (t) {
-        t.throws(function () {
-            assertx.deepStrictEqual(4, '4');
-        }, 'deepStrictEqual === check');
-
-        t.throws(function () {
-            assertx.deepStrictEqual(true, 1);
-        }, 'deepStrictEqual === check');
-
-        t.throws(function () {
-            assertx.deepStrictEqual(4, '5');
-        }, assertx.AssertionError, 'deepStrictEqual === check');
-
-        t.end();
-    });
-
-    test('assertx.deepStrictEqual', function (t) {
-        t.doesNotThrow(function () {
-            assertx.deepStrictEqual({
-                a: 4
-            }, {
-                a: 4
+            re1.lastIndex = 3;
+            assertx.throws(function () {
+                assertx.deepStrictEqual(re1, /a/);
             });
         });
 
-        t.doesNotThrow(function () {
-            assertx.deepStrictEqual({
-                a: 4,
-                b: '2'
-            }, {
-                a: 4,
-                b: '2'
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.deepStrictEqual(/a/, /a/);
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepStrictEqual(/a/g, /a/g);
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepStrictEqual(/a/i, /a/i);
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepStrictEqual(/a/m, /a/m);
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepStrictEqual(/a/igm, /a/igm);
             });
         });
+    });
 
-        t.throws(function () {
-            assertx.deepStrictEqual([4], ['4']);
+    describe('assertx.deepStrictEqual', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.deepStrictEqual(4, '4');
+            }, 'deepStrictEqual === check');
+
+            assertx.throws(function () {
+                assertx.deepStrictEqual(true, 1);
+            }, 'deepStrictEqual === check');
+
+            assertx.throws(function () {
+                assertx.deepStrictEqual(4, '5');
+            }, assertx.AssertionError, 'deepStrictEqual === check');
         });
+    });
 
-        t.throws(function () {
-            assertx.deepStrictEqual({
-                a: 4
-            }, {
-                a: 4,
-                b: true
-            });
-        }, assertx.AssertionError);
-
-        t.throws(function () {
-            assertx.deepStrictEqual(['a'], {
-                0: 'a'
-            });
-        });
-
-        t.doesNotThrow(function () {
-            assertx.deepStrictEqual({
-                a: 4,
-                b: '1'
-            }, {
-                b: '1',
-                a: 4
-            });
-        });
-
+    describe('assertx.deepStrictEqual', function () {
         var a1 = [1, 2, 3],
             a2 = [1, 2, 3];
 
@@ -485,302 +460,358 @@
         a1.b = true;
         a2.b = true;
         a2.a = 'test';
-        t.throws(function () {
-            assertx.deepStrictEqual(utilx.objectKeys(a1), utilx.objectKeys(a2));
-        }, assertx.AssertionError);
 
-        t.doesNotThrow(function () {
-            assertx.deepStrictEqual(a1, a2);
-        });
-
-        t.end();
-    });
-
-    test('assertx.deepStrictEqual - instances', function (t) {
-        NameBuilder2.prototype = nbRoot;
-
-        var nb1 = new NameBuilder('John', 'Smith'),
-            nb2 = new NameBuilder2('John', 'Smith');
-
-        t.doesNotThrow(function () {
-            assertx.deepStrictEqual(nb1, nb2);
-        });
-
-        NameBuilder2.prototype = Object;
-        nb2 = new NameBuilder2('John', 'Smith');
-        t.throws(function () {
-            assertx.deepStrictEqual(nb1, nb2);
-        }, assertx.AssertionError);
-
-        t.throws(function () {
-            assertx.deepStrictEqual('a', {});
-        }, assertx.AssertionError);
-
-        t.end();
-    });
-
-    test('assertx - Testing the throwing', function (t) {
-        t.throws(function () {
-            throw new TypeError('test');
-        }, TypeError, 'thrower working');
-
-        t.throws(function () {
-            throw new assertx.AssertionError({
-                message: 'test'
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.deepStrictEqual([4], ['4']);
             });
-        }, assertx.AssertionError, 'thrower working');
 
-        // the basic calls work
-        t.doesNotThrow(function () {
             assertx.throws(function () {
-                throw new assertx.AssertionError({
-                    message: 'test'
+                assertx.deepStrictEqual({
+                    a: 4
+                }, {
+                    a: 4,
+                    b: true
                 });
-            }, assertx.AssertionError, 'message');
-        });
+            }, assertx.AssertionError);
 
-        t.doesNotThrow(function () {
             assertx.throws(function () {
-                throw new assertx.AssertionError({
-                    message: 'test'
+                assertx.deepStrictEqual(['a'], {
+                    0: 'a'
                 });
+            });
+
+            assertx.throws(function () {
+                assertx.deepStrictEqual(utilx.objectKeys(a1), utilx.objectKeys(a2));
             }, assertx.AssertionError);
         });
 
-        t.doesNotThrow(function () {
-            assertx.throws(function () {
-                throw new assertx.AssertionError({
-                    message: 'test'
-                });
-            });
-        });
-
-        // if not passing an error, catch all.
-        t.doesNotThrow(function () {
-            assertx.throws(function () {
-                throw new TypeError('test');
-            });
-        });
-
-        // when passing a type, only catch errors of the appropriate type
-        try {
-            assertx.throws(function () {
-                throw new TypeError('test');
-            }, assertx.AssertionError);
-
-            t.fail('throws with an explicit error is eating extra errors');
-        } catch (e) {
-            t.ok(utilx.objectInstanceOf(e, TypeError), 'threw correct constructor');
-            t.pass('throws with an explicit error is not eating extra errors');
-        }
-
-        // doesNotThrow should pass through all errors
-        try {
+        it('should not throw an error in each case', function () {
             assertx.doesNotThrow(function () {
-                throw new TypeError('test');
+                assertx.deepStrictEqual({
+                    a: 4
+                }, {
+                    a: 4
+                });
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepStrictEqual({
+                    a: 4,
+                    b: '2'
+                }, {
+                    a: 4,
+                    b: '2'
+                });
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepStrictEqual({
+                    a: 4,
+                    b: '1'
+                }, {
+                    b: '1',
+                    a: 4
+                });
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.deepStrictEqual(a1, a2);
+            });
+        });
+    });
+
+    describe('assertx.deepStrictEqual - instances', function () {
+        it('should throw an error in each case', function () {
+            NameBuilder2.prototype = Object;
+
+            var nb1 = new NameBuilder('John', 'Smith'),
+                nb2 = new NameBuilder2('John', 'Smith');
+
+            assertx.throws(function () {
+                assertx.deepStrictEqual(nb1, nb2);
             }, assertx.AssertionError);
 
-            t.fail('doesNotThrow with an explicit error is eating extra errors');
-        } catch (e) {
-            t.ok(utilx.objectInstanceOf(e, TypeError), 'threw correct constructor');
-            t.pass('doesNotThrow with an explicit error is not eating extra errors');
-        }
+            assertx.throws(function () {
+                assertx.deepStrictEqual('a', {});
+            }, assertx.AssertionError);
+        });
 
-        // key difference is that throwing our correct error makes an assertion error
-        try {
+        it('should not throw an error in each case', function () {
+            NameBuilder2.prototype = nbRoot;
+
+            var nb1 = new NameBuilder('John', 'Smith'),
+                nb2 = new NameBuilder2('John', 'Smith');
+
             assertx.doesNotThrow(function () {
-                throw new TypeError('test');
-            }, TypeError);
-
-            t.fail('doesNotThrow is not catching type matching errors');
-        } catch (e) {
-            t.ok(utilx.objectInstanceOf(e, assertx.AssertionError), 'threw correct constructor');
-            t.pass('doesNotThrow is catching type matching errors');
-        }
-
-        t.end();
-    });
-
-    test('assertx.ifError', function (t) {
-        t.throws(function () {
-            assertx.ifError(new Error('test error'));
-        }, assertx.AssertionError, 'error does throw');
-
-        t.doesNotThrow(function () {
-            assertx.ifError(null);
-        }, 'null does not throw');
-
-        t.doesNotThrow(function () {
-            assertx.ifError();
-        }, 'undefined does not throw');
-
-        t.end();
-    });
-
-    test('assertx - make sure that validating using constructor really works', function (t) {
-        try {
-            assertx.throws(function () {
-                throw ({});
-            }, Array);
-
-            t.fail('wrong constructor validation');
-        } catch (e) {
-            t.pass('correct constructor validation');
-        }
-
-        t.end();
-    });
-
-    test('assertx - use a RegExp to validate error message', function (t) {
-        t.doesNotThrow(function () {
-            assertx.throws(function () {
-                throw new TypeError('test');
-            }, rxTest);
+                assertx.deepStrictEqual(nb1, nb2);
+            });
         });
+    });
 
-        t.doesNotThrow(function () {
+    describe('assertx - Testing the throwing', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                throw new TypeError('test');
+            }, TypeError, 'thrower working');
+
             assertx.throws(function () {
                 throw new assertx.AssertionError({
                     message: 'test'
                 });
-
-            }, rxTest);
+            }, assertx.AssertionError, 'thrower working');
         });
 
-        t.end();
-    });
-
-    test('assertx - set a fn to validate error object', function (t) {
-        t.doesNotThrow(function () {
-            assertx.throws(function () {
-                throw new TypeError('test');
-            }, function (err) {
-                var result;
-
-                if (utilx.objectInstanceOf(err, TypeError) && rxTest.test(assertx.AssertionError.errorToString(err))) {
-                    result = true;
-                }
-
-                return result;
+        it('should not throw an error in each case', function () {
+            // the basic calls work
+            assertx.doesNotThrow(function () {
+                assertx.throws(function () {
+                    throw new assertx.AssertionError({
+                        message: 'test'
+                    });
+                }, assertx.AssertionError, 'message');
             });
-        });
 
-        t.doesNotThrow(function () {
-            assertx.throws(function () {
-                throw new assertx.AssertionError({
-                    message: 'test'
+            assertx.doesNotThrow(function () {
+                assertx.throws(function () {
+                    throw new assertx.AssertionError({
+                        message: 'test'
+                    });
+                }, assertx.AssertionError);
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.throws(function () {
+                    throw new assertx.AssertionError({
+                        message: 'test'
+                    });
                 });
-            }, function (err) {
-                var result;
-
-                if (utilx.objectInstanceOf(err, assertx.AssertionError) && rxTest.test(assertx.AssertionError.errorToString(err))) {
-                    result = true;
-                }
-
-                return result;
             });
+
+            // if not passing an error, catch all.
+            assertx.doesNotThrow(function () {
+                assertx.throws(function () {
+                    throw new TypeError('test');
+                });
+            });
+
+            // when passing a type, only catch errors of the appropriate type
+            try {
+                assertx.throws(function () {
+                    throw new TypeError('test');
+                }, assertx.AssertionError);
+
+                assertx.fail('throws with an explicit error is eating extra errors');
+            } catch (e) {
+                assertx.ok(utilx.objectInstanceOf(e, TypeError), 'threw correct constructor');
+                assertx.ok(true, 'throws with an explicit error is not eating extra errors');
+            }
+
+            // doesNotThrow should pass through all errors
+            try {
+                assertx.doesNotThrow(function () {
+                    throw new TypeError('test');
+                }, assertx.AssertionError);
+
+                assertx.fail('doesNotThrow with an explicit error is eating extra errors');
+            } catch (e) {
+                assertx.ok(utilx.objectInstanceOf(e, TypeError), 'threw correct constructor');
+                assertx.ok(true, 'doesNotThrow with an explicit error is not eating extra errors');
+            }
+
+            // key difference is that throwing our correct error makes an assertion error
+            try {
+                assertx.doesNotThrow(function () {
+                    throw new TypeError('test');
+                }, TypeError);
+
+                assertx.fail('doesNotThrow is not catching type matching errors');
+            } catch (e) {
+                assertx.ok(utilx.objectInstanceOf(e, assertx.AssertionError), 'threw correct constructor');
+                assertx.ok(true, 'doesNotThrow is catching type matching errors');
+            }
         });
-
-        t.end();
     });
 
-    test('assertx - Make sure deepEqual doesn\'t loop forever on circular refs', function (t) {
-        var b = {},
-            c = {};
-
-        b.b = b;
-        c.b = c;
-
-        try {
-            assertx.deepEqual(b, c);
-            t.fail('cirular did not throw');
-        } catch (e) {
-            t.pass('cirular threw');
-        }
-
-        t.end();
-    });
-
-    test('assertx - Make sure deepStrictEqual doesn\'t loop forever on circular refs', function (t) {
-        var b = {},
-            c = {};
-
-        b.b = b;
-        c.b = c;
-
-        try {
-            assertx.deepStricEqual(b, c);
-            t.fail('cirular did not throw');
-        } catch (e) {
-            t.pass('cirular threw');
-        }
-
-        t.end();
-    });
-
-    test('assertx - test assertion message', function (t) {
-        function f() {}
-
-        t.doesNotThrow(function () {
-            testAssertionMessage(undefined, '"undefined"');
-            testAssertionMessage(null, 'null');
-            testAssertionMessage(true, 'true');
-            testAssertionMessage(false, 'false');
-            testAssertionMessage(0, '0');
-            testAssertionMessage(100, '100');
-            testAssertionMessage(NaN, '"NaN"');
-            testAssertionMessage(Infinity, '"Infinity"');
-            testAssertionMessage(-Infinity, '"-Infinity"');
-            testAssertionMessage('', '""');
-            testAssertionMessage('foo', '"foo"');
-            testAssertionMessage([], '[]');
-            testAssertionMessage([1, 2, 3], '[1,2,3]');
-            testAssertionMessage(/a/, '"/a/"');
-            testAssertionMessage(f, utilx.jsonStringify(f.toString()));
-            testAssertionMessage({}, '{}');
-
-            testAssertionMessage({
-                a: undefined,
-                b: null
-            }, '{"a":"undefined","b":null}');
-
-            testAssertionMessage({
-                a: NaN,
-                b: Infinity,
-                c: -Infinity
-            }, '{"a":"NaN","b":"Infinity","c":"-Infinity"}');
-
-        });
-
-        t.end();
-    });
-
-    test('assertx - regressions from node.js testcase', function (t) {
-        var threw = false;
-
-        try {
+    describe('assertx.ifError', function () {
+        it('should throw an error in each case', function () {
             assertx.throws(function () {
+                assertx.ifError(new Error('test error'));
+            }, Error, 'error does throw');
+        });
+
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
                 assertx.ifError(null);
+            }, 'null does not throw');
+
+            assertx.doesNotThrow(function () {
+                assertx.ifError();
+            }, 'undefined does not throw');
+        });
+    });
+
+    describe('assertx - make sure that validating using constructor really works', function () {
+        it('should not throw an error in each case', function () {
+            try {
+                assertx.throws(function () {
+                    throw ({});
+                }, Array);
+
+                assertx.fail('wrong constructor validation');
+            } catch (e) {
+                assertx.ok(true, 'correct constructor validation');
+            }
+        });
+    });
+
+    describe('assertx - use a RegExp to validate error message', function () {
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.throws(function () {
+                    throw new TypeError('test');
+                }, rxTest);
             });
-        } catch (e) {
-            threw = true;
-            assertx.equal(e.message, 'Missing expected exception..');
-        }
 
-        t.ok(threw, 'null threw error');
+            assertx.doesNotThrow(function () {
+                assertx.throws(function () {
+                    throw new assertx.AssertionError({
+                        message: 'test'
+                    });
 
-        try {
-            assertx.equal(1, 2);
-        } catch (e) {
-            t.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)), 'AssertionError: 1 == 2');
-        }
+                }, rxTest);
+            });
+        });
+    });
 
-        try {
-            assertx.equal(1, 2, 'oh no');
-        } catch (e) {
-            t.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)), 'AssertionError: oh no');
-        }
+    describe('assertx - set a fn to validate error object', function () {
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.throws(function () {
+                    throw new TypeError('test');
+                }, function (err) {
+                    var result;
 
-        t.end();
+                    if (utilx.objectInstanceOf(err, TypeError) && rxTest.test(assertx.AssertionError.errorToString(err))) {
+                        result = true;
+                    }
+
+                    return result;
+                });
+            });
+
+            assertx.doesNotThrow(function () {
+                assertx.throws(function () {
+                    throw new assertx.AssertionError({
+                        message: 'test'
+                    });
+                }, function (err) {
+                    var result;
+
+                    if (utilx.objectInstanceOf(err, assertx.AssertionError) && rxTest.test(assertx.AssertionError.errorToString(err))) {
+                        result = true;
+                    }
+
+                    return result;
+                });
+            });
+        });
+    });
+
+    describe('assertx - Make sure deepEqual doesn\'t loop forever on circular refs', function () {
+        it('should not throw an error in each case', function () {
+            var b = {},
+                c = {};
+
+            b.b = b;
+            c.b = c;
+
+            try {
+                assertx.deepEqual(b, c);
+                assertx.fail('cirular did not throw');
+            } catch (e) {
+                assertx.ok(true, 'cirular threw');
+            }
+        });
+    });
+
+    describe('assertx - Make sure deepStrictEqual doesn\'t loop forever on circular refs', function () {
+        it('should not throw an error in each case', function () {
+            var b = {},
+                c = {};
+
+            b.b = b;
+            c.b = c;
+
+            try {
+                assertx.deepStricEqual(b, c);
+                assertx.fail('cirular did not throw');
+            } catch (e) {
+                assertx.ok(true, 'cirular threw');
+            }
+        });
+    });
+
+    describe('assertx - test assertion message', function () {
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                testAssertionMessage(undefined, '"undefined"');
+                testAssertionMessage(null, 'null');
+                testAssertionMessage(true, 'true');
+                testAssertionMessage(false, 'false');
+                testAssertionMessage(0, '0');
+                testAssertionMessage(100, '100');
+                testAssertionMessage(NaN, '"NaN"');
+                testAssertionMessage(Infinity, '"Infinity"');
+                testAssertionMessage(-Infinity, '"-Infinity"');
+                testAssertionMessage('', '""');
+                testAssertionMessage('foo', '"foo"');
+                testAssertionMessage([], '[]');
+                testAssertionMessage([1, 2, 3], '[1,2,3]');
+                testAssertionMessage(/a/, '"/a/"');
+                testAssertionMessage(utilx.noop, utilx.jsonStringify(utilx.noop.toString()));
+                testAssertionMessage({}, '{}');
+
+                testAssertionMessage({
+                    a: undefined,
+                    b: null
+                }, '{"a":"undefined","b":null}');
+
+                testAssertionMessage({
+                    a: NaN,
+                    b: Infinity,
+                    c: -Infinity
+                }, '{"a":"NaN","b":"Infinity","c":"-Infinity"}');
+            });
+        });
+    });
+
+    describe('assertx - regressions from node.js testcase', function () {
+        it('should not throw an error in each case', function () {
+            var threw = false;
+
+            try {
+                assertx.throws(function () {
+                    assertx.ifError(null);
+                });
+            } catch (e) {
+                threw = true;
+                assertx.equal(e.message, 'Missing expected exception..');
+            }
+
+            assertx.ok(threw, 'null threw error');
+
+            try {
+                assertx.equal(1, 2);
+            } catch (e) {
+                assertx.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)), 'AssertionError: 1 == 2');
+            }
+
+            try {
+                assertx.equal(1, 2, 'oh no');
+            } catch (e) {
+                assertx.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)), 'AssertionError: oh no');
+            }
+        });
     });
 }());

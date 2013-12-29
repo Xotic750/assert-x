@@ -137,7 +137,7 @@
                             maxBuffer: 1048576
                         }
                     },
-                    command: 'ASSERTX_WHICH=1 ./node_modules/tape-compact/bin/tape-compact tests/*.js'
+                    command: './node_modules/mocha/bin/mocha --check-leaks -u bdd -t 10000 -b -R tap tests/*.js'
                 },
                 coveralls: {
                     options: {
@@ -148,7 +148,7 @@
                             maxBuffer: 1048576
                         }
                     },
-                    command: 'ASSERTX_WHICH=1 node_modules/istanbul/lib/cli.js cover ./node_modules/tape-compact/bin/tape-compact tests/*.js --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js'
+                    command: './node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha tests/*.js --report lcovonly -- --check-leaks -u bdd -t 10000 -b --reporter mocha-lcov-reporter && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js'
                 },
                 uglified: {
                     options: {
@@ -159,7 +159,7 @@
                             maxBuffer: 1048576
                         }
                     },
-                    command: './node_modules/tape-compact/bin/tape-compact tests/*.js'
+                    command: 'ASSERTX_WHICH=1 ./node_modules/mocha/bin/mocha --check-leaks -u bdd -t 10000 -b -R tap tests/*.js'
                 }
             },
 
