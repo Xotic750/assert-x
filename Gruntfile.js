@@ -10,7 +10,8 @@
             clean: {
                 all: ['README.md', 'docs', 'lib', 'coverage'],
                 after: ['coverage'],
-                coverage: ['coverage']
+                coverage: ['coverage'],
+                nodeci: ['lib/assert-x.min.js', 'docs']
             },
 
             buildReadme: {
@@ -218,6 +219,10 @@
         grunt.registerTask('coveralls', [
             'shell:coveralls',
             'clean:coverage'
+        ]);
+
+        grunt.registerTask('testNodeCI', [
+            'shell:beautified'
         ]);
     };
 }());
