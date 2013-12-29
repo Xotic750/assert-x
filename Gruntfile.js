@@ -10,8 +10,7 @@
             clean: {
                 all: ['README.md', 'docs', 'lib', 'coverage'],
                 after: ['coverage'],
-                coverage: ['coverage'],
-                nodeci: ['lib/assert-x.min.js', 'docs']
+                coverage: ['coverage']
             },
 
             buildReadme: {
@@ -222,7 +221,14 @@
         ]);
 
         grunt.registerTask('testNodeCI', [
-            'shell:beautified'
+            'clean:all',
+            'jshint:build',
+            'replace:lib',
+            'jsbeautifier:lib',
+            'jshint:lib',
+            'shell:beautified',
+            'buildReadme',
+            'clean:after'
         ]);
     };
 }());
