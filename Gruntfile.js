@@ -216,19 +216,9 @@
         ]);
 
         grunt.registerTask('coveralls', [
+            'clean:coverage',
             'shell:coveralls',
             'clean:coverage'
-        ]);
-
-        grunt.registerTask('testNodeCI', [
-            'clean:all',
-            'jshint:build',
-            'replace:lib',
-            'jsbeautifier:lib',
-            'jshint:lib',
-            'shell:beautified',
-            'buildReadme',
-            'clean:after'
         ]);
     };
 }());
