@@ -32,7 +32,8 @@
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
-            assertx.strictEqual(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)), 'AssertionError: ' + expected + ' === ' + '""');
+            assertx.strictEqual(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)),
+                                'AssertionError: ' + expected + ' === ' + '""');
         }
     }
 
@@ -123,11 +124,29 @@
         it('should not throw an error in each case', function () {
             assertx.doesNotThrow(function () {
                 assertx.ok(true);
-            }, assertx.AssertionError, 'ok(true)');
+            }, 'ok(true)');
 
             assertx.doesNotThrow(function () {
                 assertx.ok('test');
-            }, 'ok(\'test\')');
+            }, 'ok("test")');
+        });
+    });
+
+    describe('assertx.notOk', function () {
+        it('should throw an error in each case', function () {
+            assertx.throws(function () {
+                assertx.notOk(true);
+            }, assertx.AssertionError, 'notOk(true)');
+        });
+
+        it('should not throw an error in each case', function () {
+            assertx.doesNotThrow(function () {
+                assertx.notOk(false);
+            }, assertx.AssertionError, 'notOk(false)');
+
+            assertx.doesNotThrow(function () {
+                assertx.notOk();
+            }, 'notOk()');
         });
     });
 
@@ -690,13 +709,8 @@
                 assertx.throws(function () {
                     throw new TypeError('test');
                 }, function (err) {
-                    var result;
-
-                    if (utilx.objectInstanceOf(err, TypeError) && rxTest.test(assertx.AssertionError.errorToString(err))) {
-                        result = true;
-                    }
-
-                    return result;
+                    return utilx.objectInstanceOf(err, TypeError) &&
+                        rxTest.test(assertx.AssertionError.errorToString(err));
                 });
             });
 
@@ -706,13 +720,8 @@
                         message: 'test'
                     });
                 }, function (err) {
-                    var result;
-
-                    if (utilx.objectInstanceOf(err, assertx.AssertionError) && rxTest.test(assertx.AssertionError.errorToString(err))) {
-                        result = true;
-                    }
-
-                    return result;
+                    return utilx.objectInstanceOf(err, assertx.AssertionError) &&
+                        rxTest.test(assertx.AssertionError.errorToString(err));
                 });
             });
         });
@@ -804,13 +813,15 @@
             try {
                 assertx.equal(1, 2);
             } catch (e) {
-                assertx.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)), 'AssertionError: 1 == 2');
+                assertx.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)),
+                              'AssertionError: 1 == 2');
             }
 
             try {
                 assertx.equal(1, 2, 'oh no');
             } catch (e) {
-                assertx.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)), 'AssertionError: oh no');
+                assertx.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)),
+                              'AssertionError: oh no');
             }
         });
     });
