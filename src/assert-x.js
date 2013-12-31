@@ -491,7 +491,7 @@
 
     var publicAssert;
 
-    if (typeof globalThis !== 'object' && null === globalThis) {
+    if (typeof globalThis !== 'object' || null === globalThis) {
         throw new TypeError('Invalid global context');
     }
 
