@@ -1,6 +1,6 @@
 {
     "name": "assert-x",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "A Javascript assertion library.",
     "homepage": "http://xotic750.github.io/assert-x/",
     "author": {
@@ -13,7 +13,12 @@
         "assert",
         "library",
         "javascript",
-        "testing"
+        "testing",
+        "assertions",
+        "nodejs",
+        "browser",
+        "commonjs",
+        "test"
     ],
     "main": "lib/assert-x.js",
     "engines": {
@@ -30,19 +35,9 @@
         "type": "GPL3",
         "url": "http://www.gnu.org/licenses/gpl-3.0.html"
     }],
-    "files": [
-        "lib",
-        "docs",
-        "tests",
-        "src",
-        "templates"
-    ],
     "directories": {
         "lib": "lib",
-        "doc": "docs",
-        "test": "tests",
-        "src": "src",
-        "templates": "templates"
+        "doc": "docs"
     },
     "dependencies": {
         "util-x": "latest"

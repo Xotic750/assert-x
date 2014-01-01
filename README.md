@@ -8,7 +8,9 @@ Master
 
 [![Coverage Status](https://coveralls.io/repos/Xotic750/assert-x/badge.png?branch=master)](https://coveralls.io/r/Xotic750/assert-x?branch=master "Coverage status on Coveralls")
 
+[![NPM version](https://badge.fury.io/js/assert-x.png)](http://badge.fury.io/js/assert-x "Current NPM release")
+
 [![browser support](https://ci.testling.com/Xotic750/assert-x.png)](https://ci.testling.com/Xotic750/assert-x 'Browser support on Testling CI')
 
-#[assert-x 0.0.9](http://xotic750.github.io/assert-x/)
+#[assert-x 0.0.10](http://xotic750.github.io/assert-x/)
 ###### Graham Fairweather <xotic750@gmail.com>
