@@ -54,6 +54,15 @@
             } catch (e) {
                 console.log('# ' + e.toString());
             }
+
+            try {
+                throw new assertx.AssertionError({
+                    actual: false,
+                    expected: false
+                });
+            } catch (e) {
+                console.log('# ' + e.toString());
+            }
         });
     });
 
