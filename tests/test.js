@@ -47,10 +47,18 @@
 
             // is IEs toString method really returning an Error object?
             // or is Object.protoype.toString being called?
+            // it's Object
             try {
                 throw new Error('show me the money');
             } catch (e) {
                 console.log('# ' + typeof e.toString());
+            }
+
+            // Can we call the correct toString?
+            try {
+                throw new Error('show me the money');
+            } catch (e) {
+                console.log('# ' + Error.prototype.toString.call(e));
             }
 
             Error.prototype.toString = function () {
