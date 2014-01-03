@@ -32,8 +32,7 @@
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
-            assertx.strictEqual(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)),
-                                'AssertionError: ' + expected + ' === ' + '""');
+            assertx.strictEqual(e.toStringX(), 'AssertionError: ' + expected + ' === ' + '""');
         }
     }
 
@@ -813,15 +812,13 @@
             try {
                 assertx.equal(1, 2);
             } catch (e) {
-                assertx.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)),
-                              'AssertionError: 1 == 2');
+                assertx.equal(e.toStringX(), 'AssertionError: 1 == 2');
             }
 
             try {
                 assertx.equal(1, 2, 'oh no');
             } catch (e) {
-                assertx.equal(utilx.arrayFirst(utilx.stringSplit(assertx.AssertionError.errorToString(e), rxSplit)),
-                              'AssertionError: oh no');
+                assertx.equal(e.toStringX(), 'AssertionError: oh no');
             }
         });
     });
