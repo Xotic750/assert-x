@@ -36,6 +36,17 @@
         }
     }
 
+    describe('Error', function () {
+        /*global console*/
+        it('look at toString', function () {
+            try {
+                throw new Error('show me the money');
+            } catch (e) {
+                console.log('# ' + e.toString());
+            }
+        });
+    });
+
     describe('AssertionError', function () {
         it('should throw an error in each case', function () {
             assertx.throws(function () {
