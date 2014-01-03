@@ -55,10 +55,18 @@
             }
 
             // Can we call the correct toString?
+            // nope
             try {
                 throw new Error('show me the money');
             } catch (e) {
                 console.log('# ' + Error.prototype.toString.call(e));
+            }
+
+            // are they the same thing?
+            try {
+                throw new Error('show me the money');
+            } catch (e) {
+                console.log('# ' + Error.prototype.toString === Object.prototype.toString);
             }
 
             Error.prototype.toString = function () {
@@ -77,6 +85,19 @@
                     actual: false,
                     expected: false
                 });
+            } catch (e) {
+                console.log('# ' + e.toString());
+            }
+
+            // Can we cache it?
+            var cached = Error.prototype.toString;
+
+            Error.prototype.toString = function () {
+                return cached.call(this);
+            };
+
+            try {
+                throw new Error('show me the money');
             } catch (e) {
                 console.log('# ' + e.toString());
             }
