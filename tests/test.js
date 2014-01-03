@@ -44,6 +44,16 @@
             } catch (e) {
                 console.log('# ' + e.toString());
             }
+
+            Error.prototype.toString = function () {
+                return this.name + ': ' + this.message;
+            };
+
+            try {
+                throw new Error('show me the money');
+            } catch (e) {
+                console.log('# ' + e.toString());
+            }
         });
     });
 
