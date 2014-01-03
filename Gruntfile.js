@@ -166,7 +166,6 @@
         grunt.loadNpmTasks('grunt-contrib-jshint');
         grunt.loadNpmTasks('grunt-contrib-uglify');
         grunt.loadNpmTasks('grunt-jsdoc');
-        grunt.loadNpmTasks('grunt-jsbeautifier');
         grunt.loadNpmTasks('grunt-replace');
         grunt.loadNpmTasks('grunt-contrib-clean');
         grunt.loadNpmTasks('grunt-shell');

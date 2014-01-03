@@ -489,11 +489,11 @@
      *
      */
 
-    var publicAssert;
-
     if (typeof globalThis !== 'object' || null === globalThis) {
         throw new TypeError('Invalid global context');
     }
+
+    var publicAssert;
 
     /*global module, define */
     if (typeof module === 'object' && null !== module &&
