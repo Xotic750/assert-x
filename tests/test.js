@@ -45,6 +45,14 @@
                 console.log('# ' + e.toString());
             }
 
+            // is IEs toString method really returning an Error object?
+            // or is Object.protoype.toString being called?
+            try {
+                throw new Error('show me the money');
+            } catch (e) {
+                console.log('# ' + typeof e.toString());
+            }
+
             Error.prototype.toString = function () {
                 return this.name + ': ' + this.message;
             };
@@ -55,6 +63,7 @@
                 console.log('# ' + e.toString());
             }
 
+            // the anser is no. Error overrides inherited
             try {
                 throw new assertx.AssertionError({
                     actual: false,
