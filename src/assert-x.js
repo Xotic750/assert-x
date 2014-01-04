@@ -23,7 +23,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*global module, define, require */
+/*global module, define, require, console */
 
 (function (globalThis) {
     'use strict';
@@ -68,11 +68,10 @@
             this.operator = opts.operator;
         }
 
-        utilx.inherits(AssertionError, CustomError);
-
-        if (Error.prototype.isPatched) {
-            cachedToString = Error.prototype.toString;
-            utilx.objectDefineProperties(Error.prototype, {
+        if (CustomError.prototype.isPatched) {
+            console.log('IS PATCHED');
+            cachedToString = CustomError.prototype.toString;
+            utilx.objectDefineProperties(CustomError.prototype, {
                 toString: {
                     value: function () {
                         var theString;
@@ -100,6 +99,8 @@
                 }
             });
         }
+
+        utilx.inherits(AssertionError, CustomError);
 
         utilx.objectDefineProperties(AssertionError.prototype, {
             constructor: {
