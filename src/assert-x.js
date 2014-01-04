@@ -34,7 +34,8 @@
          */
         var assertx = {},
             maxMessageLength = 128,
-            CustomError = utilx.customError('AssertionError', maxMessageLength);
+            CustomError = utilx.customError('AssertionError', maxMessageLength),
+            cachedToString;
 
         /**
          * The AssertionError constructor.
@@ -69,26 +70,36 @@
 
         utilx.inherits(AssertionError, CustomError);
 
-        utilx.objectDefineProperty(AssertionError, 'errorToString', {
-            value: function (err) {
-                var theString;
+        if (Error.prototype.isPatched) {
+            cachedToString = Error.prototype.toString;
+            utilx.objectDefineProperties(Error.prototype, {
+                toString: {
+                    value: function () {
+                        var theString;
 
-                if (utilx.objectInstanceOf(err, Error)) {
-                    if (utilx.isString(err.message) && !utilx.isEmptyString(err.message)) {
-                        theString = err.name + ': ' + utilx.stringTruncate(err.message, maxMessageLength);
-                    } else if (utilx.objectInstanceOf(err, AssertionError)) {
-                        theString = err.name + ': ';
-                        theString += utilx.stringTruncate(utilx.jsonStringify(err.actual,
-                                                                utilx.customErrorReplacer), maxMessageLength) + ' ';
-                        theString += err.operator + ' ';
-                        theString += utilx.stringTruncate(utilx.jsonStringify(err.expected,
-                                                                utilx.customErrorReplacer), maxMessageLength);
-                    }
+                        if (utilx.objectInstanceOf(this, AssertionError)) {
+                            if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {
+                                theString = this.name + ': ' + utilx.stringTruncate(this.message, maxMessageLength);
+                            } else if (utilx.objectInstanceOf(this, AssertionError)) {
+                                theString = this.name + ': ';
+                                theString += utilx.stringTruncate(utilx.jsonStringify(this.actual,
+                                                                    utilx.customErrorReplacer), maxMessageLength) + ' ';
+                                theString += this.operator + ' ';
+                                theString += utilx.stringTruncate(utilx.jsonStringify(this.expected,
+                                                                    utilx.customErrorReplacer), maxMessageLength);
+                            }
+                        } else {
+                            theString = cachedToString.call(this);
+                        }
+
+                        return theString;
+                    },
+                    enumerable: false,
+                    writable: true,
+                    configurable: true
                 }
-
-                return theString;
-            }
-        });
+            });
+        }
 
         utilx.objectDefineProperties(AssertionError.prototype, {
             constructor: {
@@ -100,16 +111,20 @@
 
             toString: {
                 value: function () {
-                    return AssertionError.errorToString(this);
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                    var theString;
 
-            toStringX: {
-                value: function () {
-                    return AssertionError.errorToString(this);
+                    if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {
+                        theString = this.name + ': ' + utilx.stringTruncate(this.message, maxMessageLength);
+                    } else if (utilx.objectInstanceOf(this, AssertionError)) {
+                        theString = this.name + ': ';
+                        theString += utilx.stringTruncate(utilx.jsonStringify(this.actual,
+                                                                utilx.customErrorReplacer), maxMessageLength) + ' ';
+                        theString += this.operator + ' ';
+                        theString += utilx.stringTruncate(utilx.jsonStringify(this.expected,
+                                                                utilx.customErrorReplacer), maxMessageLength);
+                    }
+
+                    return theString;
                 },
                 enumerable: false,
                 writable: true,
@@ -131,7 +146,7 @@
             }
 
             if (utilx.isRegExp(expected) && utilx.objectInstanceOf(actual, Error)) {
-                return expected.test(AssertionError.errorToString(actual));
+                return expected.test(actual.toString());
             }
 
             if (utilx.objectInstanceOf(actual, expected)) {

@@ -6,7 +6,6 @@
     var required = require('../scripts/'),
         utilx = required.utilx,
         assertx = required.assertx,
-        rxSplit = new RegExp('[\\r\\n]'),
         rxTest = new RegExp('test'),
 
         // having an identical prototype property
@@ -32,77 +31,9 @@
         try {
             assertx.strictEqual(actual, '');
         } catch (e) {
-            assertx.strictEqual(e.toStringX(), 'AssertionError: ' + expected + ' === ' + '""');
+            assertx.strictEqual(e.toString(), 'AssertionError: ' + expected + ' === ' + '""');
         }
     }
-
-    describe('Error', function () {
-        /*global console*/
-        it('look at toString', function () {
-            try {
-                throw new Error('show me the money');
-            } catch (e) {
-                console.log('# ' + e.toString());
-            }
-
-            // is IEs toString method really returning an Error object?
-            // or is Object.protoype.toString being called?
-            // it's Object
-            try {
-                throw new Error('show me the money');
-            } catch (e) {
-                console.log('# ' + typeof e.toString());
-            }
-
-            // Can we call the correct toString?
-            // nope
-            try {
-                throw new Error('show me the money');
-            } catch (e) {
-                console.log('# ' + Error.prototype.toString.call(e));
-            }
-
-            // are they the same thing?
-            try {
-                throw new Error('show me the money');
-            } catch (e) {
-                console.log('# ' + Error.prototype.toString === Object.prototype.toString);
-            }
-
-            Error.prototype.toString = function () {
-                return this.name + ': ' + this.message;
-            };
-
-            try {
-                throw new Error('show me the money');
-            } catch (e) {
-                console.log('# ' + e.toString());
-            }
-
-            // the anser is no. Error overrides inherited
-            try {
-                throw new assertx.AssertionError({
-                    actual: false,
-                    expected: false
-                });
-            } catch (e) {
-                console.log('# ' + e.toString());
-            }
-
-            // Can we cache it?
-            var cached = Error.prototype.toString;
-
-            Error.prototype.toString = function () {
-                return cached.call(this);
-            };
-
-            try {
-                throw new Error('show me the money');
-            } catch (e) {
-                console.log('# ' + e.toString());
-            }
-        });
-    });
 
     describe('AssertionError', function () {
         it('should throw an error in each case', function () {
@@ -777,7 +708,7 @@
                     throw new TypeError('test');
                 }, function (err) {
                     return utilx.objectInstanceOf(err, TypeError) &&
-                        rxTest.test(assertx.AssertionError.errorToString(err));
+                        rxTest.test(err.toString());
                 });
             });
 
@@ -788,7 +719,7 @@
                     });
                 }, function (err) {
                     return utilx.objectInstanceOf(err, assertx.AssertionError) &&
-                        rxTest.test(assertx.AssertionError.errorToString(err));
+                        rxTest.test(err.toString());
                 });
             });
         });
@@ -880,13 +811,13 @@
             try {
                 assertx.equal(1, 2);
             } catch (e) {
-                assertx.equal(e.toStringX(), 'AssertionError: 1 == 2');
+                assertx.equal(e.toString(), 'AssertionError: 1 == 2');
             }
 
             try {
                 assertx.equal(1, 2, 'oh no');
             } catch (e) {
-                assertx.equal(e.toStringX(), 'AssertionError: oh no');
+                assertx.equal(e.toString(), 'AssertionError: oh no');
             }
         });
     });
