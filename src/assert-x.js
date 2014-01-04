@@ -69,13 +69,15 @@
         }
 
         if (CustomError.prototype.isPatched) {
-            console.log('IS PATCHED');
+            console.log('# IS PATCHED');
             cachedToString = CustomError.prototype.toString;
             /*jshint freeze: false */
             CustomError.prototype.toString = function () {
+                console.log('# CALLED ERROR TOSTRING');
                 var theString;
 
                 if (utilx.objectInstanceOf(this, AssertionError)) {
+                    console.log('# IS ASSERTIONERROR');
                     if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {
                         theString = this.name + ': ' + utilx.stringTruncate(this.message, maxMessageLength);
                     } else if (utilx.objectInstanceOf(this, AssertionError)) {
@@ -87,11 +89,14 @@
                                                             utilx.customErrorReplacer), maxMessageLength);
                     }
                 } else {
+                    console.log('# IS OTHERERROR');
                     theString = cachedToString.call(this);
                 }
 
                 return theString;
             };
+
+            CustomError.prototype.isPatched = true;
             /*jshint freeze: true */
         }
 
@@ -107,6 +112,7 @@
 
             toString: {
                 value: function () {
+                    console.log('# CALLED ASSERTION TOSTRING');
                     var theString;
 
                     if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {

@@ -707,7 +707,6 @@
                 assertx.throws(function () {
                     throw new TypeError('test');
                 }, function (err) {
-                    console.log('#: ' + err.toString());
                     return utilx.objectInstanceOf(err, TypeError) &&
                         rxTest.test(err.toString());
                 });
@@ -719,7 +718,6 @@
                         message: 'test'
                     });
                 }, function (err) {
-                    console.log('#: ' + err.toString());
                     return utilx.objectInstanceOf(err, assertx.AssertionError) &&
                         rxTest.test(err.toString());
                 });
@@ -813,14 +811,14 @@
             try {
                 assertx.equal(1, 2);
             } catch (e) {
-                console.log('#: ' + e.toString());
+                console.log('# NO MESSAGE: ' + e.toString());
                 assertx.equal(e.toString(), 'AssertionError: 1 == 2');
             }
 
             try {
                 assertx.equal(1, 2, 'oh no');
             } catch (e) {
-                console.log('#: ' + e.toString());
+                console.log('# WITH MESSAGE: ' + e.toString());
                 assertx.equal(e.toString(), 'AssertionError: oh no');
             }
         });
