@@ -40,6 +40,7 @@
         utilx.objectDefineProperty(assertx, 'AssertionError', {
             /**
              * The AssertionError constructor.
+             * @name AssertionError
              * @memberOf assertx
              * @constructor
              * @augments CustomError
@@ -73,6 +74,7 @@
             configurable: true
         });
 
+        /*
         if (CustomError.prototype.isPatched) {
             console.log('# IS PATCHED');
             cachedToString = CustomError.prototype.toString;
@@ -113,6 +115,7 @@
                 }
             });
         }
+        */
 
         utilx.inherits(assertx.AssertionError, CustomError);
 
