@@ -23,7 +23,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*global module, define, require, console */
+/*global module, define, require */
 
 (function (globalThis) {
     'use strict';
@@ -34,8 +34,7 @@
          */
         var assertx = {},
             maxMessageLength = 128,
-            CustomError = utilx.customError('AssertionError', maxMessageLength),
-            cachedToString;
+            CustomError = utilx.customError('AssertionError', maxMessageLength);
 
         utilx.objectDefineProperty(assertx, 'AssertionError', {
             /**
@@ -74,55 +73,11 @@
             configurable: true
         });
 
-        /*
-        if (CustomError.prototype.isPatched) {
-            console.log('# IS PATCHED');
-            cachedToString = CustomError.prototype.toString;
-            utilx.objectDefineProperties(CustomError.prototype, {
-                toString: {
-                    value: function () {
-                        var theString;
-
-                        if (utilx.objectInstanceOf(this, assertx.AssertionError)) {
-                            console.log('# IS ASSERTIONERROR');
-                            if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {
-                                theString = this.name + ': ' + utilx.stringTruncate(this.message, maxMessageLength);
-                            } else if (utilx.objectInstanceOf(this, assertx.AssertionError)) {
-                                theString = this.name + ': ';
-                                theString += utilx.stringTruncate(utilx.jsonStringify(this.actual,
-                                                                    utilx.customErrorReplacer), maxMessageLength) + ' ';
-                                theString += this.operator + ' ';
-                                theString += utilx.stringTruncate(utilx.jsonStringify(this.expected,
-                                                                    utilx.customErrorReplacer), maxMessageLength);
-                            }
-                        } else {
-                            console.log('# IS OTHERERROR');
-                            theString = cachedToString.call(this);
-                        }
-
-                        return theString;
-                    },
-                    enumerable: false,
-                    writable: true,
-                    configurable: true
-                },
-
-                isPatched: {
-                    value: true,
-                    enumerable: false,
-                    writable: true,
-                    configurable: true
-                }
-            });
-        }
-        */
-
         utilx.inherits(assertx.AssertionError, CustomError);
 
         utilx.objectDefineProperties(assertx.AssertionError.prototype, {
             toString: {
                 value: function () {
-                    console.log('# CALLED ASSERTION TOSTRING');
                     var theString;
 
                     if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {

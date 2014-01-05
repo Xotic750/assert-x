@@ -1,4 +1,4 @@
-/*global require, describe, it, console */
+/*global require, describe, it */
 
 (function () {
     'use strict';
@@ -815,14 +815,12 @@
             try {
                 assertx.equal(1, 2);
             } catch (e) {
-                console.log('# NO MESSAGE: ' + e.toString());
                 assertx.equal(e.toString(), 'AssertionError: 1 == 2');
             }
 
             try {
                 assertx.equal(1, 2, 'oh no');
             } catch (e) {
-                console.log('# WITH MESSAGE: ' + e.toString());
                 assertx.equal(e.toString(), 'AssertionError: oh no');
             }
         });
