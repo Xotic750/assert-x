@@ -68,6 +68,7 @@
             this.operator = opts.operator;
         }
 
+        /*
         if (CustomError.prototype.isPatched) {
             console.log('# IS PATCHED');
             cachedToString = CustomError.prototype.toString;
@@ -108,6 +109,7 @@
                 }
             });
         }
+        */
 
         utilx.inherits(AssertionError, CustomError);
 
