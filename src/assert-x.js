@@ -68,7 +68,6 @@
             this.operator = opts.operator;
         }
 
-        /*
         if (CustomError.prototype.isPatched) {
             console.log('# IS PATCHED');
             cachedToString = CustomError.prototype.toString;
@@ -109,10 +108,30 @@
                 }
             });
         }
-        */
 
         utilx.inherits(AssertionError, CustomError);
 
+        AssertionError.prototype.constructor = AssertionError;
+
+        AssertionError.prototype.toString = function () {
+            console.log('# CALLED ASSERTION TOSTRING');
+            var theString;
+
+            if (utilx.isString(this.message) && !utilx.isEmptyString(this.message)) {
+                theString = this.name + ': ' + utilx.stringTruncate(this.message, maxMessageLength);
+            } else if (utilx.objectInstanceOf(this, AssertionError)) {
+                theString = this.name + ': ';
+                theString += utilx.stringTruncate(utilx.jsonStringify(this.actual,
+                                                        utilx.customErrorReplacer), maxMessageLength) + ' ';
+                theString += this.operator + ' ';
+                theString += utilx.stringTruncate(utilx.jsonStringify(this.expected,
+                                                        utilx.customErrorReplacer), maxMessageLength);
+            }
+
+            return theString;
+        };
+
+        /*
         utilx.objectDefineProperties(AssertionError.prototype, {
             constructor: {
                 value: AssertionError,
@@ -144,6 +163,7 @@
                 configurable: true
             }
         });
+        */
 
         /**
          * Returns whether an exception is expected. Used by throws.
