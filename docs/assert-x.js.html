@@ -64,36 +64,41 @@
             CustomError = utilx.customError('AssertionError', maxMessageLength),
             cachedToString;
 
-        /**
-         * The AssertionError constructor.
-         * @memberOf assertx
-         * @constructor
-         * @augments CustomError
-         * @param {object} opts
-         * @return {undefined}
-         */
-        function AssertionError(opts) {
-            if (!utilx.isPlainObject(opts)) {
-                opts = {};
-            }
+        utilx.objectDefineProperty(assertx, 'AssertionError', {
+            /**
+             * The AssertionError constructor.
+             * @memberOf assertx
+             * @constructor
+             * @augments CustomError
+             * @param {object} opts
+             * @return {undefined}
+             */
+            value: function (opts) {
+                if (!utilx.isPlainObject(opts)) {
+                    opts = {};
+                }
 
-            if (!utilx.isString(opts.message)) {
-                opts.message = '';
-            }
+                if (!utilx.isString(opts.message)) {
+                    opts.message = '';
+                }
 
-            if (!utilx.isString(opts.operator)) {
-                opts.operator = '';
-            }
+                if (!utilx.isString(opts.operator)) {
+                    opts.operator = '';
+                }
 
-            if (!utilx.isFunction(opts.stackStartFunction)) {
-                opts.stackStartFunction = AssertionError;
-            }
+                if (!utilx.isFunction(opts.stackStartFunction)) {
+                    opts.stackStartFunction = assertx.AssertionError;
+                }
 
-            CustomError.call(this, opts.message, opts.stackStartFunction);
-            this.actual = opts.actual;
-            this.expected = opts.expected;
-            this.operator = opts.operator;
-        }
+                CustomError.call(this, opts.message, opts.stackStartFunction);
+                this.actual = opts.actual;
+                this.expected = opts.expected;
+                this.operator = opts.operator;
+            },
+            enumerable: false,
+            writable: true,
+            configurable: true
+        });
 
         if (CustomError.prototype.isPatched) {
             console.log('# IS PATCHED');
@@ -103,11 +108,11 @@
                     value: function () {
                         var theString;
 
-                        if (utilx.objectInstanceOf(this, AssertionError)) {
+                        if (utilx.objectInstanceOf(this, assertx.AssertionError)) {
                             console.log('# IS ASSERTIONERROR');
                             if (utilx.isString(this.message) &amp;&amp; !utilx.isEmptyString(this.message)) {
                                 theString = this.name + ': ' + utilx.stringTruncate(this.message, maxMessageLength);
-                            } else if (utilx.objectInstanceOf(this, AssertionError)) {
+                            } else if (utilx.objectInstanceOf(this, assertx.AssertionError)) {
                                 theString = this.name + ': ';
                                 theString += utilx.stringTruncate(utilx.jsonStringify(this.actual,
                                                                     utilx.customErrorReplacer), maxMessageLength) + ' ';
@@ -136,39 +141,9 @@
             });
         }
 
-        utilx.inherits(AssertionError, CustomError);
+        utilx.inherits(assertx.AssertionError, CustomError);
 
-        AssertionError.prototype.constructor = AssertionError;
-
-        /*
-        AssertionError.prototype.toString = function () {
-            console.log('# CALLED ASSERTION TOSTRING');
-            var theString;
-
-            if (utilx.isString(this.message) &amp;&amp; !utilx.isEmptyString(this.message)) {
-                theString = this.name + ': ' + utilx.stringTruncate(this.message, maxMessageLength);
-            } else if (utilx.objectInstanceOf(this, AssertionError)) {
-                theString = this.name + ': ';
-                theString += utilx.stringTruncate(utilx.jsonStringify(this.actual,
-                                                        utilx.customErrorReplacer), maxMessageLength) + ' ';
-                theString += this.operator + ' ';
-                theString += utilx.stringTruncate(utilx.jsonStringify(this.expected,
-                                                        utilx.customErrorReplacer), maxMessageLength);
-            }
-
-            return theString;
-        };
-        */
-
-        utilx.objectDefineProperties(AssertionError.prototype, {
-            /*
-            constructor: {
-                value: AssertionError,
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },*/
-
+        utilx.objectDefineProperties(assertx.AssertionError.prototype, {
             toString: {
                 value: function () {
                     console.log('# CALLED ASSERTION TOSTRING');
@@ -176,7 +151,7 @@
 
                     if (utilx.isString(this.message) &amp;&amp; !utilx.isEmptyString(this.message)) {
                         theString = this.name + ': ' + utilx.stringTruncate(this.message, maxMessageLength);
-                    } else if (utilx.objectInstanceOf(this, AssertionError)) {
+                    } else if (utilx.objectInstanceOf(this, assertx.AssertionError)) {
                         theString = this.name + ': ';
                         theString += utilx.stringTruncate(utilx.jsonStringify(this.actual,
                                                                 utilx.customErrorReplacer), maxMessageLength) + ' ';
@@ -237,7 +212,7 @@
                 stackStartFunction = throwAssertionError;
             }
 
-            throw new AssertionError({
+            throw new assertx.AssertionError({
                 message: message,
                 actual: actual,
                 expected: expected,
@@ -304,10 +279,6 @@
         }
 
         utilx.objectDefineProperties(assertx, {
-            AssertionError: {
-                value: AssertionError
-            },
-
             /**
              * Throws an exception that displays the values for actual and expected.
              * @memberOf assertx
@@ -321,7 +292,10 @@
             fail: {
                 value: function (actual, expected, message, stackStartFunction) {
                     throwAssertionError(actual, expected, message, 'fail', stackStartFunction);
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -340,7 +314,10 @@
                     if (utilx.isFalse(pass)) {
                         throwAssertionError(pass, true, message, 'ok', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -359,7 +336,10 @@
                     if (utilx.isTrue(pass)) {
                         throwAssertionError(pass, true, message, 'notOk', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -377,7 +357,10 @@
                     if (utilx.notEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '==', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -395,7 +378,10 @@
                     if (utilx.equal(actual, expected)) {
                         throwAssertionError(actual, expected, message, '!=', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -413,7 +399,10 @@
                     if (!utilx.deepEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'deepEqual', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -431,7 +420,10 @@
                     if (utilx.deepEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'notDeepEqual', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -450,7 +442,10 @@
                     if (!utilx.deepEqual(actual, expected, {strict: true})) {
                         throwAssertionError(actual, expected, message, 'deepStrictEqual', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -468,7 +463,10 @@
                     if (utilx.deepEqual(actual, expected, {strict: true})) {
                         throwAssertionError(actual, expected, message, 'notDeepStrictEqual', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -486,7 +484,10 @@
                     if (utilx.notStrictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '===', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -505,7 +506,10 @@
                     if (utilx.strictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '!==', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -521,7 +525,10 @@
             throws: {
                 value: function (block, error, message, stackStartFunction) {
                     throws(true, block, error, message, stackStartFunction);
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -536,7 +543,10 @@
             doesNotThrow: {
                 value: function (block, message, stackStartFunction) {
                     throws(false, block, message, stackStartFunction);
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -552,7 +562,10 @@
                     if (err) {
                         throw err;
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             }
         });
 
@@ -639,13 +652,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-assert-x.html">assert-x</a></li></ul><h3>Classes</h3><ul><li><a href="assertx.AssertionError.html">AssertionError</a></li></ul><h3>Namespaces</h3><ul><li><a href="assertx.html">assertx</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-assert-x.html">assert-x</a></li></ul><h3>Classes</h3><ul><li><a href="assertx.value.html">value</a></li></ul><h3>Namespaces</h3><ul><li><a href="assertx.html">assertx</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha3</a> on Sun Jan 05 2014 06:11:48 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha3</a> on Sun Jan 05 2014 14:38:37 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -36,6 +36,10 @@
     }
 
     describe('AssertionError', function () {
+        it('should not throw an error in each case', function () {
+            assertx.strictEqual(assertx.AssertionError.prototype.constructor, assertx.AssertionError);
+        });
+
         it('should throw an error in each case', function () {
             assertx.throws(function () {
                 throw new assertx.AssertionError({
