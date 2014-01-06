@@ -689,12 +689,9 @@
     describe('assertx - use a RegExp to validate error message', function () {
         it('should not throw an error in each case', function () {
             assertx.doesNotThrow(function () {
-                utilx.normaliseErrorIEToString.on();
                 assertx.throws(function () {
                     throw new TypeError('test');
                 }, rxTest);
-
-                utilx.normaliseErrorIEToString.off();
             });
 
             assertx.doesNotThrow(function () {
@@ -711,15 +708,12 @@
     describe('assertx - set a fn to validate error object', function () {
         it('should not throw an error in each case', function () {
             assertx.doesNotThrow(function () {
-                utilx.normaliseErrorIEToString.on();
                 assertx.throws(function () {
                     throw new TypeError('test');
                 }, function (err) {
                     return utilx.objectInstanceOf(err, TypeError) &&
                         rxTest.test(err.toString());
                 });
-
-                utilx.normaliseErrorIEToString.off();
             });
 
             assertx.doesNotThrow(function () {

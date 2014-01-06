@@ -113,7 +113,19 @@
             }
 
             if (utilx.isRegExp(expected) && utilx.objectInstanceOf(actual, Error)) {
-                return expected.test(actual.toString());
+                var storeState = utilx.normaliseErrorIEToString.state(),
+                    str;
+
+                if (utilx.isFalse(storeState)) {
+                    utilx.normaliseErrorIEToString.on();
+                }
+
+                str = actual.toString();
+                if (utilx.isFalse(storeState)) {
+                    utilx.normaliseErrorIEToString.off();
+                }
+
+                return expected.test(str);
             }
 
             if (utilx.objectInstanceOf(actual, expected)) {
