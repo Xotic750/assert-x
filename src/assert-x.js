@@ -108,24 +108,25 @@
          * @return {boolean}
          */
         function expectedException(actual, expected) {
+            var storeState,
+                val;
+
             if (utilx.isUndefinedOrNull(actual) || utilx.isUndefinedOrNull(expected)) {
                 return false;
             }
 
             if (utilx.isRegExp(expected) && utilx.objectInstanceOf(actual, Error)) {
-                var storeState = utilx.normaliseErrorIEToString.state(),
-                    str;
-
+                storeState = utilx.normaliseErrorIEToString.state();
                 if (utilx.isFalse(storeState)) {
                     utilx.normaliseErrorIEToString.on();
                 }
 
-                str = actual.toString();
+                val = actual.toString();
                 if (utilx.isFalse(storeState)) {
                     utilx.normaliseErrorIEToString.off();
                 }
 
-                return expected.test(str);
+                return expected.test(val);
             }
 
             if (utilx.objectInstanceOf(actual, expected)) {
@@ -133,7 +134,19 @@
             }
 
             if (utilx.isFunction(expected) && utilx.isTrue(expected.call({}, actual))) {
-                return true;
+                storeState = utilx.normaliseErrorIEToString.state();
+                if (utilx.isFalse(storeState)) {
+                    utilx.normaliseErrorIEToString.on();
+                }
+
+                val = utilx.isTrue(expected.call({}, actual));
+                if (utilx.isFalse(storeState)) {
+                    utilx.normaliseErrorIEToString.off();
+                }
+
+                if (utilx.isTrue(val)) {
+                    return true;
+                }
             }
 
             return false;
