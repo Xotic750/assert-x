@@ -138,7 +138,10 @@
                 if (utilx.isFalse(storeState)) {
                     utilx.normaliseErrorIEToString.on();
                 }
-
+                /*global console */
+                console.log('# storeState: ' + storeState);
+                console.log('# BEFORE SHOULD BE TRUE IE<9: ' + utilx.normaliseErrorIEToString.state());
+                console.log('# BEFORE STRING: ' + actual.toString());
                 val = utilx.isTrue(expected.call({}, actual));
                 if (utilx.isFalse(storeState)) {
                     utilx.normaliseErrorIEToString.off();
