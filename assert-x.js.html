@@ -27,7 +27,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>/**
  * @file {@link http://xotic750.github.io/assert-x/ assert-x}. A Javascript assertion library..
- * @version 0.0.10
+ * @version 0.0.17
  * @author Graham Fairweather &lt;xotic750@gmail.com>
  * @copyright Copyright (c) 2013 Graham Fairweather
  * @license {@link &lt;http://www.gnu.org/licenses/gpl-3.0.html> GPL3}
@@ -63,80 +63,62 @@
             maxMessageLength = 128,
             CustomError = utilx.customError('AssertionError', maxMessageLength);
 
-        /**
-         * The AssertionError constructor.
-         * @memberOf assertx
-         * @constructor
-         * @augments CustomError
-         * @param {object} opts
-         * @return {undefined}
-         */
-        function AssertionError(opts) {
-            if (!utilx.isPlainObject(opts)) {
-                opts = {};
-            }
-
-            if (!utilx.isString(opts.message)) {
-                opts.message = '';
-            }
-
-            if (!utilx.isString(opts.operator)) {
-                opts.operator = '';
-            }
-
-            if (!utilx.isFunction(opts.stackStartFunction)) {
-                opts.stackStartFunction = AssertionError;
-            }
-
-            CustomError.call(this, opts.message, opts.stackStartFunction);
-            this.actual = opts.actual;
-            this.expected = opts.expected;
-            this.operator = opts.operator;
-        }
-
-        utilx.inherits(AssertionError, CustomError);
-
-        utilx.objectDefineProperty(AssertionError, 'errorToString', {
-            value: function (err) {
-                var theString;
-
-                if (utilx.objectInstanceOf(err, Error)) {
-                    if (utilx.isString(err.message) &amp;&amp; !utilx.isEmptyString(err.message)) {
-                        theString = err.name + ': ' + utilx.stringTruncate(err.message, maxMessageLength);
-                    } else if (utilx.objectInstanceOf(err, AssertionError)) {
-                        theString = err.name + ': ';
-                        theString += utilx.stringTruncate(utilx.jsonStringify(err.actual,
-                                                                utilx.customErrorReplacer), maxMessageLength) + ' ';
-                        theString += err.operator + ' ';
-                        theString += utilx.stringTruncate(utilx.jsonStringify(err.expected,
-                                                                utilx.customErrorReplacer), maxMessageLength);
-                    }
+        utilx.objectDefineProperty(assertx, 'AssertionError', {
+            /**
+             * The AssertionError constructor.
+             * @name AssertionError
+             * @memberOf assertx
+             * @constructor
+             * @augments CustomError
+             * @param {object} opts
+             * @return {undefined}
+             */
+            value: function (opts) {
+                if (!utilx.isPlainObject(opts)) {
+                    opts = {};
                 }
 
-                return theString;
-            }
+                if (!utilx.isString(opts.message)) {
+                    opts.message = '';
+                }
+
+                if (!utilx.isString(opts.operator)) {
+                    opts.operator = '';
+                }
+
+                if (!utilx.isFunction(opts.stackStartFunction)) {
+                    opts.stackStartFunction = assertx.AssertionError;
+                }
+
+                CustomError.call(this, opts.message, opts.stackStartFunction);
+                this.actual = opts.actual;
+                this.expected = opts.expected;
+                this.operator = opts.operator;
+            },
+            enumerable: false,
+            writable: true,
+            configurable: true
         });
 
-        utilx.objectDefineProperties(AssertionError.prototype, {
-            constructor: {
-                value: AssertionError,
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+        utilx.inherits(assertx.AssertionError, CustomError);
 
+        utilx.objectDefineProperties(assertx.AssertionError.prototype, {
             toString: {
                 value: function () {
-                    return AssertionError.errorToString(this);
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                    var theString;
 
-            toStringX: {
-                value: function () {
-                    return AssertionError.errorToString(this);
+                    if (utilx.isString(this.message) &amp;&amp; !utilx.isEmptyString(this.message)) {
+                        theString = this.name + ': ' + utilx.stringTruncate(this.message, maxMessageLength);
+                    } else if (utilx.objectInstanceOf(this, assertx.AssertionError)) {
+                        theString = this.name + ': ';
+                        theString += utilx.stringTruncate(utilx.jsonStringify(this.actual,
+                                                                utilx.customErrorReplacer), maxMessageLength) + ' ';
+                        theString += this.operator + ' ';
+                        theString += utilx.stringTruncate(utilx.jsonStringify(this.expected,
+                                                                utilx.customErrorReplacer), maxMessageLength);
+                    }
+
+                    return theString;
                 },
                 enumerable: false,
                 writable: true,
@@ -158,7 +140,7 @@
             }
 
             if (utilx.isRegExp(expected) &amp;&amp; utilx.objectInstanceOf(actual, Error)) {
-                return expected.test(AssertionError.errorToString(actual));
+                return expected.test(actual.toString());
             }
 
             if (utilx.objectInstanceOf(actual, expected)) {
@@ -188,7 +170,7 @@
                 stackStartFunction = throwAssertionError;
             }
 
-            throw new AssertionError({
+            throw new assertx.AssertionError({
                 message: message,
                 actual: actual,
                 expected: expected,
@@ -255,10 +237,6 @@
         }
 
         utilx.objectDefineProperties(assertx, {
-            AssertionError: {
-                value: AssertionError
-            },
-
             /**
              * Throws an exception that displays the values for actual and expected.
              * @memberOf assertx
@@ -272,7 +250,10 @@
             fail: {
                 value: function (actual, expected, message, stackStartFunction) {
                     throwAssertionError(actual, expected, message, 'fail', stackStartFunction);
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -291,7 +272,10 @@
                     if (utilx.isFalse(pass)) {
                         throwAssertionError(pass, true, message, 'ok', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -310,7 +294,10 @@
                     if (utilx.isTrue(pass)) {
                         throwAssertionError(pass, true, message, 'notOk', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -328,7 +315,10 @@
                     if (utilx.notEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '==', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -346,7 +336,10 @@
                     if (utilx.equal(actual, expected)) {
                         throwAssertionError(actual, expected, message, '!=', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -364,7 +357,10 @@
                     if (!utilx.deepEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'deepEqual', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -382,7 +378,10 @@
                     if (utilx.deepEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'notDeepEqual', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -401,7 +400,10 @@
                     if (!utilx.deepEqual(actual, expected, {strict: true})) {
                         throwAssertionError(actual, expected, message, 'deepStrictEqual', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -419,7 +421,10 @@
                     if (utilx.deepEqual(actual, expected, {strict: true})) {
                         throwAssertionError(actual, expected, message, 'notDeepStrictEqual', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -437,7 +442,10 @@
                     if (utilx.notStrictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '===', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -456,7 +464,10 @@
                     if (utilx.strictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '!==', stackStartFunction);
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -472,7 +483,10 @@
             throws: {
                 value: function (block, error, message, stackStartFunction) {
                     throws(true, block, error, message, stackStartFunction);
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -487,7 +501,10 @@
             doesNotThrow: {
                 value: function (block, message, stackStartFunction) {
                     throws(false, block, message, stackStartFunction);
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             },
 
             /**
@@ -503,7 +520,10 @@
                     if (err) {
                         throw err;
                     }
-                }
+                },
+                enumerable: false,
+                writable: true,
+                configurable: true
             }
         });
 
@@ -516,11 +536,11 @@
      *
      */
 
-    var publicAssert;
-
     if (typeof globalThis !== 'object' || null === globalThis) {
         throw new TypeError('Invalid global context');
     }
+
+    var publicAssert;
 
     /*global module, define */
     if (typeof module === 'object' &amp;&amp; null !== module &amp;&amp;
@@ -596,7 +616,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha3</a> on Wed Jan 01 2014 03:23:23 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha3</a> on Mon Jan 06 2014 03:29:39 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>
