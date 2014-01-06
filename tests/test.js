@@ -724,9 +724,6 @@
                 assertx.throws(function () {
                     throw new TypeError('test');
                 }, function (err) {
-                    /*global console */
-                    console.log('# SHOULD BE TRUE IE<9: ' + utilx.normaliseErrorIEToString.state());
-                    console.log('# STRING: ' + err.toString());
                     return utilx.objectInstanceOf(err, TypeError) && rxTest.test(err.toString());
                 });
             });
@@ -738,9 +735,6 @@
                         message: 'test'
                     });
                 }, function (err) {
-                    /*global console */
-                    console.log('# SHOULD BE TRUE IE<9: ' + utilx.normaliseErrorIEToString.state());
-                    console.log('# STRING: ' + err.toString());
                     return utilx.objectInstanceOf(err, assertx.AssertionError) && rxTest.test(err.toString());
                 });
             });
