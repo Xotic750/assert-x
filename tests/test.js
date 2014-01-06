@@ -688,12 +688,22 @@
 
     describe('assertx - use a RegExp to validate error message', function () {
         it('should not throw an error in each case', function () {
+            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
             assertx.doesNotThrow(function () {
                 assertx.throws(function () {
                     throw new TypeError('test');
                 }, rxTest);
             });
 
+            // does a second call work
+            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
+            assertx.doesNotThrow(function () {
+                assertx.throws(function () {
+                    throw new TypeError('test');
+                }, rxTest);
+            });
+
+            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
             assertx.doesNotThrow(function () {
                 assertx.throws(function () {
                     throw new assertx.AssertionError({
@@ -702,30 +712,40 @@
 
                 }, rxTest);
             });
+
+            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
         });
     });
 
     describe('assertx - set a fn to validate error object', function () {
         it('should not throw an error in each case', function () {
+            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
             assertx.doesNotThrow(function () {
                 assertx.throws(function () {
                     throw new TypeError('test');
                 }, function (err) {
-                    return utilx.objectInstanceOf(err, TypeError) &&
-                        rxTest.test(err.toString());
+                    /*global console */
+                    console.log('# SHOULD BE TRUE IE<9: ' + utilx.normaliseErrorIEToString.state());
+                    console.log('# STRING: ' + err.toString());
+                    return utilx.objectInstanceOf(err, TypeError) && rxTest.test(err.toString());
                 });
             });
 
+            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
             assertx.doesNotThrow(function () {
                 assertx.throws(function () {
                     throw new assertx.AssertionError({
                         message: 'test'
                     });
                 }, function (err) {
-                    return utilx.objectInstanceOf(err, assertx.AssertionError) &&
-                        rxTest.test(err.toString());
+                    /*global console */
+                    console.log('# SHOULD BE TRUE IE<9: ' + utilx.normaliseErrorIEToString.state());
+                    console.log('# STRING: ' + err.toString());
+                    return utilx.objectInstanceOf(err, assertx.AssertionError) && rxTest.test(err.toString());
                 });
             });
+
+            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
         });
     });
 
