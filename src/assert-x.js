@@ -522,6 +522,18 @@
                 enumerable: false,
                 writable: true,
                 configurable: true
+            },
+
+            /**
+             * The Javascript library that assert-x is built on for cross environment compatability.
+             * @memberOf assertx
+             * @type {object}
+             */
+            utilx: {
+                value: utilx,
+                enumerable: false,
+                writable: true,
+                configurable: true
             }
         });
 
@@ -561,6 +573,12 @@
 
         module.exports = publicAssert;
     } else if (typeof define === 'function' && typeof define.amd === 'object' && null !== define.amd) {
+        require.config({
+            paths: {
+                'util-x': '//raw.github.com/Xotic750/util-x/master/lib/util-x'
+            }
+        });
+
         define(['util-x'], function (utilx) {
             publicAssert = factory(utilx);
             publicAssert.factory = function (deep) {

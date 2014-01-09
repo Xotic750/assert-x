@@ -12,5 +12,5 @@ Master
 
 [![browser support](https://ci.testling.com/Xotic750/assert-x.png)](https://ci.testling.com/Xotic750/assert-x 'Browser support on Testling CI')
 
-#[assert-x 0.0.21](http://xotic750.github.io/assert-x/)
+#[assert-x 0.0.23](http://xotic750.github.io/assert-x/)
 ###### Graham Fairweather <xotic750@gmail.com>

@@ -1,6 +1,6 @@
 {
     "name": "assert-x",
-    "version": "0.0.21",
+    "version": "0.0.23",
     "description": "A Javascript assertion library.",
     "homepage": "http://xotic750.github.io/assert-x/",
     "author": {
@@ -49,7 +49,7 @@
         "mocha": "latest",
         "mocha-lcov-reporter": "latest",
         "grunt-cli": "latest",
-        "grunt-contrib-jshint": "~0.7.2",
+        "grunt-contrib-jshint": "latest",
         "grunt-contrib-uglify": "latest",
         "grunt-lib-legacyhelpers": "latest",
         "grunt-contrib-clean": "latest",
@@ -67,7 +67,7 @@
         "mocha": "latest",
         "mocha-lcov-reporter": "latest",
         "grunt-cli": "latest",
-        "grunt-contrib-jshint": "~0.7.2",
+        "grunt-contrib-jshint": "latest",
         "grunt-contrib-uglify": "latest",
         "grunt-lib-legacyhelpers": "latest",
         "grunt-contrib-clean": "latest",
