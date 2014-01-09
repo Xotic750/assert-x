@@ -3,11 +3,9 @@
 (function () {
     'use strict';
 
-    var required = {
-        utilx: require('util-x')
-    };
+    var required = {};
 
-    if (required.utilx.strictEqual(process.env.ASSERTX_WHICH, '1')) {
+    if ('1' === process.env.ASSERTX_WHICH) {
         required.assertx = require('../lib/assert-x.min');
     } else {
         required.assertx = require('../lib/assert-x');

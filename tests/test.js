@@ -4,8 +4,8 @@
     'use strict';
 
     var required = require('../scripts/'),
-        utilx = required.utilx,
         assertx = required.assertx,
+        utilx = assertx.utilx,
         rxTest = new RegExp('test'),
 
         // having an identical prototype property
