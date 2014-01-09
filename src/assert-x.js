@@ -560,18 +560,28 @@
         publicAssert.factory = function (deep) {
             var pa;
 
-            if (true === deep) {
+            if (publicAssert.utilx.isTrue(deep)) {
                 pa = factory(require('util-x').factory());
             } else {
                 pa = factory(require('util-x'));
             }
 
-            pa.factory = publicAssert.factory;
+            publicAssert.utilx.objectDefineProperty(pa, 'factory', {
+                value: publicAssert.factory,
+                enumerable: false,
+                writable: true,
+                configurable: true
+            });
 
             return pa;
         };
 
-        module.exports = publicAssert;
+        publicAssert.utilx.objectDefineProperty(module, 'exports', {
+            value: publicAssert,
+            enumerable: false,
+            writable: true,
+            configurable: true
+        });
     } else if (typeof define === 'function' && typeof define.amd === 'object' && null !== define.amd) {
         require.config({
             paths: {
@@ -584,13 +594,18 @@
             publicAssert.factory = function (deep) {
                 var pa;
 
-                if (true === deep) {
+                if (publicAssert.utilx.isTrue(deep)) {
                     pa = factory(utilx.factory());
                 } else {
                     pa = factory(utilx);
                 }
 
-                pa.factory = publicAssert.factory;
+                publicAssert.utilx.objectDefineProperty(pa, 'factory', {
+                    value: publicAssert.factory,
+                    enumerable: false,
+                    writable: true,
+                    configurable: true
+                });
 
                 return pa;
             };
@@ -602,17 +617,28 @@
         publicAssert.factory = function (deep) {
             var pa;
 
-            if (true === deep) {
+            if (publicAssert.utilx.isTrue(deep)) {
                 pa = factory(globalThis.utilx.factory());
             } else {
                 pa = factory(globalThis.utilx);
             }
 
             pa.factory = publicAssert.factory;
+            publicAssert.utilx.objectDefineProperty(pa, 'factory', {
+                value: publicAssert.factory,
+                enumerable: false,
+                writable: true,
+                configurable: true
+            });
 
             return pa;
         };
 
-        globalThis.assertx = publicAssert;
+        publicAssert.utilx.objectDefineProperty(globalThis, 'assertx', {
+            value: publicAssert,
+            enumerable: false,
+            writable: true,
+            configurable: true
+        });
     }
 }(this));
