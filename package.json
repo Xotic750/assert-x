@@ -1,6 +1,6 @@
 {
     "name": "assert-x",
-    "version": "0.0.23",
+    "version": "0.0.24",
     "description": "A Javascript assertion library.",
     "homepage": "http://xotic750.github.io/assert-x/",
     "author": {
@@ -103,7 +103,7 @@
         "files": "tests/*.js",
         "browsers": [
             "iexplore/6.0..latest",
-            "firefox/3..latest",
+            "firefox/3.0..latest",
             "firefox/nightly",
             "chrome/4..latest",
             "chrome/canary",
