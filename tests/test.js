@@ -688,7 +688,7 @@
 
     describe('assertx - use a RegExp to validate error message', function () {
         it('should not throw an error in each case', function () {
-            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
+            assertx.strictEqual(utilx.normaliseErrorIEToStringState(), false);
             assertx.doesNotThrow(function () {
                 assertx.throws(function () {
                     throw new TypeError('test');
@@ -696,14 +696,14 @@
             });
 
             // does a second call work
-            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
+            assertx.strictEqual(utilx.normaliseErrorIEToStringState(), false);
             assertx.doesNotThrow(function () {
                 assertx.throws(function () {
                     throw new TypeError('test');
                 }, rxTest);
             });
 
-            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
+            assertx.strictEqual(utilx.normaliseErrorIEToStringState(), false);
             assertx.doesNotThrow(function () {
                 assertx.throws(function () {
                     throw new assertx.AssertionError({
@@ -713,13 +713,13 @@
                 }, rxTest);
             });
 
-            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
+            assertx.strictEqual(utilx.normaliseErrorIEToStringState(), false);
         });
     });
 
     describe('assertx - set a fn to validate error object', function () {
         it('should not throw an error in each case', function () {
-            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
+            assertx.strictEqual(utilx.normaliseErrorIEToStringState(), false);
             assertx.doesNotThrow(function () {
                 assertx.throws(function () {
                     throw new TypeError('test');
@@ -728,7 +728,7 @@
                 });
             });
 
-            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
+            assertx.strictEqual(utilx.normaliseErrorIEToStringState(), false);
             assertx.doesNotThrow(function () {
                 assertx.throws(function () {
                     throw new assertx.AssertionError({
@@ -739,7 +739,7 @@
                 });
             });
 
-            assertx.strictEqual(utilx.normaliseErrorIEToString.state(), false);
+            assertx.strictEqual(utilx.normaliseErrorIEToStringState(), false);
         });
     });
 

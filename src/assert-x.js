@@ -28,15 +28,24 @@
 (function (globalThis) {
     'use strict';
 
+    var maxMessageLength = 128,
+        notEnumerableProperties = {
+            enumerable: false,
+            writable: true,
+            configurable: true
+        },
+        factoryString = 'factory',
+        utilxString = 'util-x',
+        publicAssert;
+
     function factory(utilx) {
         /**
          * @namespace assertx
          */
         var assertx = {},
-            maxMessageLength = 128,
             CustomError = utilx.customError('AssertionError', maxMessageLength);
 
-        utilx.objectDefineProperty(assertx, 'AssertionError', {
+        utilx.objectDefineProperty(assertx, 'AssertionError', utilx.extend({
             /**
              * The AssertionError constructor.
              * @name AssertionError
@@ -64,19 +73,26 @@
                 }
 
                 CustomError.call(this, opts.message, opts.stackStartFunction);
-                this.actual = opts.actual;
-                this.expected = opts.expected;
-                this.operator = opts.operator;
-            },
-            enumerable: false,
-            writable: true,
-            configurable: true
-        });
+                utilx.objectDefineProperties(this, {
+                    actual: utilx.extend({
+                        value: opts.actual
+                    }, notEnumerableProperties),
+
+                    expected: utilx.extend({
+                        value: opts.expected
+                    }, notEnumerableProperties),
+
+                    operator: utilx.extend({
+                        value: opts.operator
+                    }, notEnumerableProperties)
+                });
+            }
+        }, notEnumerableProperties));
 
         utilx.inherits(assertx.AssertionError, CustomError);
 
         utilx.objectDefineProperties(assertx.AssertionError.prototype, {
-            toString: {
+            toString: utilx.extend({
                 value: function () {
                     var theString;
 
@@ -92,11 +108,8 @@
                     }
 
                     return theString;
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            }
+                }
+            }, notEnumerableProperties)
         });
 
         /**
@@ -116,14 +129,14 @@
             }
 
             if (utilx.isRegExp(expected) && utilx.objectInstanceOf(actual, Error)) {
-                storeState = utilx.normaliseErrorIEToString.state();
+                storeState = utilx.normaliseErrorIEToStringState();
                 if (utilx.isFalse(storeState)) {
-                    utilx.normaliseErrorIEToString.on();
+                    utilx.normaliseErrorIEToStringOn();
                 }
 
                 val = actual.toString();
                 if (utilx.isFalse(storeState)) {
-                    utilx.normaliseErrorIEToString.off();
+                    utilx.normaliseErrorIEToStringOff();
                 }
 
                 return expected.test(val);
@@ -134,14 +147,14 @@
             }
 
             if (utilx.isFunction(expected)) {
-                storeState = utilx.normaliseErrorIEToString.state();
+                storeState = utilx.normaliseErrorIEToStringState();
                 if (utilx.isFalse(storeState)) {
-                    utilx.normaliseErrorIEToString.on();
+                    utilx.normaliseErrorIEToStringOn();
                 }
 
                 val = expected.call({}, actual);
                 if (utilx.isFalse(storeState)) {
-                    utilx.normaliseErrorIEToString.off();
+                    utilx.normaliseErrorIEToStringOff();
                 }
 
                 if (utilx.isTrue(val)) {
@@ -245,14 +258,11 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            fail: {
+            fail: utilx.extend({
                 value: function (actual, expected, message, stackStartFunction) {
                     throwAssertionError(actual, expected, message, 'fail', stackStartFunction);
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Tests if value is truthy, it is equivalent to assert.equal(!!value, true, message);
@@ -263,18 +273,15 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            ok: {
+            ok: utilx.extend({
                 value: function (value, message, stackStartFunction) {
                     var pass = utilx.toBoolean(value);
 
                     if (utilx.isFalse(pass)) {
                         throwAssertionError(pass, true, message, 'ok', stackStartFunction);
                     }
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Tests if value is truthy, it is equivalent to assert.equal(!value, true, message);
@@ -285,18 +292,15 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            notOk: {
+            notOk: utilx.extend({
                 value: function (value, message, stackStartFunction) {
                     var pass = utilx.toBoolean(value);
 
                     if (utilx.isTrue(pass)) {
                         throwAssertionError(pass, true, message, 'notOk', stackStartFunction);
                     }
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Tests shallow, coercive equality with the equal comparison operator ( == ).
@@ -308,16 +312,13 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            equal: {
+            equal: utilx.extend({
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.notEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '==', stackStartFunction);
                     }
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Tests shallow, coercive non-equality with the not equal comparison operator ( != ).
@@ -329,16 +330,13 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            notEqual: {
+            notEqual: utilx.extend({
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.equal(actual, expected)) {
                         throwAssertionError(actual, expected, message, '!=', stackStartFunction);
                     }
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Tests for deep equality, coercive equality with the equal comparison operator ( == ) and equivalent.
@@ -350,16 +348,13 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            deepEqual: {
+            deepEqual: utilx.extend({
                 value: function (actual, expected, message, stackStartFunction) {
                     if (!utilx.deepEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'deepEqual', stackStartFunction);
                     }
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Tests for deep inequality.
@@ -371,16 +366,13 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            notDeepEqual: {
+            notDeepEqual: utilx.extend({
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.deepEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'notDeepEqual', stackStartFunction);
                     }
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Tests for deep strict equality, equality with the strict equal comparison operator
@@ -393,16 +385,13 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            deepStrictEqual: {
+            deepStrictEqual: utilx.extend({
                 value: function (actual, expected, message, stackStartFunction) {
                     if (!utilx.deepStrictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'deepStrictEqual', stackStartFunction);
                     }
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Tests for deep strict inequality.
@@ -414,16 +403,13 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            notDeepStrictEqual: {
+            notDeepStrictEqual: utilx.extend({
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.deepStrictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'notDeepStrictEqual', stackStartFunction);
                     }
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Tests strict equality, as determined by the strict equality operator ( === ).
@@ -435,16 +421,13 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            strictEqual: {
+            strictEqual: utilx.extend({
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.notStrictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '===', stackStartFunction);
                     }
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Tests strict non-equality, as determined by the strict not equal operator ( !== ).
@@ -457,16 +440,13 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            notStrictEqual: {
+            notStrictEqual: utilx.extend({
                 value: function (actual, expected, message, stackStartFunction) {
                     if (utilx.strictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '!==', stackStartFunction);
                     }
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Expects block to throw an error. error can be constructor, regexp or validation function.
@@ -478,14 +458,11 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            throws: {
+            throws: utilx.extend({
                 value: function (block, error, message, stackStartFunction) {
                     throws(true, block, error, message, stackStartFunction);
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Expects block not to throw an error, see assert.throws for details.
@@ -496,14 +473,11 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            doesNotThrow: {
+            doesNotThrow: utilx.extend({
                 value: function (block, message, stackStartFunction) {
                     throws(false, block, message, stackStartFunction);
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * Tests if value is not a falsy value, throws if it is a truthy value.
@@ -513,28 +487,22 @@
              * @param {*} err
              * @return {undefined}
              */
-            ifError: {
+            ifError: utilx.extend({
                 value: function (err) {
                     if (err) {
                         throw err;
                     }
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            },
+                }
+            }, notEnumerableProperties),
 
             /**
              * The Javascript library that assert-x is built on for cross environment compatability.
              * @memberOf assertx
              * @type {object}
              */
-            utilx: {
-                value: utilx,
-                enumerable: false,
-                writable: true,
-                configurable: true
-            }
+            utilx: utilx.extend({
+                value: utilx
+            }, notEnumerableProperties)
         });
 
         return assertx;
@@ -550,43 +518,32 @@
         throw new TypeError('Invalid global context');
     }
 
-    var publicAssert;
-
     /*global module, define */
     if (typeof module === 'object' && null !== module &&
             typeof module.exports === 'object' && null !== module.exports) {
 
-        publicAssert = factory(require('util-x'));
-        publicAssert.utilx.objectDefineProperty(publicAssert, 'factory', {
+        publicAssert = factory(require(utilxString));
+        publicAssert.utilx.objectDefineProperty(publicAssert, factoryString, publicAssert.utilx.extend({
             value: function (deep) {
                 var pa;
 
                 if (publicAssert.utilx.isTrue(deep)) {
-                    pa = factory(require('util-x').factory());
+                    pa = factory(require(utilxString)[factoryString]());
                 } else {
-                    pa = factory(require('util-x'));
+                    pa = factory(require(utilxString));
                 }
 
-                publicAssert.utilx.objectDefineProperty(pa, 'factory', {
-                    value: publicAssert.factory,
-                    enumerable: false,
-                    writable: true,
-                    configurable: true
-                });
+                publicAssert.utilx.objectDefineProperty(pa, factoryString, publicAssert.utilx.extend({
+                    value: publicAssert[factoryString]
+                }, notEnumerableProperties));
 
                 return pa;
-            },
-            enumerable: false,
-            writable: true,
-            configurable: true
-        });
+            }
+        }, notEnumerableProperties));
 
-        publicAssert.utilx.objectDefineProperty(module, 'exports', {
-            value: publicAssert,
-            enumerable: false,
-            writable: true,
-            configurable: true
-        });
+        publicAssert.utilx.objectDefineProperty(module, 'exports', publicAssert.utilx.extend({
+            value: publicAssert
+        }, notEnumerableProperties));
     } else if (typeof define === 'function' && typeof define.amd === 'object' && null !== define.amd) {
         require.config({
             paths: {
@@ -594,65 +551,50 @@
             }
         });
 
-        define(['util-x'], function (utilx) {
+        define([utilxString], function (utilx) {
             publicAssert = factory(utilx);
-            publicAssert.utilx.objectDefineProperty(publicAssert, 'factory', {
+            publicAssert.utilx.objectDefineProperty(publicAssert, factoryString, publicAssert.utilx.extend({
                 value: function (deep) {
                     var pa;
 
                     if (publicAssert.utilx.isTrue(deep)) {
-                        pa = factory(utilx.factory());
+                        pa = factory(utilx[factoryString]());
                     } else {
                         pa = factory(utilx);
                     }
 
-                    publicAssert.utilx.objectDefineProperty(pa, 'factory', {
-                        value: publicAssert.factory,
-                        enumerable: false,
-                        writable: true,
-                        configurable: true
-                    });
+                    publicAssert.utilx.objectDefineProperty(pa, factoryString, publicAssert.utilx.extend({
+                        value: publicAssert[factoryString]
+                    }, notEnumerableProperties));
 
                     return pa;
-                },
-                enumerable: false,
-                writable: true,
-                configurable: true
-            });
+                }
+            }, notEnumerableProperties));
 
             return publicAssert;
         });
     } else {
         publicAssert = factory(globalThis.utilx);
-        publicAssert.utilx.objectDefineProperty(publicAssert, 'factory', {
+        publicAssert.utilx.objectDefineProperty(publicAssert, factoryString, publicAssert.utilx.extend({
             value: function (deep) {
                 var pa;
 
                 if (publicAssert.utilx.isTrue(deep)) {
-                    pa = factory(globalThis.utilx.factory());
+                    pa = factory(globalThis.utilx[factoryString]());
                 } else {
                     pa = factory(globalThis.utilx);
                 }
 
-                publicAssert.utilx.objectDefineProperty(pa, 'factory', {
-                    value: publicAssert.factory,
-                    enumerable: false,
-                    writable: true,
-                    configurable: true
-                });
+                publicAssert.utilx.objectDefineProperty(pa, factoryString, publicAssert.utilx.extend({
+                    value: publicAssert[factoryString]
+                }, notEnumerableProperties));
 
                 return pa;
-            },
-            enumerable: false,
-            writable: true,
-            configurable: true
-        });
+            }
+        }, notEnumerableProperties));
 
-        publicAssert.utilx.objectDefineProperty(globalThis, 'assertx', {
-            value: publicAssert,
-            enumerable: false,
-            writable: true,
-            configurable: true
-        });
+        publicAssert.utilx.objectDefineProperty(globalThis, 'assertx', publicAssert.utilx.extend({
+            value: publicAssert
+        }, notEnumerableProperties));
     }
 }(this));
