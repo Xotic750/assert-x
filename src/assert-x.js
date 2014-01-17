@@ -35,7 +35,6 @@
             configurable: true
         },
         factoryString = 'factory',
-        utilxString = 'util-x',
         publicAssert;
 
     function factory(utilx) {
@@ -522,15 +521,15 @@
     if (typeof module === 'object' && null !== module &&
             typeof module.exports === 'object' && null !== module.exports) {
 
-        publicAssert = factory(require(utilxString));
+        publicAssert = factory(require('util-x'));
         publicAssert.utilx.objectDefineProperty(publicAssert, factoryString, publicAssert.utilx.extend({
             value: function (deep) {
                 var pa;
 
                 if (publicAssert.utilx.isTrue(deep)) {
-                    pa = factory(require(utilxString)[factoryString]());
+                    pa = factory(require('util-x')[factoryString]());
                 } else {
-                    pa = factory(require(utilxString));
+                    pa = factory(require('util-x'));
                 }
 
                 publicAssert.utilx.objectDefineProperty(pa, factoryString, publicAssert.utilx.extend({
@@ -551,7 +550,7 @@
             }
         });
 
-        define([utilxString], function (utilx) {
+        define(['util-x'], function (utilx) {
             publicAssert = factory(utilx);
             publicAssert.utilx.objectDefineProperty(publicAssert, factoryString, publicAssert.utilx.extend({
                 value: function (deep) {
