@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: /home/graham/source_projects/assert-x/lib/assert-x.js</title>
-    
+    <title>JSDoc: Source: assert-x.js</title>
+
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
@@ -16,10 +16,11 @@
 <body>
 
 <div id="main">
+
+    <h1 class="page-title">Source: assert-x.js</h1>
+
     
-    <h1 class="page-title">Source: /home/graham/source_projects/assert-x/lib/assert-x.js</h1>
-    
-    
+
 
 
     
@@ -27,7 +28,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>/**
  * @file {@link http://xotic750.github.io/assert-x/ assert-x}. A Javascript assertion library..
- * @version 0.0.26
+ * @version 0.0.27
  * @author Graham Fairweather &lt;xotic750@gmail.com>
  * @copyright Copyright (c) 2013 Graham Fairweather
  * @license {@link &lt;http://www.gnu.org/licenses/gpl-3.0.html> GPL3}
@@ -52,7 +53,7 @@
 
 /*global module, define, require */
 
-(function (globalThis) {
+(function (globalThis, Undefined) {
     'use strict';
 
     var maxMessageLength = 128,
@@ -71,7 +72,7 @@
         var assertx = {},
             CustomError = utilx.customError('AssertionError', maxMessageLength);
 
-        utilx.objectDefineProperty(assertx, 'AssertionError', utilx.extend({
+        utilx.Object.defineProperty(assertx, 'AssertionError', utilx.Object.assign({
             /**
              * The AssertionError constructor.
              * @name AssertionError
@@ -82,54 +83,54 @@
              * @return {undefined}
              */
             value: function (opts) {
-                if (!utilx.isPlainObject(opts)) {
+                if (!utilx.Object.isPlainObject(opts)) {
                     opts = {};
                 }
 
-                if (!utilx.isString(opts.message)) {
+                if (!utilx.String.isString(opts.message)) {
                     opts.message = '';
                 }
 
-                if (!utilx.isString(opts.operator)) {
+                if (!utilx.String.isString(opts.operator)) {
                     opts.operator = '';
                 }
 
-                if (!utilx.isFunction(opts.stackStartFunction)) {
+                if (!utilx.Function.isFunction(opts.stackStartFunction)) {
                     opts.stackStartFunction = assertx.AssertionError;
                 }
 
                 CustomError.call(this, opts.message, opts.stackStartFunction);
-                utilx.objectDefineProperties(this, {
-                    actual: utilx.extend({
+                utilx.Object.defineProperties(this, {
+                    actual: utilx.Object.assign({
                         value: opts.actual
                     }, notEnumerableProperties),
 
-                    expected: utilx.extend({
+                    expected: utilx.Object.assign({
                         value: opts.expected
                     }, notEnumerableProperties),
 
-                    operator: utilx.extend({
+                    operator: utilx.Object.assign({
                         value: opts.operator
                     }, notEnumerableProperties)
                 });
             }
         }, notEnumerableProperties));
 
-        utilx.inherits(assertx.AssertionError, CustomError);
+        utilx.Function.inherits(assertx.AssertionError, CustomError);
 
-        utilx.objectDefineProperties(assertx.AssertionError.prototype, {
-            toString: utilx.extend({
+        utilx.Object.defineProperties(assertx.AssertionError.prototype, {
+            toString: utilx.Object.assign({
                 value: function () {
                     var theString;
 
-                    if (utilx.isString(this.message) &amp;&amp; !utilx.isEmptyString(this.message)) {
-                        theString = this.name + ': ' + utilx.stringTruncate(this.message, maxMessageLength);
-                    } else if (utilx.objectInstanceOf(this, assertx.AssertionError)) {
+                    if (utilx.String.isString(this.message) &amp;&amp; !utilx.String.isEmpty(this.message)) {
+                        theString = this.name + ': ' + utilx.String.truncate(this.message, maxMessageLength);
+                    } else if (utilx.Object.instanceOf(this, assertx.AssertionError)) {
                         theString = this.name + ': ';
-                        theString += utilx.stringTruncate(utilx.jsonStringify(this.actual,
+                        theString += utilx.String.truncate(utilx.JSON.stringify(this.actual,
                                                                 utilx.customErrorReplacer), maxMessageLength) + ' ';
                         theString += this.operator + ' ';
-                        theString += utilx.stringTruncate(utilx.jsonStringify(this.expected,
+                        theString += utilx.String.truncate(utilx.JSON.stringify(this.expected,
                                                                 utilx.customErrorReplacer), maxMessageLength);
                     }
 
@@ -150,40 +151,40 @@
             var storeState,
                 val;
 
-            if (utilx.isUndefinedOrNull(actual) || utilx.isUndefinedOrNull(expected)) {
+            if (utilx.Object.isUndefinedOrNull(actual) || utilx.Object.isUndefinedOrNull(expected)) {
                 return false;
             }
 
-            if (utilx.isRegExp(expected) &amp;&amp; utilx.objectInstanceOf(actual, Error)) {
+            if (utilx.RegExp.isRegExp(expected) &amp;&amp; utilx.Object.instanceOf(actual, Error)) {
                 storeState = utilx.normaliseErrorIEToStringState();
-                if (utilx.isFalse(storeState)) {
+                if (utilx.Boolean.isFalse(storeState)) {
                     utilx.normaliseErrorIEToStringOn();
                 }
 
                 val = actual.toString();
-                if (utilx.isFalse(storeState)) {
+                if (utilx.Boolean.isFalse(storeState)) {
                     utilx.normaliseErrorIEToStringOff();
                 }
 
                 return expected.test(val);
             }
 
-            if (utilx.objectInstanceOf(actual, expected)) {
+            if (utilx.Object.instanceOf(actual, expected)) {
                 return true;
             }
 
-            if (utilx.isFunction(expected)) {
+            if (utilx.Function.isFunction(expected)) {
                 storeState = utilx.normaliseErrorIEToStringState();
-                if (utilx.isFalse(storeState)) {
+                if (utilx.Boolean.isFalse(storeState)) {
                     utilx.normaliseErrorIEToStringOn();
                 }
 
                 val = expected.call({}, actual);
-                if (utilx.isFalse(storeState)) {
+                if (utilx.Boolean.isFalse(storeState)) {
                     utilx.normaliseErrorIEToStringOff();
                 }
 
-                if (utilx.isTrue(val)) {
+                if (utilx.Boolean.isTrue(val)) {
                     return true;
                 }
             }
@@ -203,7 +204,7 @@
          * @return {undefined}
          */
         function throwAssertionError(actual, expected, message, operator, stackStartFunction) {
-            if (!utilx.isFunction(stackStartFunction)) {
+            if (!utilx.Function.isFunction(stackStartFunction)) {
                 stackStartFunction = throwAssertionError;
             }
 
@@ -231,16 +232,16 @@
             var wasExceptionExpected,
                 actual;
 
-            if (!utilx.isFunction(stackStartFunction)) {
-                if (utilx.isFunction(message)) {
+            if (!utilx.Function.isFunction(stackStartFunction)) {
+                if (utilx.Function.isFunction(message)) {
                     stackStartFunction = message;
-                    message = utilx.privateUndefined;
+                    message = Undefined;
                 } else {
                     stackStartFunction = throws;
                 }
             }
 
-            if ((!utilx.isString(message) || utilx.isEmptyString(message)) &amp;&amp; utilx.isString(expected)) {
+            if ((!utilx.String.isString(message) || utilx.String.isEmpty(message)) &amp;&amp; utilx.String.isString(expected)) {
                 message = expected;
                 expected = null;
             }
@@ -252,28 +253,31 @@
             }
 
             wasExceptionExpected = expectedException(actual, expected);
-            message = (expected &amp;&amp; utilx.isString(expected.name) &amp;&amp; utilx.isEmptyString(expected.name) ?
+            message = (expected &amp;&amp; utilx.String.isString(expected.name) &amp;&amp; utilx.String.isEmpty(expected.name) ?
                        ' (' + expected.name + ').' :
                        '.') + (message ? ' ' + message : '.');
 
-            if (utilx.isTrue(shouldThrow) &amp;&amp; !actual) {
+            if (utilx.Boolean.isTrue(shouldThrow) &amp;&amp; !actual) {
                 throwAssertionError(actual, expected, 'Missing expected exception' + message,
-                                    utilx.privateUndefined, stackStartFunction);
+                                    Undefined, stackStartFunction);
             }
 
-            if (utilx.isFalse(shouldThrow) &amp;&amp; utilx.isTrue(wasExceptionExpected)) {
+            if (utilx.Boolean.isFalse(shouldThrow) &amp;&amp; utilx.Boolean.isTrue(wasExceptionExpected)) {
                 throwAssertionError(actual, expected, 'Got unwanted exception' + message,
-                                    utilx.privateUndefined, stackStartFunction);
+                                    Undefined, stackStartFunction);
             }
 
-            if ((utilx.isTrue(shouldThrow) &amp;&amp; actual &amp;&amp; expected &amp;&amp; utilx.isFalse(wasExceptionExpected)) ||
-                    (utilx.isFalse(shouldThrow) &amp;&amp; actual)) {
+            if ((utilx.Boolean.isTrue(shouldThrow) &amp;&amp;
+                 actual &amp;&amp;
+                 expected &amp;&amp;
+                 utilx.Boolean.isFalse(wasExceptionExpected)) ||
+                    (utilx.Boolean.isFalse(shouldThrow) &amp;&amp; actual)) {
 
                 throw actual;
             }
         }
 
-        utilx.objectDefineProperties(assertx, {
+        utilx.Object.defineProperties(assertx, {
             /**
              * Throws an exception that displays the values for actual and expected.
              * @memberOf assertx
@@ -284,7 +288,7 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            fail: utilx.extend({
+            fail: utilx.Object.assign({
                 value: function (actual, expected, message, stackStartFunction) {
                     throwAssertionError(actual, expected, message, 'fail', stackStartFunction);
                 }
@@ -299,11 +303,11 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            ok: utilx.extend({
+            ok: utilx.Object.assign({
                 value: function (value, message, stackStartFunction) {
-                    var pass = utilx.toBoolean(value);
+                    var pass = !!value;
 
-                    if (utilx.isFalse(pass)) {
+                    if (!pass) {
                         throwAssertionError(pass, true, message, 'ok', stackStartFunction);
                     }
                 }
@@ -318,11 +322,11 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            notOk: utilx.extend({
+            notOk: utilx.Object.assign({
                 value: function (value, message, stackStartFunction) {
-                    var pass = utilx.toBoolean(value);
+                    var pass = !!value;
 
-                    if (utilx.isTrue(pass)) {
+                    if (pass) {
                         throwAssertionError(pass, true, message, 'notOk', stackStartFunction);
                     }
                 }
@@ -338,9 +342,9 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            equal: utilx.extend({
+            equal: utilx.Object.assign({
                 value: function (actual, expected, message, stackStartFunction) {
-                    if (utilx.notEqual(actual, expected)) {
+                    if (utilx.Object.notEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '==', stackStartFunction);
                     }
                 }
@@ -356,9 +360,9 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            notEqual: utilx.extend({
+            notEqual: utilx.Object.assign({
                 value: function (actual, expected, message, stackStartFunction) {
-                    if (utilx.equal(actual, expected)) {
+                    if (utilx.Object.equal(actual, expected)) {
                         throwAssertionError(actual, expected, message, '!=', stackStartFunction);
                     }
                 }
@@ -374,9 +378,9 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            deepEqual: utilx.extend({
+            deepEqual: utilx.Object.assign({
                 value: function (actual, expected, message, stackStartFunction) {
-                    if (!utilx.deepEqual(actual, expected)) {
+                    if (!utilx.Object.deepEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'deepEqual', stackStartFunction);
                     }
                 }
@@ -392,9 +396,9 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            notDeepEqual: utilx.extend({
+            notDeepEqual: utilx.Object.assign({
                 value: function (actual, expected, message, stackStartFunction) {
-                    if (utilx.deepEqual(actual, expected)) {
+                    if (utilx.Object.deepEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'notDeepEqual', stackStartFunction);
                     }
                 }
@@ -411,9 +415,9 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            deepStrictEqual: utilx.extend({
+            deepStrictEqual: utilx.Object.assign({
                 value: function (actual, expected, message, stackStartFunction) {
-                    if (!utilx.deepStrictEqual(actual, expected)) {
+                    if (!utilx.Object.deepStrictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'deepStrictEqual', stackStartFunction);
                     }
                 }
@@ -429,9 +433,9 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            notDeepStrictEqual: utilx.extend({
+            notDeepStrictEqual: utilx.Object.assign({
                 value: function (actual, expected, message, stackStartFunction) {
-                    if (utilx.deepStrictEqual(actual, expected)) {
+                    if (utilx.Object.deepStrictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, 'notDeepStrictEqual', stackStartFunction);
                     }
                 }
@@ -447,9 +451,9 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            strictEqual: utilx.extend({
+            strictEqual: utilx.Object.assign({
                 value: function (actual, expected, message, stackStartFunction) {
-                    if (utilx.notStrictEqual(actual, expected)) {
+                    if (utilx.Object.notStrictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '===', stackStartFunction);
                     }
                 }
@@ -466,9 +470,9 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            notStrictEqual: utilx.extend({
+            notStrictEqual: utilx.Object.assign({
                 value: function (actual, expected, message, stackStartFunction) {
-                    if (utilx.strictEqual(actual, expected)) {
+                    if (utilx.Object.strictEqual(actual, expected)) {
                         throwAssertionError(actual, expected, message, '!==', stackStartFunction);
                     }
                 }
@@ -484,7 +488,7 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            throws: utilx.extend({
+            throws: utilx.Object.assign({
                 value: function (block, error, message, stackStartFunction) {
                     throws(true, block, error, message, stackStartFunction);
                 }
@@ -499,7 +503,7 @@
              * @param {function} [stackStartFunction]
              * @return {undefined}
              */
-            doesNotThrow: utilx.extend({
+            doesNotThrow: utilx.Object.assign({
                 value: function (block, message, stackStartFunction) {
                     throws(false, block, message, stackStartFunction);
                 }
@@ -513,7 +517,7 @@
              * @param {*} err
              * @return {undefined}
              */
-            ifError: utilx.extend({
+            ifError: utilx.Object.assign({
                 value: function (err) {
                     if (err) {
                         throw err;
@@ -526,7 +530,7 @@
              * @memberOf assertx
              * @type {object}
              */
-            utilx: utilx.extend({
+            utilx: utilx.Object.assign({
                 value: utilx
             }, notEnumerableProperties)
         });
@@ -549,17 +553,17 @@
             typeof module.exports === 'object' &amp;&amp; null !== module.exports) {
 
         publicAssert = factory(require('util-x'));
-        publicAssert.utilx.objectDefineProperty(publicAssert, factoryString, publicAssert.utilx.extend({
+        publicAssert.utilx.Object.defineProperty(publicAssert, factoryString, publicAssert.utilx.Object.assign({
             value: function (deep) {
                 var pa;
 
-                if (publicAssert.utilx.isTrue(deep)) {
+                if (publicAssert.utilx.Boolean.isTrue(deep)) {
                     pa = factory(require('util-x')[factoryString]());
                 } else {
                     pa = factory(require('util-x'));
                 }
 
-                publicAssert.utilx.objectDefineProperty(pa, factoryString, publicAssert.utilx.extend({
+                publicAssert.utilx.Object.defineProperty(pa, factoryString, publicAssert.utilx.Object.assign({
                     value: publicAssert[factoryString]
                 }, notEnumerableProperties));
 
@@ -567,7 +571,7 @@
             }
         }, notEnumerableProperties));
 
-        publicAssert.utilx.objectDefineProperty(module, 'exports', publicAssert.utilx.extend({
+        publicAssert.utilx.Object.defineProperty(module, 'exports', publicAssert.utilx.Object.assign({
             value: publicAssert
         }, notEnumerableProperties));
     } else if (typeof define === 'function' &amp;&amp; typeof define.amd === 'object' &amp;&amp; null !== define.amd) {
@@ -579,17 +583,17 @@
 
         define(['util-x'], function (utilx) {
             publicAssert = factory(utilx);
-            publicAssert.utilx.objectDefineProperty(publicAssert, factoryString, publicAssert.utilx.extend({
+            publicAssert.utilx.Object.defineProperty(publicAssert, factoryString, publicAssert.utilx.Object.assign({
                 value: function (deep) {
                     var pa;
 
-                    if (publicAssert.utilx.isTrue(deep)) {
+                    if (publicAssert.utilx.Boolean.isTrue(deep)) {
                         pa = factory(utilx[factoryString]());
                     } else {
                         pa = factory(utilx);
                     }
 
-                    publicAssert.utilx.objectDefineProperty(pa, factoryString, publicAssert.utilx.extend({
+                    publicAssert.utilx.Object.defineProperty(pa, factoryString, publicAssert.utilx.Object.assign({
                         value: publicAssert[factoryString]
                     }, notEnumerableProperties));
 
@@ -601,17 +605,17 @@
         });
     } else {
         publicAssert = factory(globalThis.utilx);
-        publicAssert.utilx.objectDefineProperty(publicAssert, factoryString, publicAssert.utilx.extend({
+        publicAssert.utilx.Object.defineProperty(publicAssert, factoryString, publicAssert.utilx.Object.assign({
             value: function (deep) {
                 var pa;
 
-                if (publicAssert.utilx.isTrue(deep)) {
+                if (publicAssert.utilx.Boolean.isTrue(deep)) {
                     pa = factory(globalThis.utilx[factoryString]());
                 } else {
                     pa = factory(globalThis.utilx);
                 }
 
-                publicAssert.utilx.objectDefineProperty(pa, factoryString, publicAssert.utilx.extend({
+                publicAssert.utilx.Object.defineProperty(pa, factoryString, publicAssert.utilx.Object.assign({
                     value: publicAssert[factoryString]
                 }, notEnumerableProperties));
 
@@ -619,7 +623,7 @@
             }
         }, notEnumerableProperties));
 
-        publicAssert.utilx.objectDefineProperty(globalThis, 'assertx', publicAssert.utilx.extend({
+        publicAssert.utilx.Object.defineProperty(globalThis, 'assertx', publicAssert.utilx.Object.assign({
             value: publicAssert
         }, notEnumerableProperties));
     }
@@ -634,13 +638,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-assert-x.html">assert-x</a></li></ul><h3>Classes</h3><ul><li><a href="assertx.AssertionError.html">AssertionError</a></li></ul><h3>Namespaces</h3><ul><li><a href="assertx.html">assertx</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-assert-x.html">assert-x</a></li></ul><h3>Classes</h3><ul><li><a href="assertx.AssertionError.html">AssertionError</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-assert-x-assertx.html">assertx</a></li></ul>
 </nav>
 
-<br clear="both">
+<br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha3</a> on Fri Jan 17 2014 10:13:26 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha13</a> on Tue Jan 06 2015 02:55:49 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -313,7 +313,7 @@
             }, assertx.AssertionError);
 
             assertx.throws(function () {
-                assertx.deepEqual(utilx.objectKeys(a1), utilx.objectKeys(a2));
+                assertx.deepEqual(utilx.Object.keys(a1), utilx.Object.keys(a2));
             }, assertx.AssertionError);
         });
 
@@ -503,7 +503,7 @@
             });
 
             assertx.throws(function () {
-                assertx.deepStrictEqual(utilx.objectKeys(a1), utilx.objectKeys(a2));
+                assertx.deepStrictEqual(utilx.Object.keys(a1), utilx.Object.keys(a2));
             }, assertx.AssertionError);
         });
 
@@ -624,7 +624,7 @@
 
                 assertx.fail('throws with an explicit error is eating extra errors');
             } catch (e) {
-                assertx.ok(utilx.objectInstanceOf(e, TypeError), 'threw correct constructor');
+                assertx.ok(utilx.Object.instanceOf(e, TypeError), 'threw correct constructor');
                 assertx.ok(true, 'throws with an explicit error is not eating extra errors');
             }
 
@@ -636,7 +636,7 @@
 
                 assertx.fail('doesNotThrow with an explicit error is eating extra errors');
             } catch (e) {
-                assertx.ok(utilx.objectInstanceOf(e, TypeError), 'threw correct constructor');
+                assertx.ok(utilx.Object.instanceOf(e, TypeError), 'threw correct constructor');
                 assertx.ok(true, 'doesNotThrow with an explicit error is not eating extra errors');
             }
 
@@ -648,7 +648,7 @@
 
                 assertx.fail('doesNotThrow is not catching type matching errors');
             } catch (e) {
-                assertx.ok(utilx.objectInstanceOf(e, assertx.AssertionError), 'threw correct constructor');
+                assertx.ok(utilx.Object.instanceOf(e, assertx.AssertionError), 'threw correct constructor');
                 assertx.ok(true, 'doesNotThrow is catching type matching errors');
             }
         });
@@ -724,7 +724,7 @@
                 assertx.throws(function () {
                     throw new TypeError('test');
                 }, function (err) {
-                    return utilx.objectInstanceOf(err, TypeError) && rxTest.test(err.toString());
+                    return utilx.Object.instanceOf(err, TypeError) && rxTest.test(err.toString());
                 });
             });
 
@@ -735,7 +735,7 @@
                         message: 'test'
                     });
                 }, function (err) {
-                    return utilx.objectInstanceOf(err, assertx.AssertionError) && rxTest.test(err.toString());
+                    return utilx.Object.instanceOf(err, assertx.AssertionError) && rxTest.test(err.toString());
                 });
             });
 
@@ -794,7 +794,7 @@
                 testAssertionMessage([], '[]');
                 testAssertionMessage([1, 2, 3], '[1,2,3]');
                 testAssertionMessage(/a/, '"/a/"');
-                testAssertionMessage(utilx.noop, utilx.jsonStringify(utilx.noop.toString()));
+                testAssertionMessage(utilx.Function.noop, utilx.JSON.stringify(utilx.Function.noop.toString()));
                 testAssertionMessage({}, '{}');
 
                 testAssertionMessage({
