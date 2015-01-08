@@ -549,7 +549,7 @@
     } else if (typeof define === 'function' && typeof define.amd === 'object' && null !== define.amd) {
         require.config({
             paths: {
-                'util-x': '//raw.github.com/Xotic750/util-x/master/lib/util-x'
+                'util-x': '//rawgit.com/Xotic750/util-x/master/lib/util-x'
             }
         });
 
