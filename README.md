@@ -1,5 +1,3 @@
-Master
-
 [![Build Status](https://travis-ci.org/Xotic750/assert-x.png?branch=master)](https://travis-ci.org/Xotic750/assert-x  "Build Status on Travis CI")
 
 [![Dependency Status](https://david-dm.org/Xotic750/assert-x.png)](https://david-dm.org/Xotic750/assert-x#info=dependencies&view=table "Dependency Status on David")
@@ -11,6 +9,3 @@ Master
 [![NPM version](https://badge.fury.io/js/assert-x.png)](http://badge.fury.io/js/assert-x "Current NPM release")
 
 [![browser support](https://ci.testling.com/Xotic750/assert-x.png)](https://ci.testling.com/Xotic750/assert-x 'Browser support on Testling CI')
-
-#[assert-x 0.0.28](http://xotic750.github.io/assert-x/)
-###### Graham Fairweather <xotic750@gmail.com>
