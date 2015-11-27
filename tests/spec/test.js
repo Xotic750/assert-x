@@ -20,8 +20,6 @@
       JSON = {};
     }
     require('json3').runInContext(null, JSON);
-    require('es6-shim');
-    require('cycle-x');
     assert = require('../../index.js');
   } else {
     assert = returnExports;
@@ -365,6 +363,171 @@
           nb2 = new NameBuilder2('John', 'Smith');
       assert.doesNotThrow(function () {
         assert.deepEqual(nb1, nb2);
+      });
+    });
+  });
+
+  describe('assert.deepStrictEqual - 7.2', function () {
+    it('should throw an error in each case', function () {
+      assert.throws(function () {
+        assert.deepStrictEqual(new Date(), new Date(2000, 3, 14));
+      }, assert.AssertionError, 'deepStrictEqual date');
+    });
+
+    it('should not throw an error in each case', function () {
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual(new Date(2000, 3, 14), new Date(2000, 3, 14));
+      }, 'deepStrictEqual date');
+    });
+  });
+
+  describe('assert.deepStrictEqual - 7.3', function () {
+    it('should throw an error in each case', function () {
+      assert.throws(function () {
+        assert.deepStrictEqual(/ab/, /a/);
+      });
+      assert.throws(function () {
+        assert.deepStrictEqual(/a/g, /a/);
+      });
+      assert.throws(function () {
+        assert.deepStrictEqual(/a/i, /a/);
+      });
+      assert.throws(function () {
+        assert.deepStrictEqual(/a/m, /a/);
+      });
+      assert.throws(function () {
+        assert.deepStrictEqual(/a/igm, /a/im);
+      });
+      var re1 = /a/;
+      re1.lastIndex = 3;
+      assert.throws(function () {
+        assert.deepStrictEqual(re1, /a/);
+      });
+    });
+
+    it('should not throw an error in each case', function () {
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual(/a/, /a/);
+      });
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual(/a/g, /a/g);
+      });
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual(/a/i, /a/i);
+      });
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual(/a/m, /a/m);
+      });
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual(/a/igm, /a/igm);
+      });
+    });
+  });
+
+  describe('assert.deepStrictEqual - 7.4', function () {
+    it('should throw an error in each case', function () {
+      assert.throws(function () {
+        assert.deepStrictEqual(4, '5');
+      }, assert.AssertionError, 'deepStrictEqual === check');
+    });
+
+    it('should not throw an error in each case', function () {
+      assert.doesNotThrow(function () {
+        assert.throws(4, '4');
+      }, 'deepStrictEqual === check');
+
+      assert.throws(function () {
+        assert.deepStrictEqual(true, 1);
+      }, 'deepStrictEqual === check');
+    });
+  });
+
+  describe('assert.deepStrictEqual - 7.5', function () {
+    it('should throw an error in each case', function () {
+      assert.throws(function () {
+        assert.deepStrictEqual({
+          a: 4
+        }, {
+          a: 4,
+          b: true
+        });
+      }, assert.AssertionError);
+      assert.throws(function () {
+        var a1 = [1, 2, 3],
+            a2 = [1, 2, 3];
+        a1.a = 'test';
+        a1.b = true;
+        a2.b = true;
+        a2.a = 'test';
+        assert.deepStrictEqual(Object.keys(a1), Object.keys(a2));
+      }, assert.AssertionError);
+    });
+
+    it('should not throw an error in each case', function () {
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual({
+          a: 4
+        }, {
+          a: 4
+        });
+      });
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual({
+          a: 4,
+          b: '2'
+        }, {
+          a: 4,
+          b: '2'
+        });
+      });
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual([4], ['4']);
+      });
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual(['a'], {
+          0: 'a'
+        });
+      });
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual({
+          a: 4,
+          b: '1'
+        }, {
+          b: '1',
+          a: 4
+        });
+      });
+      assert.doesNotThrow(function () {
+        var a1 = [1, 2, 3],
+            a2 = [1, 2, 3];
+        a1.a = 'test';
+        a1.b = true;
+        a2.b = true;
+        a2.a = 'test';
+        assert.deepStrictEqual(a1, a2);
+      });
+    });
+  });
+
+  describe('assert.deepStrictEqual - instances', function () {
+    it('should throw an error in each case', function () {
+      NameBuilder2.prototype = Object;
+      var nb1 = new NameBuilder('John', 'Smith'),
+          nb2 = new NameBuilder2('John', 'Smith');
+      assert.throws(function () {
+        assert.deepStrictEqual(nb1, nb2);
+      }, assert.AssertionError);
+      assert.throws(function () {
+        assert.deepStrictEqual('a', {});
+      }, assert.AssertionError);
+    });
+
+    it('should not throw an error in each case', function () {
+      NameBuilder2.prototype = NameBuilder.prototype;
+      var nb1 = new NameBuilder('John', 'Smith'),
+          nb2 = new NameBuilder2('John', 'Smith');
+      assert.doesNotThrow(function () {
+        assert.deepStrictEqual(nb1, nb2);
       });
     });
   });
