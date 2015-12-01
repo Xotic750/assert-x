@@ -20,8 +20,9 @@
  * alt="npm version" height="18">
  * </a>
  *
- * A Javascript assertion library.
- * @version 1.1.2
+ * A Javascript assertion library. Works in ES3 environments if es5-shim is
+ * loaded, which is recommended for all environments to fix native bugs.
+ * @version 1.1.4
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -44,11 +45,12 @@
 
   var errorx = require('error-x'),
     AssertionError = errorx.AssertionError,
+    pTest = RegExp.prototype.test,
     defProps = require('define-properties'),
-    isRegExp = require('is-regex'),
-    isCallable = require('is-callable'),
-    deepEql = require('deep-equal-x');
-  require('cycle-x');
+    ES = require('es-abstract/es6'),
+    deepEql = require('deep-equal-x'),
+    CircularJSON = require('circular-json'),
+    isPrimitive = require('is-primitive');
 
   /**
    * Custom replacer for JSON~stringify.
@@ -60,13 +62,16 @@
    */
   function replacer(ignore, value) {
     if (typeof value === 'undefined') {
-      return String(value);
+      return ES.ToString(value);
     }
     if (typeof value === 'number' && !isFinite(value)) {
-      return String(value);
+      return ES.ToString(value);
     }
-    if (isRegExp(value) || isCallable(value)) {
-      return String(value);
+    if (isPrimitive(value)) {
+      return value;
+    }
+    if (ES.IsRegExp(value) || ES.IsCallable(value)) {
+      return ES.ToString(value);
     }
     return value;
   }
@@ -82,14 +87,12 @@
    * @return {string} The text message.
    */
   function getMessage(actual, expected, message, operator) {
-    var decycle;
     if (typeof message === 'undefined') {
-      decycle = isCallable(JSON.decycle);
-      return JSON.stringify(decycle ? JSON.decycle(actual) : actual, replacer) +
+      return CircularJSON.stringify(actual, replacer) +
         ' ' + operator + ' ' +
-        JSON.stringify(decycle ? JSON.decycle(expected) : expected, replacer);
+        CircularJSON.stringify(expected, replacer);
     }
-    return String(message);
+    return ES.ToString(message);
   }
 
   /**
@@ -124,14 +127,14 @@
     if (!actual || !expected) {
       return false;
     }
-    if (isRegExp(expected)) {
-      return expected.test(String(actual));
+    if (ES.IsRegExp(expected)) {
+      return ES.Call(pTest, expected, [ES.ToString(actual)]);
     }
     if (actual instanceof expected) {
       return true;
     }
-    if (isCallable(expected) && expected.call({}, actual) === true) {
-      return true;
+    if (ES.IsCallable(expected)) {
+      return ES.Call(expected, {}, [actual]) === true;
     }
     return false;
   }
@@ -226,7 +229,7 @@
      * @param {*} value The value to be tested.
      * @param {string} message Text description of test.
      */
-    ok: function (value, message) {
+    ok: function ok(value, message) {
       baseAssert(value, message, 'ok');
     },
     /**
@@ -237,7 +240,7 @@
      * @param {*} value The value to be tested.
      * @param {string} message Text description of test.
      */
-    notOk: function (value, message) {
+    notOk: function notOk(value, message) {
       if (value) {
         baseFail(true, true, message, 'notOk');
       }
@@ -250,7 +253,7 @@
      * @param {*} expected The expected value to compare against actual.
      * @param {string} message Text description of test.
      */
-    equal: function (actual, expected, message) {
+    equal: function equal(actual, expected, message) {
       /*jshint eqeqeq:false */
       if (actual != expected) {
         baseFail(actual, expected, message, '==');
@@ -264,7 +267,7 @@
      * @param {*} expected The expected value to compare against actual.
      * @param {string} message Text description of test.
      */
-    notEqual: function (actual, expected, message) {
+    notEqual: function notEqual(actual, expected, message) {
       /*jshint eqeqeq:false */
       if (actual == expected) {
         baseFail(actual, expected, message, '!=');
@@ -278,7 +281,7 @@
      * @param {*} expected The expected value to compare against actual.
      * @param {string} message Text description of test.
      */
-    deepEqual: function (actual, expected, message) {
+    deepEqual: function deepEqual(actual, expected, message) {
       if (!deepEql(actual, expected)) {
         baseFail(actual, expected, message, 'deepEqual');
       }
@@ -290,7 +293,7 @@
      * @param {*} expected The expected value to compare against actual.
      * @param {string} message Text description of test.
      */
-    notDeepEqual: function (actual, expected, message) {
+    notDeepEqual: function notDeepEqual(actual, expected, message) {
       if (deepEql(actual, expected)) {
         baseFail(actual, expected, message, 'notDeepEqual');
       }
@@ -303,7 +306,7 @@
      * @param {*} expected The expected value to compare against actual.
      * @param {string} message Text description of test.
      */
-    deepStrictEqual: function (actual, expected, message) {
+    deepStrictEqual: function deepStrictEqual(actual, expected, message) {
       if (!deepEql(actual, expected, true)) {
         baseFail(actual, expected, message, 'deepStrictEqual');
       }
@@ -315,7 +318,7 @@
      * @param {*} expected The expected value to compare against actual.
      * @param {string} message Text description of test.
      */
-    notDeepStrictEqual: function (actual, expected, message) {
+    notDeepStrictEqual: function notDeepStrictEqual(actual, expected, message) {
       if (deepEql(actual, expected, true)) {
         baseFail(actual, expected, message, 'notDeepStrictEqual');
       }
@@ -328,7 +331,7 @@
      * @param {*} expected The expected value to compare against actual.
      * @param {string} message Text description of test.
      */
-    strictEqual: function (actual, expected, message) {
+    strictEqual: function strictEqual(actual, expected, message) {
       if (actual !== expected) {
         baseFail(actual, expected, message, '===');
       }
@@ -341,7 +344,7 @@
      * @param {*} expected The expected value to compare against actual.
      * @param {string} message Text description of test.
      */
-    notStrictEqual: function (actual, expected, message) {
+    notStrictEqual: function notStrictEqual(actual, expected, message) {
       if (actual === expected) {
         baseFail(actual, expected, message, '!==');
       }
@@ -354,7 +357,7 @@
      * @param {constructor|RegExp|Function} error The comparator.
      * @param {string} message Text description of test.
      */
-    throws: function (block, error, message) {
+    throws: function throws(block, error, message) {
       baseThrows(true, block, error, message);
     },
     /**
@@ -363,7 +366,7 @@
      * @param {Function} block The function block to be executed in testing.
      * @param {string} message Text description of test.
      */
-    doesNotThrow: function (block, message) {
+    doesNotThrow: function doesNotThrow(block, message) {
       baseThrows(false, block, message);
     },
     /**
@@ -373,7 +376,7 @@
      * @param {*} err The value to be tested for truthiness.
      * @throws {*} The value `err` if truthy.
      */
-    ifError: function (err) {
+    ifError: function ifError(err) {
       if (err) {
         throw err;
       }

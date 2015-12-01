@@ -453,6 +453,9 @@
         });
       }, assert.AssertionError);
       assert.throws(function () {
+        assert.deepStrictEqual([4], ['4']);
+      }, assert.AssertionError);
+      assert.throws(function () {
         var a1 = [1, 2, 3],
             a2 = [1, 2, 3];
         a1.a = 'test';
@@ -479,9 +482,6 @@
           a: 4,
           b: '2'
         });
-      });
-      assert.doesNotThrow(function () {
-        assert.deepStrictEqual([4], ['4']);
       });
       assert.doesNotThrow(function () {
         assert.deepStrictEqual(['a'], {
@@ -688,6 +688,25 @@
         assert.fail('cirular did not throw');
       } catch (e) {
         assert.ok(true, 'cirular threw');
+        assert.equal(e instanceof RangeError, true);
+        assert.equal(e.message, 'Circular reference');
+      }
+    });
+  });
+
+  describe('assert - test deepStrictEqual with circular refs', function () {
+    it('should not throw an error in each case', function () {
+      var b = {},
+          c = {};
+      b.b = b;
+      c.b = c;
+      try {
+        assert.deepStrictEqual(b, c);
+        assert.fail('cirular did not throw');
+      } catch (e) {
+        assert.ok(true, 'cirular threw');
+        assert.equal(e instanceof RangeError, true);
+        assert.equal(e.message, 'Circular reference');
       }
     });
   });
