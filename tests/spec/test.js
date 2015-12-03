@@ -4,7 +4,7 @@
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
   es3:true, esnext:true, plusplus:true, maxparams:2, maxdepth:2,
-  maxstatements:50, maxcomplexity:5 */
+  maxstatements:52, maxcomplexity:5 */
 
 /*global JSON:true, module, require, describe, it, returnExports */
 
@@ -379,8 +379,10 @@
       }), a.AssertionError);
       assert.throws(makeBlock(a.deepStrictEqual, 1, {}), a.AssertionError);
       assert.throws(makeBlock(a.deepStrictEqual, true, {}), a.AssertionError);
-      assert.throws(makeBlock(assert.deepStrictEqual, Symbol(), {}),
-        a.AssertionError);
+      if (hasSymbols) {
+        assert.throws(makeBlock(assert.deepStrictEqual, Symbol(), {}),
+          a.AssertionError);
+      }
 
       // primitive wrappers and object
       assert.throws(makeBlock(a.deepStrictEqual, Object('a'), ['a']),
