@@ -22,7 +22,7 @@
  *
  * A Javascript assertion library. Works in ES3 environments if es5-shim is
  * loaded, which is recommended for all environments to fix native bugs.
- * @version 1.2.1
+ * @version 1.2.2
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -36,7 +36,7 @@
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
   es3:true, esnext:false, plusplus:true, maxparams:4, maxdepth:2,
-  maxstatements:24, maxcomplexity:11 */
+  maxstatements:19, maxcomplexity:11 */
 
 /*global require, module */
 
@@ -46,10 +46,26 @@
   var errorx = require('error-x'),
     AssertionError = errorx.AssertionError,
     pTest = RegExp.prototype.test,
+    pReduce = Array.prototype.reduce,
     noop = require('noop-x'),
     defProps = require('define-properties'),
     ES = require('es-abstract/es6'),
-    deepEql = require('deep-equal-x');
+    deepEql = require('deep-equal-x'),
+    truncOpts = ['length', 'omission', 'separator'],
+    assertIt;
+
+  /**
+   * Extends `arg` with the `truncate` options.
+   *
+   * @private
+   * @param {Object} arg The object to extend.
+   * @param {string} name The `truncate` option name.
+   * @return {Object} The `arg` object.
+   */
+  function extendOpts(arg, name) {
+    arg[name] = assertIt.truncate[name];
+    return arg;
+  }
 
   /**
    * Throws an exception that displays the values for actual and expected
@@ -63,12 +79,18 @@
    * @throws {Error} Throws an `AssertionError`.
    */
   function baseFail(actual, expected, message, operator) {
-    throw new AssertionError({
+    var arg = {
       actual: actual,
       expected: expected,
       message: message,
       operator: operator
-    });
+    };
+
+    if (typeof assertIt.truncate === 'object' && assertIt.truncate !== null) {
+      ES.Call(pReduce, truncOpts, [extendOpts, arg]);
+    }
+
+    throw new AssertionError(arg);
   }
 
   /**
@@ -157,7 +179,7 @@
    * @param {*} value The value to be tested.
    * @param {string} message Text description of test.
    */
-  module.exports = function assert(value, message) {
+  module.exports = assertIt = function assert(value, message) {
     baseAssert(value, message, 'ok');
   };
   defProps(module.exports, {
@@ -190,19 +212,6 @@
      */
     ok: function ok(value, message) {
       baseAssert(value, message, 'ok');
-    },
-    /**
-     * Specification extension.
-     * Tests if value is truthy, it is equivalent to
-     * `equal(!value, true, message)`.
-     *
-     * @param {*} value The value to be tested.
-     * @param {string} [message] Text description of test.
-     */
-    notOk: function notOk(value, message) {
-      if (value) {
-        baseFail(true, true, message, 'notOk');
-      }
     },
     /**
      * Tests shallow, coercive equality with the equal comparison
@@ -340,6 +349,23 @@
       if (err) {
         throw err;
       }
-    }
+    },
+    truncate: {}
+  });
+  /**
+   * Allows `truncate` options of AssertionError to be modified. The
+   * `truncate` used is the one from `lodash`.
+   *
+   * @name truncate
+   * @type {Object}
+   * @property {number} length=128 The maximum string length.
+   * @property {string} omission='' The string to indicate text is omitted.
+   * @property {RegExp|string} separator='' The pattern to truncate to.
+   * @see https://lodash.com/docs#trunc
+   */
+  defProps(assertIt.truncate, {
+    length: 128,
+    omission: '',
+    separator: ''
   });
 }());

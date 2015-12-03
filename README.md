@@ -24,18 +24,18 @@ A Javascript assertion library. Works in ES3 environments if es5-shim is
 loaded, which is recommended for all environments to fix native bugs.
 
 **See**: https://nodejs.org/api/assert.html  
-**Version**: 1.2.1  
+**Version**: 1.2.2  
 **Author:** Xotic750 <Xotic750@gmail.com>  
 **License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
 **Copyright**: Xotic750  
 
 * [assert-x](#module_assert-x)
-  * [`module.exports(value, message)`](#exp_module_assert-x--module.exports) ⏏
+  * [`module.exports`](#exp_module_assert-x--module.exports) ⏏
     * [~AssertionError](#module_assert-x--module.exports..AssertionError) ⇐ <code>Error</code>
       * [`new AssertionError([message])`](#new_module_assert-x--module.exports..AssertionError_new)
     * [`~fail`](#module_assert-x--module.exports..fail)
+    * [`~truncate`](#module_assert-x--module.exports..truncate) : <code>Object</code>
     * [`~ok(value, [message])`](#module_assert-x--module.exports..ok)
-    * [`~notOk(value, [message])`](#module_assert-x--module.exports..notOk)
     * [`~equal(actual, expected, [message])`](#module_assert-x--module.exports..equal)
     * [`~notEqual(actual, expected, [message])`](#module_assert-x--module.exports..notEqual)
     * [`~deepEqual(actual, expected, [message])`](#module_assert-x--module.exports..deepEqual)
@@ -49,11 +49,11 @@ loaded, which is recommended for all environments to fix native bugs.
     * [`~ifError(err)`](#module_assert-x--module.exports..ifError)
 
 <a name="exp_module_assert-x--module.exports"></a>
-### `module.exports(value, message)` ⏏
+### `module.exports` ⏏
 Tests if value is truthy, it is equivalent to
 `equal(!!value, true, message)`.
 
-**Kind**: Exported function  
+**Kind**: Exported member  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -92,23 +92,25 @@ separated by the provided operator.
 | [message] | <code>string</code> | Text description of test. |
 | operator | <code>string</code> | The compare operator. |
 
+<a name="module_assert-x--module.exports..truncate"></a>
+#### `module.exports~truncate` : <code>Object</code>
+Allows `truncate` options of AssertionError to be modified. The
+`truncate` used is the one from `lodash`.
+
+**Kind**: inner property of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
+**See**: https://lodash.com/docs#trunc  
+**Properties**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| length | <code>number</code> | <code>128</code> | The maximum string length. |
+| omission | <code>string</code> | <code>&quot;&#x27;&#x27;&quot;</code> | The string to indicate text is omitted. |
+| separator | <code>RegExp</code> &#124; <code>string</code> | <code>&#x27;&#x27;</code> | The pattern to truncate to. |
+
 <a name="module_assert-x--module.exports..ok"></a>
 #### `module.exports~ok(value, [message])`
 Tests if value is truthy, it is equivalent to
 `equal(!!value, true, message)`.
-
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| value | <code>\*</code> | The value to be tested. |
-| [message] | <code>string</code> | Text description of test. |
-
-<a name="module_assert-x--module.exports..notOk"></a>
-#### `module.exports~notOk(value, [message])`
-Specification extension.
-Tests if value is truthy, it is equivalent to
-`equal(!value, true, message)`.
 
 **Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
 
