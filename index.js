@@ -22,7 +22,7 @@
  *
  * A Javascript assertion library. Works in ES3 environments if es5-shim is
  * loaded, which is recommended for all environments to fix native bugs.
- * @version 1.1.4
+ * @version 1.2.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -36,7 +36,7 @@
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
   es3:true, esnext:false, plusplus:true, maxparams:4, maxdepth:2,
-  maxstatements:24, maxcomplexity:10 */
+  maxstatements:24, maxcomplexity:11 */
 
 /*global require, module */
 
@@ -46,54 +46,10 @@
   var errorx = require('error-x'),
     AssertionError = errorx.AssertionError,
     pTest = RegExp.prototype.test,
+    noop = require('noop-x'),
     defProps = require('define-properties'),
     ES = require('es-abstract/es6'),
-    deepEql = require('deep-equal-x'),
-    CircularJSON = require('circular-json'),
-    isPrimitive = require('is-primitive');
-
-  /**
-   * Custom replacer for JSON~stringify.
-   *
-   * @private
-   * @param {*} ignore Unused argument `key`.
-   * @param {*} value The value beging stringified.
-   * @return {*} The value to be processed by JSON~stringify.
-   */
-  function replacer(ignore, value) {
-    if (typeof value === 'undefined') {
-      return ES.ToString(value);
-    }
-    if (typeof value === 'number' && !isFinite(value)) {
-      return ES.ToString(value);
-    }
-    if (isPrimitive(value)) {
-      return value;
-    }
-    if (ES.IsRegExp(value) || ES.IsCallable(value)) {
-      return ES.ToString(value);
-    }
-    return value;
-  }
-
-  /**
-   * Get the message to be passed to AssertionError.
-   *
-   * @private
-   * @param {*} actual The actual value to be tested.
-   * @param {*} expected The expected value to compare against actual.
-   * @param {string} message Text description of test.
-   * @param {string} operator The compare operator.
-   * @return {string} The text message.
-   */
-  function getMessage(actual, expected, message, operator) {
-    if (typeof message === 'undefined') {
-      return CircularJSON.stringify(actual, replacer) +
-        ' ' + operator + ' ' +
-        CircularJSON.stringify(expected, replacer);
-    }
-    return ES.ToString(message);
-  }
+    deepEql = require('deep-equal-x');
 
   /**
    * Throws an exception that displays the values for actual and expected
@@ -110,7 +66,7 @@
     throw new AssertionError({
       actual: actual,
       expected: expected,
-      message: getMessage(actual, expected, message, operator),
+      message: message,
       operator: operator
     });
   }
@@ -152,9 +108,12 @@
   function baseThrows(shouldThrow, block, expected, message) {
     var wasExceptionExpected, actual,
       clause1 = !message || typeof message !== 'string';
+    if (!ES.IsCallable(block)) {
+      throw new TypeError('block must be a function');
+    }
     if (clause1 && typeof expected === 'string') {
       message = expected;
-      expected = null;
+      expected = noop();
     }
     try {
       block();
@@ -162,7 +121,7 @@
       actual = e;
     }
     wasExceptionExpected = expectedException(actual, expected);
-    clause1 = expected && typeof expected.name === 'string' && !expected.name;
+    clause1 = expected && typeof expected.name === 'string' && expected.name;
     message = message ? ' ' + message : '.';
     message = (clause1 ? ' (' + expected.name + ').' : '.') + message;
     if (shouldThrow && !actual) {
@@ -217,7 +176,7 @@
      *
      * @param {*} actual The actual value to be tested.
      * @param {*} expected The expected value to compare against actual.
-     * @param {string} message Text description of test.
+     * @param {string} [message] Text description of test.
      * @param {string} operator The compare operator.
      * @throws {Error} Throws an `AssertionError`.
      */
@@ -227,7 +186,7 @@
      * `equal(!!value, true, message)`.
      *
      * @param {*} value The value to be tested.
-     * @param {string} message Text description of test.
+     * @param {string} [message] Text description of test.
      */
     ok: function ok(value, message) {
       baseAssert(value, message, 'ok');
@@ -238,7 +197,7 @@
      * `equal(!value, true, message)`.
      *
      * @param {*} value The value to be tested.
-     * @param {string} message Text description of test.
+     * @param {string} [message] Text description of test.
      */
     notOk: function notOk(value, message) {
       if (value) {
@@ -251,7 +210,7 @@
      *
      * @param {*} actual The actual value to be tested.
      * @param {*} expected The expected value to compare against actual.
-     * @param {string} message Text description of test.
+     * @param {string} [message] Text description of test.
      */
     equal: function equal(actual, expected, message) {
       /*jshint eqeqeq:false */
@@ -265,7 +224,7 @@
      *
      * @param {*} actual The actual value to be tested.
      * @param {*} expected The expected value to compare against actual.
-     * @param {string} message Text description of test.
+     * @param {string} [message] Text description of test.
      */
     notEqual: function notEqual(actual, expected, message) {
       /*jshint eqeqeq:false */
@@ -279,7 +238,7 @@
      *
      * @param {*} actual The actual value to be tested.
      * @param {*} expected The expected value to compare against actual.
-     * @param {string} message Text description of test.
+     * @param {string} [message] Text description of test.
      */
     deepEqual: function deepEqual(actual, expected, message) {
       if (!deepEql(actual, expected)) {
@@ -291,7 +250,7 @@
      *
      * @param {*} actual The actual value to be tested.
      * @param {*} expected The expected value to compare against actual.
-     * @param {string} message Text description of test.
+     * @param {string} [message] Text description of test.
      */
     notDeepEqual: function notDeepEqual(actual, expected, message) {
       if (deepEql(actual, expected)) {
@@ -304,7 +263,7 @@
      *
      * @param {*} actual The actual value to be tested.
      * @param {*} expected The expected value to compare against actual.
-     * @param {string} message Text description of test.
+     * @param {string} [message] Text description of test.
      */
     deepStrictEqual: function deepStrictEqual(actual, expected, message) {
       if (!deepEql(actual, expected, true)) {
@@ -316,7 +275,7 @@
      *
      * @param {*} actual The actual value to be tested.
      * @param {*} expected The expected value to compare against actual.
-     * @param {string} message Text description of test.
+     * @param {string} [message] Text description of test.
      */
     notDeepStrictEqual: function notDeepStrictEqual(actual, expected, message) {
       if (deepEql(actual, expected, true)) {
@@ -329,7 +288,7 @@
      *
      * @param {*} actual The actual value to be tested.
      * @param {*} expected The expected value to compare against actual.
-     * @param {string} message Text description of test.
+     * @param {string} [message] Text description of test.
      */
     strictEqual: function strictEqual(actual, expected, message) {
       if (actual !== expected) {
@@ -342,7 +301,7 @@
      *
      * @param {*} actual The actual value to be tested.
      * @param {*} expected The expected value to compare against actual.
-     * @param {string} message Text description of test.
+     * @param {string} [message] Text description of test.
      */
     notStrictEqual: function notStrictEqual(actual, expected, message) {
       if (actual === expected) {
@@ -354,8 +313,8 @@
      * validation function.
      *
      * @param {Function} block The function block to be executed in testing.
-     * @param {constructor|RegExp|Function} error The comparator.
-     * @param {string} message Text description of test.
+     * @param {constructor|RegExp|Function} [error] The comparator.
+     * @param {string} [message] Text description of test.
      */
     throws: function throws(block, error, message) {
       baseThrows(true, block, error, message);
@@ -364,10 +323,11 @@
      * Expects block not to throw an error, see assert~throws for details.
      *
      * @param {Function} block The function block to be executed in testing.
-     * @param {string} message Text description of test.
+     * @param {constructor} [error] The comparator.
+     * @param {string} [message] Text description of test.
      */
-    doesNotThrow: function doesNotThrow(block, message) {
-      baseThrows(false, block, message);
+    doesNotThrow: function doesNotThrow(block, error, message) {
+      baseThrows(false, block, error, message);
     },
     /**
      * Tests if value is not a falsy value, throws if it is a truthy value.
