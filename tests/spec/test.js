@@ -1,9 +1,9 @@
-/*jslint maxlen:80, es6:false, this:true, white:true */
+/*jslint maxlen:80, es6:true, this:true, white:true */
 
 /*jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
-  es3:true, esnext:false, plusplus:true, maxparams:2, maxdepth:2,
+  es3:true, esnext:true, plusplus:true, maxparams:2, maxdepth:2,
   maxstatements:50, maxcomplexity:5 */
 
 /*global JSON:true, module, require, describe, it, returnExports */
@@ -11,7 +11,8 @@
 (function () {
   'use strict';
 
-  var assert, a;
+  var hasSymbols = typeof Symbol === 'function' && typeof Symbol() === 'symbol',
+    assert, a;
   if (typeof module === 'object' && module.exports) {
     require('es5-shim');
     if (typeof JSON === 'undefined') {
@@ -234,7 +235,9 @@
       }), a.AssertionError);
       assert.throws(makeBlock(a.deepEqual, 1, {}), a.AssertionError);
       assert.throws(makeBlock(a.deepEqual, true, {}), a.AssertionError);
-      assert.throws(makeBlock(a.deepEqual, Symbol(), {}), a.AssertionError);
+      if (hasSymbols) {
+        assert.throws(makeBlock(a.deepEqual, Symbol(), {}), a.AssertionError);
+      }
 
       // primitive wrappers and object
       assert.doesNotThrow(makeBlock(a.deepEqual, Object('a'), ['a']),
@@ -356,11 +359,13 @@
         a.AssertionError);
       assert.throws(makeBlock(assert.deepStrictEqual, true, 1),
         a.AssertionError);
-      assert.throws(makeBlock(assert.deepStrictEqual, Symbol(), Symbol()),
-        a.AssertionError);
+      if (hasSymbols) {
+        assert.throws(makeBlock(assert.deepStrictEqual, Symbol(), Symbol()),
+          a.AssertionError);
 
-      var s = Symbol();
-      assert.doesNotThrow(makeBlock(assert.deepStrictEqual, s, s));
+        var s = Symbol();
+        assert.doesNotThrow(makeBlock(assert.deepStrictEqual, s, s));
+      }
 
       // primitives and object
       assert.throws(makeBlock(a.deepStrictEqual, null, {}), a.AssertionError);
