@@ -20,12 +20,7 @@
       JSON = {};
     }
     require('json3').runInContext(null, JSON);
-    assert = require('../../index.js');
-    a = require('../../index.js');
-    //assert = require('assert');
-    //a = require('assert');
-    //assert = require('../../node_modules/assert/assert.js');
-    //a = require('../../node_modules/assert/assert.js');
+    assert = a = require('../../index.js');
   } else {
     assert = returnExports;
   }
