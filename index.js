@@ -22,7 +22,7 @@
  *
  * A Javascript assertion library. Works in ES3 environments if es5-shim is
  * loaded, which is recommended for all environments to fix native bugs.
- * @version 1.2.2
+ * @version 1.2.3
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}

@@ -24,7 +24,7 @@ A Javascript assertion library. Works in ES3 environments if es5-shim is
 loaded, which is recommended for all environments to fix native bugs.
 
 **See**: https://nodejs.org/api/assert.html  
-**Version**: 1.2.2  
+**Version**: 1.2.3  
 **Author:** Xotic750 <Xotic750@gmail.com>  
 **License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
 **Copyright**: Xotic750  
