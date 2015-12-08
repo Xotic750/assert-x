@@ -22,7 +22,7 @@
     require('json3').runInContext(null, JSON);
     assert = a = require('../../index.js');
   } else {
-    assert = returnExports;
+    assert = a = returnExports;
   }
 
   describe('Node\'s test-assert', function () {

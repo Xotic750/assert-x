@@ -183,7 +183,7 @@
   module.exports = assertIt = function assert(value, message) {
     baseAssert(value, message, 'ok');
   };
-  defProps(module.exports, {
+  defProps(assertIt, {
     /**
      * Error constructor for test and validation frameworks that implement the
      * standardized AssertionError specification.
