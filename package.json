@@ -37,7 +37,7 @@
     "error-x": "1.2.4",
     "es-abstract": "^1.4.3",
     "deep-equal-x": "^1.2.0",
-    "noop-x": "^1.0.5"
+    "noop-x": "^1.0.6"
   },
   "devDependencies": {
     "es5-shim": "^4.3.1",
