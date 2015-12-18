@@ -36,7 +36,7 @@
     "define-properties": "^1.1.2",
     "error-x": "1.2.4",
     "es-abstract": "^1.4.3",
-    "deep-equal-x": "^1.2.0",
+    "deep-equal-x": "^1.2.2",
     "noop-x": "^1.0.5"
   },
   "devDependencies": {
