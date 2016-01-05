@@ -1,6 +1,6 @@
 {
   "name": "assert-x",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "A Javascript assertion library.",
   "homepage": "http://xotic750.github.io/assert-x/",
   "author": {
@@ -34,16 +34,16 @@
   },
   "dependencies": {
     "define-properties": "^1.1.2",
-    "error-x": "^1.3.1",
+    "error-x": "^1.3.2",
     "es-abstract": "^1.5.0",
-    "deep-equal-x": "^1.2.3",
-    "noop-x": "^1.0.7"
+    "deep-equal-x": "^1.2.4",
+    "noop-x": "^1.0.8"
   },
   "devDependencies": {
     "es5-shim": "^4.4.1",
-    "es6-shim": "^0.34.0",
+    "es6-shim": "^0.34.1",
     "json3": "^3.3.2",
-    "jscs": "^2.7.0",
+    "jscs": "^2.8.0",
     "uglify-js": "^2.6.1",
     "browserify": "^12.0.1",
     "jasmine-node": "^1.14.5",
@@ -54,6 +54,6 @@
     "style": "jscs index.js",
     "docs": "jsdoc2md --name-format --example-lang js index.js > README.md",
     "build": "browserify -e index.js -o lib/assert-x.js -u 'crypto' -s returnExports",
-    "build-uglify": "uglifyjs lib/assert-x.js -o lib/assert-x.min.js --compress unused=false,dead_code=false --keep-fnames --mangle --beautify ascii_only=true,beautify=false --source-map lib/assert-x.map"
+    "build-uglify": "uglifyjs lib/assert-x.js -o lib/assert-x.min.js --compress --keep-fnames --mangle --beautify ascii_only=true,beautify=false --source-map lib/assert-x.map"
   }
 }
