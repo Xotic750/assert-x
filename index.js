@@ -39,7 +39,7 @@
  * `es6.shim.js` provides compatibility shims so that legacy JavaScript engines
  * behave as closely as possible to ECMAScript 6 (Harmony).
  *
- * @version 1.2.9
+ * @version 1.2.10
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -64,7 +64,6 @@
     AssertionError = errorx.AssertionError,
     pTest = RegExp.prototype.test,
     pReduce = Array.prototype.reduce,
-    noop = require('noop-x'),
     defProps = require('define-properties'),
     ES = require('es-abstract/es6'),
     deepEql = require('deep-equal-x'),
@@ -152,7 +151,7 @@
     }
     if (clause1 && typeof expected === 'string') {
       message = expected;
-      expected = noop();
+      expected = void 0;
     }
     try {
       block();
