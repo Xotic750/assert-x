@@ -39,7 +39,7 @@
  * `es6.shim.js` provides compatibility shims so that legacy JavaScript engines
  * behave as closely as possible to ECMAScript 6 (Harmony).
  *
- * @version 1.2.12
+ * @version 1.2.13
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -67,7 +67,7 @@
   var AssertionError = errorx.AssertionError;
   var pTest = RegExp.prototype.test;
   var pReduce = Array.prototype.reduce;
-  var defProps = require('define-properties-x').defineProperties;
+  var define = require('define-properties-x');
   var deepEql = require('deep-equal-x');
   var truncOpts = ['length', 'omission', 'separator'];
   var assertIt;
@@ -198,7 +198,7 @@
   module.exports = assertIt = function assert(value, message) {
     baseAssert(value, message, 'ok');
   };
-  defProps(assertIt, {
+  define.properties(assertIt, {
     /**
      * Error constructor for test and validation frameworks that implement the
      * standardized AssertionError specification.
@@ -379,7 +379,7 @@
    * @property {RegExp|string} separator='' The pattern to truncate to.
    * @see https://lodash.com/docs#trunc
    */
-  defProps(assertIt.truncate, {
+  define.properties(assertIt.truncate, {
     length: 128,
     omission: '',
     separator: ''
