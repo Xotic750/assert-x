@@ -39,7 +39,7 @@
  * `es6.shim.js` provides compatibility shims so that legacy JavaScript engines
  * behave as closely as possible to ECMAScript 6 (Harmony).
  *
- * @version 1.2.10
+ * @version 1.2.11
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -53,22 +53,24 @@
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
   es3:true, esnext:false, plusplus:true, maxparams:4, maxdepth:2,
-  maxstatements:19, maxcomplexity:11 */
+  maxstatements:20, maxcomplexity:11 */
 
 /*global require, module */
 
 (function () {
   'use strict';
 
-  var errorx = require('error-x'),
-    AssertionError = errorx.AssertionError,
-    pTest = RegExp.prototype.test,
-    pReduce = Array.prototype.reduce,
-    defProps = require('define-properties'),
-    ES = require('es-abstract/es6'),
-    deepEql = require('deep-equal-x'),
-    truncOpts = ['length', 'omission', 'separator'],
-    assertIt;
+  var errorx = require('error-x');
+  var isRegExp = require('is-regex');
+  var safeToString = require('safe-to-string-x');
+  var isCallable = require('is-callable');
+  var AssertionError = errorx.AssertionError;
+  var pTest = RegExp.prototype.test;
+  var pReduce = Array.prototype.reduce;
+  var defProps = require('define-properties-x').defineProperties;
+  var deepEql = require('deep-equal-x');
+  var truncOpts = ['length', 'omission', 'separator'];
+  var assertIt;
 
   /**
    * Extends `arg` with the `truncate` options.
@@ -101,11 +103,9 @@
       message: message,
       operator: operator
     };
-
     if (typeof assertIt.truncate === 'object' && assertIt.truncate !== null) {
-      ES.Call(pReduce, truncOpts, [extendOpts, arg]);
+      pReduce.call(truncOpts, extendOpts, arg);
     }
-
     throw new AssertionError(arg);
   }
 
@@ -121,14 +121,14 @@
     if (!actual || !expected) {
       return false;
     }
-    if (ES.IsRegExp(expected)) {
-      return ES.Call(pTest, expected, [ES.ToString(actual)]);
+    if (isRegExp(expected)) {
+      return pTest.call(expected, safeToString(actual));
     }
     if (actual instanceof expected) {
       return true;
     }
-    if (ES.IsCallable(expected)) {
-      return ES.Call(expected, {}, [actual]) === true;
+    if (isCallable(expected)) {
+      return expected.call({}, actual) === true;
     }
     return false;
   }
@@ -144,21 +144,21 @@
    * @param {string} [message] Text description of test.
    */
   function baseThrows(shouldThrow, block, expected, message) {
-    var wasExceptionExpected, actual,
-      clause1 = !message || typeof message !== 'string';
-    if (!ES.IsCallable(block)) {
+    var clause1 = !message || typeof message !== 'string';
+    if (!isCallable(block)) {
       throw new TypeError('block must be a function');
     }
     if (clause1 && typeof expected === 'string') {
       message = expected;
       expected = void 0;
     }
+    var actual;
     try {
       block();
     } catch (e) {
       actual = e;
     }
-    wasExceptionExpected = expectedException(actual, expected);
+    var wasExceptionExpected = expectedException(actual, expected);
     clause1 = expected && typeof expected.name === 'string' && expected.name;
     message = message ? ' ' + message : '.';
     message = (clause1 ? ' (' + expected.name + ').' : '.') + message;
