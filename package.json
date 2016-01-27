@@ -1,6 +1,6 @@
 {
   "name": "assert-x",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "description": "A Javascript assertion library.",
   "homepage": "http://xotic750.github.io/assert-x/",
   "author": {
@@ -41,7 +41,7 @@
     "is-regex": "^1.0.3"
   },
   "devDependencies": {
-    "es5-shim": "^4.5.0",
+    "es5-shim": "^4.5.2",
     "es6-shim": "^0.34.2",
     "json3": "^3.3.2",
     "jscs": "^2.9.0",
