@@ -23,26 +23,9 @@ alt="npm version" height="18">
 
 A Javascript assertion library.
 
-<h2>ECMAScript compatibility shims for legacy JavaScript engines</h2>
-`es5-shim.js` monkey-patches a JavaScript context to contain all EcmaScript 5
-methods that can be faithfully emulated with a legacy JavaScript engine.
-
-`es5-sham.js` monkey-patches other ES5 methods as closely as possible.
-For these methods, as closely as possible to ES5 is not very close.
-Many of these shams are intended only to allow code to be written to ES5
-without causing run-time errors in older engines. In many cases,
-this means that these shams cause many ES5 methods to silently fail.
-Decide carefully whether this is what you want. Note: es5-sham.js requires
-es5-shim.js to be able to work properly.
-
-`json3.js` monkey-patches the EcmaScript 5 JSON implimentation faithfully.
-
-`es6.shim.js` provides compatibility shims so that legacy JavaScript engines
-behave as closely as possible to ECMAScript 6 (Harmony).
-
 **See**: https://nodejs.org/api/assert.html  
-**Version**: 1.2.18  
-**Author:** Xotic750 <Xotic750@gmail.com>  
+**Version**: 1.3.0  
+**Author**: Xotic750 <Xotic750@gmail.com>  
 **License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
 **Copyright**: Xotic750  
 
@@ -82,7 +65,7 @@ Tests if value is truthy, it is equivalent to
 
 #### module.exports~AssertionError ⇐ <code>Error</code>
 **Kind**: inner class of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
-**Extends:** <code>Error</code>  
+**Extends**: <code>Error</code>  
 <a name="new_module_assert-x--module.exports..AssertionError_new"></a>
 
 ##### `new AssertionError([message])`
@@ -127,7 +110,7 @@ Allows `truncate` options of AssertionError to be modified. The
 | --- | --- | --- | --- |
 | length | <code>number</code> | <code>128</code> | The maximum string length. |
 | omission | <code>string</code> | <code>&quot;&#x27;&#x27;&quot;</code> | The string to indicate text is omitted. |
-| separator | <code>RegExp</code> &#124; <code>string</code> | <code>&#x27;&#x27;</code> | The pattern to truncate to. |
+| separator | <code>RegExp</code> \| <code>string</code> | <code>&#x27;&#x27;</code> | The pattern to truncate to. |
 
 <a name="module_assert-x--module.exports..ok"></a>
 
@@ -263,7 +246,7 @@ validation function.
 | Param | Type | Description |
 | --- | --- | --- |
 | block | <code>function</code> | The function block to be executed in testing. |
-| [error] | <code>constructor</code> &#124; <code>RegExp</code> &#124; <code>function</code> | The comparator. |
+| [error] | <code>constructor</code> \| <code>RegExp</code> \| <code>function</code> | The comparator. |
 | [message] | <code>string</code> | Text description of test. |
 
 <a name="module_assert-x--module.exports..doesNotThrow"></a>

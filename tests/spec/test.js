@@ -1,18 +1,13 @@
-/*jslint maxlen:80, esversion:6, this:true, white:true */
+/* eslint strict: 1, max-statements: 1, max-lines: 1, symbol-description: 1,
+   no-proto: 1, no-invalid-this: 1, sort-keys: 1, no-throw-literal: 1 */
 
-/*jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
-  freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
-  nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
-  es3:false, esnext:true, plusplus:true, maxparams:2, maxdepth:2,
-  maxstatements:52, maxcomplexity:5 */
+/* global JSON:true, module, require, describe, it, returnExports */
 
-/*global JSON:true, module, require, describe, it, returnExports */
+;(function () { // eslint-disable-line no-extra-semi
 
-(function () {
   'use strict';
 
-  var hasSymbols = typeof Symbol === 'function' && typeof Symbol() === 'symbol',
-    assert, a;
+  var assert;
   if (typeof module === 'object' && module.exports) {
     require('es5-shim');
     require('es5-shim/es5-sham');
@@ -22,16 +17,18 @@
     require('json3').runInContext(null, JSON);
     require('es6-shim');
     var es7 = require('es7-shim');
-    Object.keys(es7).forEach(function(key) {
+    Object.keys(es7).forEach(function (key) {
       var obj = es7[key];
-      if (typeof obj.shim === 'function'){
+      if (typeof obj.shim === 'function') {
         obj.shim();
       }
     });
-    assert = a = require('../../index.js');
+    assert = require('../../index.js');
   } else {
-    assert = a = returnExports;
+    assert = returnExports;
   }
+  var a = assert;
+  var hasSymbols = typeof Symbol === 'function' && typeof Symbol() === 'symbol';
 
   describe('Node\'s test-assert', function () {
     var a1 = [1, 2, 3];
@@ -42,31 +39,29 @@
     a2.b = true;
     a2.a = 'test';
 
-    function makeBlock(f) {
+    var makeBlock = function (f) {
       var args = Array.prototype.slice.call(arguments, 1);
       return function () {
         return f.apply(this, args);
       };
-    }
+    };
 
-    function protoCtrChain(o) {
+    var protoCtrChain = function (o) {
       var result = [];
-      /*jshint proto:true */
-      for (; o; o = o.__proto__) {
-        result.push(o.constructor);
+      for (var x = o; x; x = x.__proto__) {
+        result.push(x.constructor);
       }
-      /*jshint proto:false */
       return result.join();
-    }
+    };
 
-    function indirectInstanceOf(obj, cls) {
+    var indirectInstanceOf = function (obj, cls) {
       if (obj instanceof cls) {
         return true;
       }
       var clsChain = protoCtrChain(cls.prototype);
       var objChain = protoCtrChain(obj);
       return objChain.slice(-clsChain.length) === clsChain;
-    }
+    };
 
     it('AssertionError', function () {
       assert.ok(
@@ -165,11 +160,7 @@
 
       // 7.5
       // having the same number of owned properties && the same set of keys
-      assert.doesNotThrow(makeBlock(a.deepEqual, {
-        a: 4
-      }, {
-        a: 4
-      }));
+      assert.doesNotThrow(makeBlock(a.deepEqual, { a: 4 }, { a: 4 }));
       assert.doesNotThrow(makeBlock(a.deepEqual, {
         a: 4,
         b: '2'
@@ -178,17 +169,13 @@
         b: '2'
       }));
       assert.doesNotThrow(makeBlock(a.deepEqual, [4], ['4']));
-      assert.throws(makeBlock(a.deepEqual, {
-          a: 4
-        }, {
-          a: 4,
-          b: true
-        }),
+      assert.throws(makeBlock(a.deepEqual, { a: 4 }, {
+        a: 4,
+        b: true
+      }),
         a.AssertionError);
-      assert.doesNotThrow(makeBlock(a.deepEqual, ['a'], {
-        0: 'a'
-      }));
-      //(although not necessarily the same order),
+      assert.doesNotThrow(makeBlock(a.deepEqual, ['a'], { 0: 'a' }));
+      // (although not necessarily the same order),
       assert.doesNotThrow(makeBlock(a.deepEqual, {
         a: 4,
         b: '1'
@@ -207,18 +194,18 @@
         }
       };
 
-      function NameBuilder(first, last) {
+      var NameBuilder = function (first, last) {
         this.first = first;
         this.last = last;
         return this;
-      }
+      };
       NameBuilder.prototype = nbRoot;
 
-      function NameBuilder2(first, last) {
+      var NameBuilder2 = function (first, last) {
         this.first = first;
         this.last = last;
         return this;
-      }
+      };
       NameBuilder2.prototype = nbRoot;
 
       var nb1 = new NameBuilder('Ryan', 'Dahl');
@@ -234,9 +221,7 @@
       assert.throws(makeBlock(a.deepEqual, null, {}), a.AssertionError);
       assert.throws(makeBlock(a.deepEqual, undefined, {}), a.AssertionError);
       assert.throws(makeBlock(a.deepEqual, 'a', ['a']), a.AssertionError);
-      assert.throws(makeBlock(a.deepEqual, 'a', {
-        0: 'a'
-      }), a.AssertionError);
+      assert.throws(makeBlock(a.deepEqual, 'a', { 0: 'a' }), a.AssertionError);
       assert.throws(makeBlock(a.deepEqual, 1, {}), a.AssertionError);
       assert.throws(makeBlock(a.deepEqual, true, {}), a.AssertionError);
       if (hasSymbols) {
@@ -246,9 +231,7 @@
       // primitive wrappers and object
       assert.doesNotThrow(makeBlock(a.deepEqual, Object('a'), ['a']),
         a.AssertionError);
-      assert.doesNotThrow(makeBlock(a.deepEqual, Object('a'), {
-          0: 'a'
-        }),
+      assert.doesNotThrow(makeBlock(a.deepEqual, Object('a'), { 0: 'a' }),
         a.AssertionError);
       assert.doesNotThrow(makeBlock(a.deepEqual, Object(1), {}),
         a.AssertionError);
@@ -257,7 +240,7 @@
     });
 
     it('deepStrictEqual', function () {
-      //deepStrictEqual
+      // deepStrictEqual
       assert.doesNotThrow(makeBlock(a.deepStrictEqual, new Date(2000, 3, 14),
         new Date(2000, 3, 14)), 'deepStrictEqual date');
 
@@ -298,11 +281,7 @@
 
       // 7.5 - strict
       // having the same number of owned properties && the same set of keys
-      assert.doesNotThrow(makeBlock(a.deepStrictEqual, {
-        a: 4
-      }, {
-        a: 4
-      }));
+      assert.doesNotThrow(makeBlock(a.deepStrictEqual, { a: 4 }, { a: 4 }));
       assert.doesNotThrow(makeBlock(a.deepStrictEqual, {
         a: 4,
         b: '2'
@@ -311,17 +290,13 @@
         b: '2'
       }));
       assert.throws(makeBlock(a.deepStrictEqual, [4], ['4']));
-      assert.throws(makeBlock(a.deepStrictEqual, {
-          a: 4
-        }, {
-          a: 4,
-          b: true
-        }),
+      assert.throws(makeBlock(a.deepStrictEqual, { a: 4 }, {
+        a: 4,
+        b: true
+      }),
         a.AssertionError);
-      assert.throws(makeBlock(a.deepStrictEqual, ['a'], {
-        0: 'a'
-      }));
-      //(although not necessarily the same order),
+      assert.throws(makeBlock(a.deepStrictEqual, ['a'], { 0: 'a' }));
+      // (although not necessarily the same order),
       assert.doesNotThrow(makeBlock(a.deepStrictEqual, {
         a: 4,
         b: '1'
@@ -338,15 +313,15 @@
       assert.doesNotThrow(makeBlock(a.deepStrictEqual, a1, a2));
 
       // Prototype check
-      function Constructor1(first, last) {
+      var Constructor1 = function (first, last) {
         this.first = first;
         this.last = last;
-      }
+      };
 
-      function Constructor2(first, last) {
+      var Constructor2 = function (first, last) {
         this.first = first;
         this.last = last;
-      }
+      };
 
       var obj1 = new Constructor1('Ryan', 'Dahl');
       var obj2 = new Constructor2('Ryan', 'Dahl');
@@ -378,9 +353,7 @@
         a.AssertionError
       );
       assert.throws(makeBlock(a.deepStrictEqual, 'a', ['a']), a.AssertionError);
-      assert.throws(makeBlock(a.deepStrictEqual, 'a', {
-        0: 'a'
-      }), a.AssertionError);
+      assert.throws(makeBlock(a.deepStrictEqual, 'a', { 0: 'a' }), a.AssertionError);
       assert.throws(makeBlock(a.deepStrictEqual, 1, {}), a.AssertionError);
       assert.throws(makeBlock(a.deepStrictEqual, true, {}), a.AssertionError);
       if (hasSymbols) {
@@ -391,9 +364,7 @@
       // primitive wrappers and object
       assert.throws(makeBlock(a.deepStrictEqual, Object('a'), ['a']),
         a.AssertionError);
-      assert.throws(makeBlock(a.deepStrictEqual, Object('a'), {
-          0: 'a'
-        }),
+      assert.throws(makeBlock(a.deepStrictEqual, Object('a'), { 0: 'a' }),
         a.AssertionError);
       assert.throws(makeBlock(a.deepStrictEqual, Object(1), {}),
         a.AssertionError);
@@ -403,11 +374,9 @@
 
     it('throwing', function () {
       // Testing the throwing
-      function thrower(ErrorConstructor) {
+      var thrower = function (ErrorConstructor) {
         throw new ErrorConstructor('test');
-      }
-      var aethrow = makeBlock(thrower, a.AssertionError);
-      aethrow = makeBlock(thrower, a.AssertionError);
+      };
 
       // the basic calls work
       assert.throws(makeBlock(thrower, a.AssertionError),
@@ -478,9 +447,10 @@
 
       // use a fn to validate error object
       a.throws(makeBlock(thrower, TypeError), function (err) {
-        if (err instanceof TypeError && /test/.test(err)) {
+        if (err instanceof TypeError && (/test/).test(err)) {
           return true;
         }
+        return false;
       });
     });
 
@@ -506,16 +476,14 @@
       // GH-7178. Ensure reflexivity of deepEqual with `arguments` objects.
       var args = (function () {
         return arguments;
-      })();
+      }());
       a.throws(makeBlock(a.deepEqual, [], args));
       a.throws(makeBlock(a.deepEqual, args, []));
 
-      var circular = {
-        y: 1
-      };
+      var circular = { y: 1 };
       circular.x = circular;
 
-      function testAssertionMessage(actual, expected) {
+      var testAssertionMessage = function (actual, expected) {
         try {
           assert.equal(actual, '');
         } catch (e) {
@@ -525,7 +493,7 @@
           );
           assert.ok(e.generatedMessage, 'Message not marked as generated');
         }
-      }
+      };
 
       testAssertionMessage(undefined, 'undefined');
       testAssertionMessage(null, 'null');
@@ -551,10 +519,10 @@
         b: null
       }, '{ a: undefined, b: null }');
       testAssertionMessage({
-          a: NaN,
-          b: Infinity,
-          c: -Infinity
-        },
+        a: NaN,
+        b: Infinity,
+        c: -Infinity
+      },
         '{ a: NaN, b: Infinity, c: -Infinity }');
     });
 
@@ -592,7 +560,7 @@
 
     it('non-function block', function () {
       // Verify that throws() and doesNotThrow() throw on non-function block
-      function testBlockTypeError(method, block) {
+      var testBlockTypeError = function (method, block) {
         var threw = true;
 
         try {
@@ -603,7 +571,7 @@
         }
 
         assert.ok(threw);
-      }
+      };
 
       testBlockTypeError(assert.throws, 'string');
       testBlockTypeError(assert.doesNotThrow, 'string');
