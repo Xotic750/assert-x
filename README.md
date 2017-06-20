@@ -24,51 +24,38 @@ alt="npm version" height="18">
 A Javascript assertion library.
 
 **See**: https://nodejs.org/api/assert.html  
-**Version**: 1.3.0  
+**Version**: 1.4.0  
 **Author**: Xotic750 <Xotic750@gmail.com>  
 **License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
 **Copyright**: Xotic750  
 
 * [assert-x](#module_assert-x)
-    * [`module.exports`](#exp_module_assert-x--module.exports) ⏏
-        * [~AssertionError](#module_assert-x--module.exports..AssertionError) ⇐ <code>Error</code>
-            * [`new AssertionError([message])`](#new_module_assert-x--module.exports..AssertionError_new)
-        * [`~fail`](#module_assert-x--module.exports..fail)
-        * [`~truncate`](#module_assert-x--module.exports..truncate) : <code>Object</code>
-        * [`~ok(value, [message])`](#module_assert-x--module.exports..ok)
-        * [`~equal(actual, expected, [message])`](#module_assert-x--module.exports..equal)
-        * [`~notEqual(actual, expected, [message])`](#module_assert-x--module.exports..notEqual)
-        * [`~deepEqual(actual, expected, [message])`](#module_assert-x--module.exports..deepEqual)
-        * [`~notDeepEqual(actual, expected, [message])`](#module_assert-x--module.exports..notDeepEqual)
-        * [`~deepStrictEqual(actual, expected, [message])`](#module_assert-x--module.exports..deepStrictEqual)
-        * [`~notDeepStrictEqual(actual, expected, [message])`](#module_assert-x--module.exports..notDeepStrictEqual)
-        * [`~strictEqual(actual, expected, [message])`](#module_assert-x--module.exports..strictEqual)
-        * [`~notStrictEqual(actual, expected, [message])`](#module_assert-x--module.exports..notStrictEqual)
-        * [`~throws(block, [error], [message])`](#module_assert-x--module.exports..throws)
-        * [`~doesNotThrow(block, [error], [message])`](#module_assert-x--module.exports..doesNotThrow)
-        * [`~ifError(err)`](#module_assert-x--module.exports..ifError)
+    * [~AssertionError](#module_assert-x..AssertionError) ⇐ <code>Error</code>
+        * [`new AssertionError([message])`](#new_module_assert-x..AssertionError_new)
+    * [`~fail`](#module_assert-x..fail)
+    * [`~truncate`](#module_assert-x..truncate) : <code>Object</code>
+    * [`~assertIt(value, message)`](#module_assert-x..assertIt)
+    * [`~deepEqual(actual, expected, [message])`](#module_assert-x..deepEqual)
+    * [`~deepStrictEqual(actual, expected, [message])`](#module_assert-x..deepStrictEqual)
+    * [`~doesNotThrow(block, [error], [message])`](#module_assert-x..doesNotThrow)
+    * [`~equal(actual, expected, [message])`](#module_assert-x..equal)
+    * [`~ifError(err)`](#module_assert-x..ifError)
+    * [`~notDeepEqual(actual, expected, [message])`](#module_assert-x..notDeepEqual)
+    * [`~notDeepStrictEqual(actual, expected, [message])`](#module_assert-x..notDeepStrictEqual)
+    * [`~notEqual(actual, expected, [message])`](#module_assert-x..notEqual)
+    * [`~notStrictEqual(actual, expected, [message])`](#module_assert-x..notStrictEqual)
+    * [`~ok(value, [message])`](#module_assert-x..ok)
+    * [`~strictEqual(actual, expected, [message])`](#module_assert-x..strictEqual)
+    * [`~throws(block, [error], [message])`](#module_assert-x..throws)
 
-<a name="exp_module_assert-x--module.exports"></a>
+<a name="module_assert-x..AssertionError"></a>
 
-### `module.exports` ⏏
-Tests if value is truthy, it is equivalent to
-`equal(!!value, true, message)`.
-
-**Kind**: Exported member  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| value | <code>\*</code> | The value to be tested. |
-| message | <code>string</code> | Text description of test. |
-
-<a name="module_assert-x--module.exports..AssertionError"></a>
-
-#### module.exports~AssertionError ⇐ <code>Error</code>
-**Kind**: inner class of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
+### assert-x~AssertionError ⇐ <code>Error</code>
+**Kind**: inner class of [<code>assert-x</code>](#module_assert-x)  
 **Extends**: <code>Error</code>  
-<a name="new_module_assert-x--module.exports..AssertionError_new"></a>
+<a name="new_module_assert-x..AssertionError_new"></a>
 
-##### `new AssertionError([message])`
+#### `new AssertionError([message])`
 Error constructor for test and validation frameworks that implement the
 standardized AssertionError specification.
 
@@ -77,13 +64,13 @@ standardized AssertionError specification.
 | --- | --- | --- |
 | [message] | <code>Object</code> | Need to document the properties. |
 
-<a name="module_assert-x--module.exports..fail"></a>
+<a name="module_assert-x..fail"></a>
 
-#### `module.exports~fail`
+### `assert-x~fail`
 Throws an exception that displays the values for actual and expected
 separated by the provided operator.
 
-**Kind**: inner property of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
+**Kind**: inner property of [<code>assert-x</code>](#module_assert-x)  
 **Throws**:
 
 - <code>Error</code> Throws an `AssertionError`.
@@ -96,13 +83,13 @@ separated by the provided operator.
 | [message] | <code>string</code> | Text description of test. |
 | operator | <code>string</code> | The compare operator. |
 
-<a name="module_assert-x--module.exports..truncate"></a>
+<a name="module_assert-x..truncate"></a>
 
-#### `module.exports~truncate` : <code>Object</code>
+### `assert-x~truncate` : <code>Object</code>
 Allows `truncate` options of AssertionError to be modified. The
 `truncate` used is the one from `lodash`.
 
-**Kind**: inner property of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
+**Kind**: inner property of [<code>assert-x</code>](#module_assert-x)  
 **See**: https://lodash.com/docs#trunc  
 **Properties**
 
@@ -112,54 +99,26 @@ Allows `truncate` options of AssertionError to be modified. The
 | omission | <code>string</code> | <code>&quot;&#x27;&#x27;&quot;</code> | The string to indicate text is omitted. |
 | separator | <code>RegExp</code> \| <code>string</code> | <code>&#x27;&#x27;</code> | The pattern to truncate to. |
 
-<a name="module_assert-x--module.exports..ok"></a>
+<a name="module_assert-x..assertIt"></a>
 
-#### `module.exports~ok(value, [message])`
+### `assert-x~assertIt(value, message)`
 Tests if value is truthy, it is equivalent to
 `equal(!!value, true, message)`.
 
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | value | <code>\*</code> | The value to be tested. |
-| [message] | <code>string</code> | Text description of test. |
+| message | <code>string</code> | Text description of test. |
 
-<a name="module_assert-x--module.exports..equal"></a>
+<a name="module_assert-x..deepEqual"></a>
 
-#### `module.exports~equal(actual, expected, [message])`
-Tests shallow, coercive equality with the equal comparison
-operator ( == ).
-
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| actual | <code>\*</code> | The actual value to be tested. |
-| expected | <code>\*</code> | The expected value to compare against actual. |
-| [message] | <code>string</code> | Text description of test. |
-
-<a name="module_assert-x--module.exports..notEqual"></a>
-
-#### `module.exports~notEqual(actual, expected, [message])`
-Tests shallow, coercive non-equality with the not equal comparison
-operator ( != ).
-
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| actual | <code>\*</code> | The actual value to be tested. |
-| expected | <code>\*</code> | The expected value to compare against actual. |
-| [message] | <code>string</code> | Text description of test. |
-
-<a name="module_assert-x--module.exports..deepEqual"></a>
-
-#### `module.exports~deepEqual(actual, expected, [message])`
+### `assert-x~deepEqual(actual, expected, [message])`
 Tests for deep equality, coercive equality with the equal comparison
 operator ( == ) and equivalent.
 
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -167,26 +126,13 @@ operator ( == ) and equivalent.
 | expected | <code>\*</code> | The expected value to compare against actual. |
 | [message] | <code>string</code> | Text description of test. |
 
-<a name="module_assert-x--module.exports..notDeepEqual"></a>
+<a name="module_assert-x..deepStrictEqual"></a>
 
-#### `module.exports~notDeepEqual(actual, expected, [message])`
-Tests for any deep inequality. Opposite of `deepEqual`.
-
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| actual | <code>\*</code> | The actual value to be tested. |
-| expected | <code>\*</code> | The expected value to compare against actual. |
-| [message] | <code>string</code> | Text description of test. |
-
-<a name="module_assert-x--module.exports..deepStrictEqual"></a>
-
-#### `module.exports~deepStrictEqual(actual, expected, [message])`
+### `assert-x~deepStrictEqual(actual, expected, [message])`
 Tests for deep equality, coercive equality with the equal comparison
 operator ( === ) and equivalent.
 
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -194,67 +140,12 @@ operator ( === ) and equivalent.
 | expected | <code>\*</code> | The expected value to compare against actual. |
 | [message] | <code>string</code> | Text description of test. |
 
-<a name="module_assert-x--module.exports..notDeepStrictEqual"></a>
+<a name="module_assert-x..doesNotThrow"></a>
 
-#### `module.exports~notDeepStrictEqual(actual, expected, [message])`
-Tests for deep inequality. Opposite of `deepStrictEqual`.
-
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| actual | <code>\*</code> | The actual value to be tested. |
-| expected | <code>\*</code> | The expected value to compare against actual. |
-| [message] | <code>string</code> | Text description of test. |
-
-<a name="module_assert-x--module.exports..strictEqual"></a>
-
-#### `module.exports~strictEqual(actual, expected, [message])`
-Tests strict equality, as determined by the strict equality
-operator ( === ).
-
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| actual | <code>\*</code> | The actual value to be tested. |
-| expected | <code>\*</code> | The expected value to compare against actual. |
-| [message] | <code>string</code> | Text description of test. |
-
-<a name="module_assert-x--module.exports..notStrictEqual"></a>
-
-#### `module.exports~notStrictEqual(actual, expected, [message])`
-Tests strict non-equality, as determined by the strict not equal
-operator ( !== ).
-
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| actual | <code>\*</code> | The actual value to be tested. |
-| expected | <code>\*</code> | The expected value to compare against actual. |
-| [message] | <code>string</code> | Text description of test. |
-
-<a name="module_assert-x--module.exports..throws"></a>
-
-#### `module.exports~throws(block, [error], [message])`
-Expects block to throw an error. `error` can be constructor, regexp or
-validation function.
-
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| block | <code>function</code> | The function block to be executed in testing. |
-| [error] | <code>constructor</code> \| <code>RegExp</code> \| <code>function</code> | The comparator. |
-| [message] | <code>string</code> | Text description of test. |
-
-<a name="module_assert-x--module.exports..doesNotThrow"></a>
-
-#### `module.exports~doesNotThrow(block, [error], [message])`
+### `assert-x~doesNotThrow(block, [error], [message])`
 Expects block not to throw an error, see assert~throws for details.
 
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -262,13 +153,27 @@ Expects block not to throw an error, see assert~throws for details.
 | [error] | <code>constructor</code> | The comparator. |
 | [message] | <code>string</code> | Text description of test. |
 
-<a name="module_assert-x--module.exports..ifError"></a>
+<a name="module_assert-x..equal"></a>
 
-#### `module.exports~ifError(err)`
+### `assert-x~equal(actual, expected, [message])`
+Tests shallow, coercive equality with the equal comparison
+operator ( == ).
+
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actual | <code>\*</code> | The actual value to be tested. |
+| expected | <code>\*</code> | The expected value to compare against actual. |
+| [message] | <code>string</code> | Text description of test. |
+
+<a name="module_assert-x..ifError"></a>
+
+### `assert-x~ifError(err)`
 Tests if value is not a falsy value, throws if it is a truthy value.
 Useful when testing the first argument, error in callbacks.
 
-**Kind**: inner method of <code>[module.exports](#exp_module_assert-x--module.exports)</code>  
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
 **Throws**:
 
 - <code>\*</code> The value `err` if truthy.
@@ -277,4 +182,99 @@ Useful when testing the first argument, error in callbacks.
 | Param | Type | Description |
 | --- | --- | --- |
 | err | <code>\*</code> | The value to be tested for truthiness. |
+
+<a name="module_assert-x..notDeepEqual"></a>
+
+### `assert-x~notDeepEqual(actual, expected, [message])`
+Tests for any deep inequality. Opposite of `deepEqual`.
+
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actual | <code>\*</code> | The actual value to be tested. |
+| expected | <code>\*</code> | The expected value to compare against actual. |
+| [message] | <code>string</code> | Text description of test. |
+
+<a name="module_assert-x..notDeepStrictEqual"></a>
+
+### `assert-x~notDeepStrictEqual(actual, expected, [message])`
+Tests for deep inequality. Opposite of `deepStrictEqual`.
+
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actual | <code>\*</code> | The actual value to be tested. |
+| expected | <code>\*</code> | The expected value to compare against actual. |
+| [message] | <code>string</code> | Text description of test. |
+
+<a name="module_assert-x..notEqual"></a>
+
+### `assert-x~notEqual(actual, expected, [message])`
+Tests shallow, coercive non-equality with the not equal comparison
+operator ( != ).
+
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actual | <code>\*</code> | The actual value to be tested. |
+| expected | <code>\*</code> | The expected value to compare against actual. |
+| [message] | <code>string</code> | Text description of test. |
+
+<a name="module_assert-x..notStrictEqual"></a>
+
+### `assert-x~notStrictEqual(actual, expected, [message])`
+Tests strict non-equality, as determined by the strict not equal
+operator ( !== ).
+
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actual | <code>\*</code> | The actual value to be tested. |
+| expected | <code>\*</code> | The expected value to compare against actual. |
+| [message] | <code>string</code> | Text description of test. |
+
+<a name="module_assert-x..ok"></a>
+
+### `assert-x~ok(value, [message])`
+Tests if value is truthy, it is equivalent to
+`equal(!!value, true, message)`.
+
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| value | <code>\*</code> | The value to be tested. |
+| [message] | <code>string</code> | Text description of test. |
+
+<a name="module_assert-x..strictEqual"></a>
+
+### `assert-x~strictEqual(actual, expected, [message])`
+Tests strict equality, as determined by the strict equality
+operator ( === ).
+
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| actual | <code>\*</code> | The actual value to be tested. |
+| expected | <code>\*</code> | The expected value to compare against actual. |
+| [message] | <code>string</code> | Text description of test. |
+
+<a name="module_assert-x..throws"></a>
+
+### `assert-x~throws(block, [error], [message])`
+Expects block to throw an error. `error` can be constructor, regexp or
+validation function.
+
+**Kind**: inner method of [<code>assert-x</code>](#module_assert-x)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| block | <code>function</code> | The function block to be executed in testing. |
+| [error] | <code>constructor</code> \| <code>RegExp</code> \| <code>function</code> | The comparator. |
+| [message] | <code>string</code> | Text description of test. |
 
