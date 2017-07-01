@@ -24,8 +24,16 @@ var a = assert;
 var hasSymbols = typeof Symbol === 'function' && typeof Symbol('') === 'symbol';
 
 describe('Node\'s test-assert', function () {
-  var a1 = [1, 2, 3];
-  var a2 = [1, 2, 3];
+  var a1 = [
+    1,
+    2,
+    3
+  ];
+  var a2 = [
+    1,
+    2,
+    3
+  ];
 
   a1.a = 'test';
   a1.b = true;
@@ -113,7 +121,7 @@ describe('Node\'s test-assert', function () {
   });
 
   it('deepEqual', function () {
-      // deepEquals joy!
+    // deepEquals joy!
     // 7.2
     assert.doesNotThrow(makeBlock(a.deepEqual, new Date(2000, 3, 14),
       new Date(2000, 3, 14)), 'deepEqual date');
@@ -168,7 +176,7 @@ describe('Node\'s test-assert', function () {
       a: 4,
       b: true
     }),
-        a.AssertionError);
+    a.AssertionError);
     assert.doesNotThrow(makeBlock(a.deepEqual, ['a'], { 0: 'a' }));
     // (although not necessarily the same order),
     assert.doesNotThrow(makeBlock(a.deepEqual, {
@@ -246,7 +254,7 @@ describe('Node\'s test-assert', function () {
       'deepStrictEqual date'
     );
 
-      // 7.3 - strict
+    // 7.3 - strict
     assert.doesNotThrow(makeBlock(a.deepStrictEqual, /a/, /a/));
     assert.doesNotThrow(makeBlock(a.deepStrictEqual, /a/g, /a/g));
     assert.doesNotThrow(makeBlock(a.deepStrictEqual, /a/i, /a/i));
@@ -302,9 +310,21 @@ describe('Node\'s test-assert', function () {
     }));
 
     assert.throws(
-        makeBlock(a.deepStrictEqual, [0, 1, 2, 'a', 'b'], [0, 1, 2, 'b', 'a']),
-        a.AssertionError
-      );
+      makeBlock(a.deepStrictEqual, [
+        0,
+        1,
+        2,
+        'a',
+        'b'
+      ], [
+        0,
+        1,
+        2,
+        'b',
+        'a'
+      ]),
+      a.AssertionError
+    );
 
     assert.doesNotThrow(makeBlock(a.deepStrictEqual, a1, a2));
 
@@ -334,13 +354,13 @@ describe('Node\'s test-assert', function () {
     assert.throws(makeBlock(assert.deepStrictEqual, true, 1), a.AssertionError);
     if (hasSymbols) {
       assert.throws(makeBlock(assert.deepStrictEqual, Symbol(''), Symbol('')),
-          a.AssertionError);
+        a.AssertionError);
 
       var s = Symbol('');
       assert.doesNotThrow(makeBlock(assert.deepStrictEqual, s, s));
     }
 
-      // primitives and object
+    // primitives and object
     assert.throws(makeBlock(a.deepStrictEqual, null, {}), a.AssertionError);
     assert.throws(
       makeBlock(a.deepStrictEqual, undefined, {}),
@@ -483,9 +503,9 @@ describe('Node\'s test-assert', function () {
         assert.equal(actual, '');
       } catch (e) {
         assert.equal(
-            e.toString(),
-            'AssertionError: ' + expected + ' == \'\''
-          );
+          e.toString(),
+          'AssertionError: ' + expected + ' == \'\''
+        );
         assert.ok(e.generatedMessage, 'Message not marked as generated');
       }
     };
@@ -502,7 +522,11 @@ describe('Node\'s test-assert', function () {
     testAssertionMessage('', '""');
     testAssertionMessage('foo', '\'foo\'');
     testAssertionMessage([], '[]');
-    testAssertionMessage([1, 2, 3], '[ 1, 2, 3 ]');
+    testAssertionMessage([
+      1,
+      2,
+      3
+    ], '[ 1, 2, 3 ]');
     testAssertionMessage(/a/, '/a/');
     testAssertionMessage(/abc/gim, '/abc/gim');
     testAssertionMessage(function f() {}, '[Function: f]');
@@ -518,7 +542,7 @@ describe('Node\'s test-assert', function () {
       b: Infinity,
       c: -Infinity
     },
-        '{ a: NaN, b: Infinity, c: -Infinity }');
+    '{ a: NaN, b: Infinity, c: -Infinity }');
   });
 
   it('#2893', function () {
@@ -549,7 +573,7 @@ describe('Node\'s test-assert', function () {
     } catch (e) {
       assert.equal(e.toString().split('\n')[0], 'AssertionError: oh no');
       assert.equal(e.generatedMessage, false,
-          'Message incorrectly marked as generated');
+        'Message incorrectly marked as generated');
     }
   });
 

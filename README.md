@@ -24,7 +24,7 @@ alt="npm version" height="18">
 A Javascript assertion library.
 
 **See**: https://nodejs.org/api/assert.html  
-**Version**: 1.4.0  
+**Version**: 1.5.0  
 **Author**: Xotic750 <Xotic750@gmail.com>  
 **License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
 **Copyright**: Xotic750  
@@ -90,7 +90,7 @@ Allows `truncate` options of AssertionError to be modified. The
 `truncate` used is the one from `lodash`.
 
 **Kind**: inner property of [<code>assert-x</code>](#module_assert-x)  
-**See**: https://lodash.com/docs#trunc  
+**See**: [https://github.com/Xotic750/truncate-x](https://github.com/Xotic750/truncate-x)  
 **Properties**
 
 | Name | Type | Default | Description |
@@ -110,7 +110,7 @@ Tests if value is truthy, it is equivalent to
 | Param | Type | Description |
 | --- | --- | --- |
 | value | <code>\*</code> | The value to be tested. |
-| message | <code>string</code> | Text description of test. |
+| message | <code>string</code> | message Text description of test. |
 
 <a name="module_assert-x..deepEqual"></a>
 
