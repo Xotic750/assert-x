@@ -1,6 +1,8 @@
 <a name="module_assert-x"></a>
 
 ## assert-x
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Xotic750/assert-x.svg)](https://greenkeeper.io/)
 <a href="https://travis-ci.org/Xotic750/assert-x"
 title="Travis status">
 <img src="https://travis-ci.org/Xotic750/assert-x.svg?branch=master"
