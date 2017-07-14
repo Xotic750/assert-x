@@ -74,16 +74,16 @@ describe('Node\'s test-assert', function () {
   });
 
   it('ok', function () {
-    assert.throws(makeBlock(a, false), a.AssertionError, 'ok(false)');
+    assert['throws'](makeBlock(a, false), a.AssertionError, 'ok(false)');
     assert.doesNotThrow(makeBlock(a, true), a.AssertionError, 'ok(true)');
     assert.doesNotThrow(makeBlock(a, 'test', 'ok(\'test\')'));
-    assert.throws(makeBlock(a.ok, false), a.AssertionError, 'ok(false)');
+    assert['throws'](makeBlock(a.ok, false), a.AssertionError, 'ok(false)');
     assert.doesNotThrow(makeBlock(a.ok, true), a.AssertionError, 'ok(true)');
     assert.doesNotThrow(makeBlock(a.ok, 'test'), 'ok(\'test\')');
   });
 
   it('equal', function () {
-    assert.throws(makeBlock(a.equal, true, false), a.AssertionError, 'equal');
+    assert['throws'](makeBlock(a.equal, true, false), a.AssertionError, 'equal');
     assert.doesNotThrow(makeBlock(a.equal, null, null), 'equal');
     assert.doesNotThrow(makeBlock(a.equal, undefined, undefined), 'equal');
     assert.doesNotThrow(makeBlock(a.equal, null, undefined), 'equal');
@@ -93,7 +93,7 @@ describe('Node\'s test-assert', function () {
 
   it('notEqual', function () {
     assert.doesNotThrow(makeBlock(a.notEqual, true, false), 'notEqual');
-    assert.throws(
+    assert['throws'](
       makeBlock(a.notEqual, true, true),
       a.AssertionError,
       'notEqual'
@@ -101,12 +101,12 @@ describe('Node\'s test-assert', function () {
   });
 
   it('strictEqual', function () {
-    assert.throws(
+    assert['throws'](
       makeBlock(a.strictEqual, 2, '2'),
       a.AssertionError,
       'strictEqual'
     );
-    assert.throws(
+    assert['throws'](
       makeBlock(a.strictEqual, null, undefined),
       a.AssertionError,
       'strictEqual'
@@ -126,7 +126,7 @@ describe('Node\'s test-assert', function () {
     assert.doesNotThrow(makeBlock(a.deepEqual, new Date(2000, 3, 14),
       new Date(2000, 3, 14)), 'deepEqual date');
 
-    assert.throws(makeBlock(a.deepEqual, new Date(), new Date(2000, 3, 14)),
+    assert['throws'](makeBlock(a.deepEqual, new Date(), new Date(2000, 3, 14)),
       a.AssertionError,
       'deepEqual date');
 
@@ -136,15 +136,15 @@ describe('Node\'s test-assert', function () {
     assert.doesNotThrow(makeBlock(a.deepEqual, /a/i, /a/i));
     assert.doesNotThrow(makeBlock(a.deepEqual, /a/m, /a/m));
     assert.doesNotThrow(makeBlock(a.deepEqual, /a/igm, /a/igm));
-    assert.throws(makeBlock(a.deepEqual, /ab/, /a/));
-    assert.throws(makeBlock(a.deepEqual, /a/g, /a/));
-    assert.throws(makeBlock(a.deepEqual, /a/i, /a/));
-    assert.throws(makeBlock(a.deepEqual, /a/m, /a/));
-    assert.throws(makeBlock(a.deepEqual, /a/igm, /a/im));
+    assert['throws'](makeBlock(a.deepEqual, /ab/, /a/));
+    assert['throws'](makeBlock(a.deepEqual, /a/g, /a/));
+    assert['throws'](makeBlock(a.deepEqual, /a/i, /a/));
+    assert['throws'](makeBlock(a.deepEqual, /a/m, /a/));
+    assert['throws'](makeBlock(a.deepEqual, /a/igm, /a/im));
 
     var re1 = /a/;
     re1.lastIndex = 3;
-    assert.throws(makeBlock(a.deepEqual, re1, /a/));
+    assert['throws'](makeBlock(a.deepEqual, re1, /a/));
 
     // 7.4
     assert.doesNotThrow(
@@ -155,7 +155,7 @@ describe('Node\'s test-assert', function () {
       makeBlock(a.deepEqual, true, 1),
       'deepEqual == check'
     );
-    assert.throws(
+    assert['throws'](
       makeBlock(a.deepEqual, 4, '5'),
       a.AssertionError,
       'deepEqual == check'
@@ -172,7 +172,7 @@ describe('Node\'s test-assert', function () {
       b: '2'
     }));
     assert.doesNotThrow(makeBlock(a.deepEqual, [4], ['4']));
-    assert.throws(makeBlock(a.deepEqual, { a: 4 }, {
+    assert['throws'](makeBlock(a.deepEqual, { a: 4 }, {
       a: 4,
       b: true
     }),
@@ -187,7 +187,7 @@ describe('Node\'s test-assert', function () {
       // eslint-disable-next-line sort-keys
       a: 4
     }));
-    assert.throws(makeBlock(a.deepEqual, Object.keys(a1), Object.keys(a2)),
+    assert['throws'](makeBlock(a.deepEqual, Object.keys(a1), Object.keys(a2)),
       a.AssertionError);
     assert.doesNotThrow(makeBlock(a.deepEqual, a1, a2));
 
@@ -222,14 +222,14 @@ describe('Node\'s test-assert', function () {
     assert.doesNotThrow(makeBlock(a.deepEqual, nb1, nb2));
 
     // primitives and object
-    assert.throws(makeBlock(a.deepEqual, null, {}), a.AssertionError);
-    assert.throws(makeBlock(a.deepEqual, undefined, {}), a.AssertionError);
-    assert.throws(makeBlock(a.deepEqual, 'a', ['a']), a.AssertionError);
-    assert.throws(makeBlock(a.deepEqual, 'a', { 0: 'a' }), a.AssertionError);
-    assert.throws(makeBlock(a.deepEqual, 1, {}), a.AssertionError);
-    assert.throws(makeBlock(a.deepEqual, true, {}), a.AssertionError);
+    assert['throws'](makeBlock(a.deepEqual, null, {}), a.AssertionError);
+    assert['throws'](makeBlock(a.deepEqual, undefined, {}), a.AssertionError);
+    assert['throws'](makeBlock(a.deepEqual, 'a', ['a']), a.AssertionError);
+    assert['throws'](makeBlock(a.deepEqual, 'a', { 0: 'a' }), a.AssertionError);
+    assert['throws'](makeBlock(a.deepEqual, 1, {}), a.AssertionError);
+    assert['throws'](makeBlock(a.deepEqual, true, {}), a.AssertionError);
     if (hasSymbols) {
-      assert.throws(makeBlock(a.deepEqual, Symbol(''), {}), a.AssertionError);
+      assert['throws'](makeBlock(a.deepEqual, Symbol(''), {}), a.AssertionError);
     }
 
     // primitive wrappers and object
@@ -248,7 +248,7 @@ describe('Node\'s test-assert', function () {
     assert.doesNotThrow(makeBlock(a.deepStrictEqual, new Date(2000, 3, 14),
       new Date(2000, 3, 14)), 'deepStrictEqual date');
 
-    assert.throws(
+    assert['throws'](
       makeBlock(a.deepStrictEqual, new Date(), new Date(2000, 3, 14)),
       a.AssertionError,
       'deepStrictEqual date'
@@ -260,26 +260,26 @@ describe('Node\'s test-assert', function () {
     assert.doesNotThrow(makeBlock(a.deepStrictEqual, /a/i, /a/i));
     assert.doesNotThrow(makeBlock(a.deepStrictEqual, /a/m, /a/m));
     assert.doesNotThrow(makeBlock(a.deepStrictEqual, /a/igm, /a/igm));
-    assert.throws(makeBlock(a.deepStrictEqual, /ab/, /a/));
-    assert.throws(makeBlock(a.deepStrictEqual, /a/g, /a/));
-    assert.throws(makeBlock(a.deepStrictEqual, /a/i, /a/));
-    assert.throws(makeBlock(a.deepStrictEqual, /a/m, /a/));
-    assert.throws(makeBlock(a.deepStrictEqual, /a/igm, /a/im));
+    assert['throws'](makeBlock(a.deepStrictEqual, /ab/, /a/));
+    assert['throws'](makeBlock(a.deepStrictEqual, /a/g, /a/));
+    assert['throws'](makeBlock(a.deepStrictEqual, /a/i, /a/));
+    assert['throws'](makeBlock(a.deepStrictEqual, /a/m, /a/));
+    assert['throws'](makeBlock(a.deepStrictEqual, /a/igm, /a/im));
 
     var re1 = /a/;
     re1.lastIndex = 3;
-    assert.throws(makeBlock(a.deepStrictEqual, re1, /a/));
+    assert['throws'](makeBlock(a.deepStrictEqual, re1, /a/));
 
     // 7.4 - strict
-    assert.throws(makeBlock(a.deepStrictEqual, 4, '4'),
+    assert['throws'](makeBlock(a.deepStrictEqual, 4, '4'),
       a.AssertionError,
       'deepStrictEqual === check');
 
-    assert.throws(makeBlock(a.deepStrictEqual, true, 1),
+    assert['throws'](makeBlock(a.deepStrictEqual, true, 1),
       a.AssertionError,
       'deepStrictEqual === check');
 
-    assert.throws(makeBlock(a.deepStrictEqual, 4, '5'),
+    assert['throws'](makeBlock(a.deepStrictEqual, 4, '5'),
       a.AssertionError,
       'deepStrictEqual === check');
 
@@ -293,12 +293,12 @@ describe('Node\'s test-assert', function () {
       a: 4,
       b: '2'
     }));
-    assert.throws(makeBlock(a.deepStrictEqual, [4], ['4']));
-    assert.throws(makeBlock(a.deepStrictEqual, { a: 4 }, {
+    assert['throws'](makeBlock(a.deepStrictEqual, [4], ['4']));
+    assert['throws'](makeBlock(a.deepStrictEqual, { a: 4 }, {
       a: 4,
       b: true
     }), a.AssertionError);
-    assert.throws(makeBlock(a.deepStrictEqual, ['a'], { 0: 'a' }));
+    assert['throws'](makeBlock(a.deepStrictEqual, ['a'], { 0: 'a' }));
     // (although not necessarily the same order),
     assert.doesNotThrow(makeBlock(a.deepStrictEqual, {
       a: 4,
@@ -309,7 +309,7 @@ describe('Node\'s test-assert', function () {
       a: 4
     }));
 
-    assert.throws(
+    assert['throws'](
       makeBlock(a.deepStrictEqual, [
         0,
         1,
@@ -342,7 +342,7 @@ describe('Node\'s test-assert', function () {
     var obj1 = new Constructor1('Ryan', 'Dahl');
     var obj2 = new Constructor2('Ryan', 'Dahl');
 
-    assert.throws(makeBlock(a.deepStrictEqual, obj1, obj2), a.AssertionError);
+    assert['throws'](makeBlock(a.deepStrictEqual, obj1, obj2), a.AssertionError);
 
     Constructor2.prototype = Constructor1.prototype;
     obj2 = new Constructor2('Ryan', 'Dahl');
@@ -350,10 +350,10 @@ describe('Node\'s test-assert', function () {
     assert.doesNotThrow(makeBlock(a.deepStrictEqual, obj1, obj2));
 
     // primitives
-    assert.throws(makeBlock(assert.deepStrictEqual, 4, '4'), a.AssertionError);
-    assert.throws(makeBlock(assert.deepStrictEqual, true, 1), a.AssertionError);
+    assert['throws'](makeBlock(assert.deepStrictEqual, 4, '4'), a.AssertionError);
+    assert['throws'](makeBlock(assert.deepStrictEqual, true, 1), a.AssertionError);
     if (hasSymbols) {
-      assert.throws(makeBlock(assert.deepStrictEqual, Symbol(''), Symbol('')),
+      assert['throws'](makeBlock(assert.deepStrictEqual, Symbol(''), Symbol('')),
         a.AssertionError);
 
       var s = Symbol('');
@@ -361,28 +361,28 @@ describe('Node\'s test-assert', function () {
     }
 
     // primitives and object
-    assert.throws(makeBlock(a.deepStrictEqual, null, {}), a.AssertionError);
-    assert.throws(
+    assert['throws'](makeBlock(a.deepStrictEqual, null, {}), a.AssertionError);
+    assert['throws'](
       makeBlock(a.deepStrictEqual, undefined, {}),
       a.AssertionError
     );
-    assert.throws(makeBlock(a.deepStrictEqual, 'a', ['a']), a.AssertionError);
-    assert.throws(makeBlock(a.deepStrictEqual, 'a', { 0: 'a' }), a.AssertionError);
-    assert.throws(makeBlock(a.deepStrictEqual, 1, {}), a.AssertionError);
-    assert.throws(makeBlock(a.deepStrictEqual, true, {}), a.AssertionError);
+    assert['throws'](makeBlock(a.deepStrictEqual, 'a', ['a']), a.AssertionError);
+    assert['throws'](makeBlock(a.deepStrictEqual, 'a', { 0: 'a' }), a.AssertionError);
+    assert['throws'](makeBlock(a.deepStrictEqual, 1, {}), a.AssertionError);
+    assert['throws'](makeBlock(a.deepStrictEqual, true, {}), a.AssertionError);
     if (hasSymbols) {
-      assert.throws(makeBlock(assert.deepStrictEqual, Symbol(''), {}),
+      assert['throws'](makeBlock(assert.deepStrictEqual, Symbol(''), {}),
         a.AssertionError);
     }
 
     // primitive wrappers and object
-    assert.throws(makeBlock(a.deepStrictEqual, Object('a'), ['a']),
+    assert['throws'](makeBlock(a.deepStrictEqual, Object('a'), ['a']),
       a.AssertionError);
-    assert.throws(makeBlock(a.deepStrictEqual, Object('a'), { 0: 'a' }),
+    assert['throws'](makeBlock(a.deepStrictEqual, Object('a'), { 0: 'a' }),
       a.AssertionError);
-    assert.throws(makeBlock(a.deepStrictEqual, Object(1), {}),
+    assert['throws'](makeBlock(a.deepStrictEqual, Object(1), {}),
       a.AssertionError);
-    assert.throws(makeBlock(a.deepStrictEqual, Object(true), {}),
+    assert['throws'](makeBlock(a.deepStrictEqual, Object(true), {}),
       a.AssertionError);
   });
 
@@ -393,18 +393,18 @@ describe('Node\'s test-assert', function () {
     };
 
     // the basic calls work
-    assert.throws(makeBlock(thrower, a.AssertionError),
+    assert['throws'](makeBlock(thrower, a.AssertionError),
       a.AssertionError, 'message');
-    assert.throws(makeBlock(thrower, a.AssertionError), a.AssertionError);
-    assert.throws(makeBlock(thrower, a.AssertionError));
+    assert['throws'](makeBlock(thrower, a.AssertionError), a.AssertionError);
+    assert['throws'](makeBlock(thrower, a.AssertionError));
 
     // if not passing an error, catch all.
-    assert.throws(makeBlock(thrower, TypeError));
+    assert['throws'](makeBlock(thrower, TypeError));
 
     // when passing a type, only catch errors of the appropriate type
     var threw = false;
     try {
-      a.throws(makeBlock(thrower, TypeError), a.AssertionError);
+      a['throws'](makeBlock(thrower, TypeError), a.AssertionError);
     } catch (e) {
       threw = true;
       assert.ok(e instanceof TypeError, 'type');
@@ -435,7 +435,7 @@ describe('Node\'s test-assert', function () {
     assert.equal(true, threw,
       'a.doesNotThrow is not catching type matching errors');
 
-    assert.throws(function () {
+    assert['throws'](function () {
       assert.ifError(new Error('test error'));
     });
     assert.doesNotThrow(function () {
@@ -448,7 +448,7 @@ describe('Node\'s test-assert', function () {
     // make sure that validating using constructor really works
     threw = false;
     try {
-      assert.throws(function () {
+      assert['throws'](function () {
         // eslint-disable-next-line no-throw-literal
         throw {};
       }, Array);
@@ -458,10 +458,10 @@ describe('Node\'s test-assert', function () {
     assert.ok(threw, 'wrong constructor validation');
 
     // use a RegExp to validate error message
-    a.throws(makeBlock(thrower, TypeError), /test/);
+    a['throws'](makeBlock(thrower, TypeError), /test/);
 
     // use a fn to validate error object
-    a.throws(makeBlock(thrower, TypeError), function (err) {
+    a['throws'](makeBlock(thrower, TypeError), function (err) {
       if (err instanceof TypeError && (/test/).test(err)) {
         return true;
       }
@@ -492,8 +492,8 @@ describe('Node\'s test-assert', function () {
     var args = (function () {
       return arguments;
     }());
-    a.throws(makeBlock(a.deepEqual, [], args));
-    a.throws(makeBlock(a.deepEqual, args, []));
+    a['throws'](makeBlock(a.deepEqual, [], args));
+    a['throws'](makeBlock(a.deepEqual, args, []));
 
     var circular = { y: 1 };
     circular.x = circular;
@@ -549,7 +549,7 @@ describe('Node\'s test-assert', function () {
     // #2893
     var threw = false;
     try {
-      assert.throws(function () {
+      assert['throws'](function () {
         assert.ifError(null);
       });
     } catch (e) {
@@ -592,35 +592,35 @@ describe('Node\'s test-assert', function () {
       assert.ok(threw);
     };
 
-    testBlockTypeError(assert.throws, 'string');
+    testBlockTypeError(assert['throws'], 'string');
     testBlockTypeError(assert.doesNotThrow, 'string');
-    testBlockTypeError(assert.throws, 1);
+    testBlockTypeError(assert['throws'], 1);
     testBlockTypeError(assert.doesNotThrow, 1);
-    testBlockTypeError(assert.throws, true);
+    testBlockTypeError(assert['throws'], true);
     testBlockTypeError(assert.doesNotThrow, true);
-    testBlockTypeError(assert.throws, false);
+    testBlockTypeError(assert['throws'], false);
     testBlockTypeError(assert.doesNotThrow, false);
-    testBlockTypeError(assert.throws, []);
+    testBlockTypeError(assert['throws'], []);
     testBlockTypeError(assert.doesNotThrow, []);
-    testBlockTypeError(assert.throws, {});
+    testBlockTypeError(assert['throws'], {});
     testBlockTypeError(assert.doesNotThrow, {});
-    testBlockTypeError(assert.throws, /foo/);
+    testBlockTypeError(assert['throws'], /foo/);
     testBlockTypeError(assert.doesNotThrow, /foo/);
-    testBlockTypeError(assert.throws, null);
+    testBlockTypeError(assert['throws'], null);
     testBlockTypeError(assert.doesNotThrow, null);
-    testBlockTypeError(assert.throws, undefined);
+    testBlockTypeError(assert['throws'], undefined);
     testBlockTypeError(assert.doesNotThrow, undefined);
   });
 
   it('https://github.com/nodejs/node/issues/3275', function () {
     // https://github.com/nodejs/node/issues/3275
-    assert.throws(function () {
+    assert['throws'](function () {
       // eslint-disable-next-line no-throw-literal
       throw 'error';
     }, function (err) {
       return err === 'error';
     });
-    assert.throws(function () {
+    assert['throws'](function () {
       throw new Error();
     }, function (err) {
       return err instanceof Error;

@@ -1,28 +1,6 @@
 /**
- * @file
- * <a href="https://travis-ci.org/Xotic750/assert-x"
- * title="Travis status">
- * <img src="https://travis-ci.org/Xotic750/assert-x.svg?branch=master"
- * alt="Travis status" height="18">
- * </a>
- * <a href="https://david-dm.org/Xotic750/assert-x"
- * title="Dependency status">
- * <img src="https://david-dm.org/Xotic750/assert-x.svg"
- * alt="Dependency status" height="18"/>
- * </a>
- * <a href="https://david-dm.org/Xotic750/assert-x#info=devDependencies"
- * title="devDependency status">
- * <img src="https://david-dm.org/Xotic750/assert-x/dev-status.svg"
- * alt="devDependency status" height="18"/>
- * </a>
- * <a href="https://badge.fury.io/js/assert-x" title="npm version">
- * <img src="https://badge.fury.io/js/assert-x.svg"
- * alt="npm version" height="18">
- * </a>
- *
- * A Javascript assertion library.
- *
- * @version 1.6.0
+ * @file A Javascript assertion library.
+ * @version 1.7.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -39,14 +17,14 @@ var safeToString = require('safe-to-string-x');
 var isFunction = require('is-function-x');
 var isObjectLike = require('is-object-like-x');
 var reduce = require('reduce');
-var define = require('define-properties-x');
+var defineProperties = require('object-define-properties-x');
 var deepEql = require('deep-equal-x');
 var truncOpts = [
   'length',
   'omission',
   'separator'
 ];
-var assertIt;
+var $assert;
 
 var isStringType = function _isStringType(value) {
   return typeof value === 'string';
@@ -60,8 +38,8 @@ var isStringType = function _isStringType(value) {
  * @param {string} name - The `truncate` option name.
  * @returns {Object} The `arg` object.
  */
-var extendOpts = function _extendOpts(arg, name) {
-  arg[name] = assertIt.truncate[name];
+var $extendOpts = function extendOpts(arg, name) {
+  arg[name] = $assert.truncate[name];
   return arg;
 };
 
@@ -77,7 +55,7 @@ var extendOpts = function _extendOpts(arg, name) {
  * @throws {Error} Throws an `AssertionError`.
  */
 // eslint-disable-next-line max-params
-var baseFail = function _baseFail(actual, expected, message, operator) {
+var $baseFail = function baseFail(actual, expected, message, operator) {
   var arg = {
     actual: actual,
     expected: expected,
@@ -85,8 +63,8 @@ var baseFail = function _baseFail(actual, expected, message, operator) {
     operator: operator
   };
 
-  if (isObjectLike(assertIt.truncate)) {
-    reduce(truncOpts, extendOpts, arg);
+  if (isObjectLike($assert.truncate)) {
+    reduce(truncOpts, $extendOpts, arg);
   }
 
   throw new AssertionError(arg);
@@ -100,7 +78,7 @@ var baseFail = function _baseFail(actual, expected, message, operator) {
  * @param {*} expected - The expected value to compare against actual.
  * @returns {boolean} True if exception expected, otherwise false.
  */
-var expectedException = function _expectedException(actual, expected) {
+var $expectedException = function expectedException(actual, expected) {
   if (Boolean(actual) === false || Boolean(expected) === false) {
     return false;
   }
@@ -131,7 +109,7 @@ var expectedException = function _expectedException(actual, expected) {
  * @param {string} [message] - Text description of test.
  */
 // eslint-disable-next-line max-params
-var baseThrows = function _baseThrows(shouldThrow, block, expected, message) {
+var $baseThrows = function baseThrows(shouldThrow, block, expected, message) {
   var msg = message;
   var clause1 = Boolean(msg) === false || isStringType(msg) === false;
   if (isFunction(block) === false) {
@@ -151,13 +129,13 @@ var baseThrows = function _baseThrows(shouldThrow, block, expected, message) {
     actual = e;
   }
 
-  var wasExceptionExpected = expectedException(actual, xpd);
+  var wasExceptionExpected = $expectedException(actual, xpd);
   clause1 = xpd && isStringType(xpd.name) && xpd.name;
   msg = (clause1 ? ' (' + xpd.name + ').' : '.') + (msg ? ' ' + msg : '.');
   if (shouldThrow && Boolean(actual) === false) {
-    baseFail(actual, xpd, 'Missing expected exception' + msg);
+    $baseFail(actual, xpd, 'Missing expected exception' + msg);
   } else if (Boolean(shouldThrow) === false && wasExceptionExpected) {
-    baseFail(actual, xpd, 'Got unwanted exception' + msg);
+    $baseFail(actual, xpd, 'Got unwanted exception' + msg);
   } else {
     var clause2;
     if (shouldThrow) {
@@ -181,33 +159,34 @@ var baseThrows = function _baseThrows(shouldThrow, block, expected, message) {
  * @param {string} message - Text description of test.
  * @param {string} operator - Text description of test operator.
  */
-var baseAssert = function _baseAssert(value, message, operator) {
+var $baseAssert = function baseAssert(value, message, operator) {
   if (Boolean(value) === false) {
-    baseFail(false, true, message, operator);
+    $baseFail(false, true, message, operator);
   }
 };
 
 /**
- * Tests if value is truthy, it is equivalent to
- * `equal(!!value, true, message)`.
+ * Tests if value is truthy, it is equivalent to `equal(!!value, true, message)`.
  *
  * @param {*} value - The value to be tested.
- * @param {string} - message Text description of test.
+ * @param {string} message - Text description of test.
  */
-assertIt = function assert(value, message) {
-  baseAssert(value, message, 'ok');
+$assert = function assert(value, message) {
+  $baseAssert(value, message, 'ok');
 };
 
-define.properties(assertIt, {
+defineProperties($assert, {
   /**
    * Error constructor for test and validation frameworks that implement the
    * standardized AssertionError specification.
    *
-   * @constructor
+   * @class
    * @augments Error
    * @param {Object} [message] - Need to document the properties.
    */
-  AssertionError: AssertionError,
+  AssertionError: {
+    value: AssertionError
+  },
   /**
    * Tests for deep equality, coercive equality with the equal comparison
    * operator ( == ) and equivalent.
@@ -216,9 +195,11 @@ define.properties(assertIt, {
    * @param {*} expected - The expected value to compare against actual.
    * @param {string} [message] - Text description of test.
    */
-  deepEqual: function _deepEqual(actual, expected, message) {
-    if (deepEql(actual, expected) === false) {
-      baseFail(actual, expected, message, 'deepEqual');
+  deepEqual: {
+    value: function deepEqual(actual, expected, message) {
+      if (deepEql(actual, expected) === false) {
+        $baseFail(actual, expected, message, 'deepEqual');
+      }
     }
   },
   /**
@@ -229,9 +210,11 @@ define.properties(assertIt, {
    * @param {*} expected - The expected value to compare against actual.
    * @param {string} [message] - Text description of test.
    */
-  deepStrictEqual: function _deepStrictEqual(actual, expected, message) {
-    if (deepEql(actual, expected, true) === false) {
-      baseFail(actual, expected, message, 'deepStrictEqual');
+  deepStrictEqual: {
+    value: function deepStrictEqual(actual, expected, message) {
+      if (deepEql(actual, expected, true) === false) {
+        $baseFail(actual, expected, message, 'deepStrictEqual');
+      }
     }
   },
   /**
@@ -241,8 +224,10 @@ define.properties(assertIt, {
    * @param {constructor} [error] - The comparator.
    * @param {string} [message] - Text description of test.
    */
-  doesNotThrow: function _doesNotThrow(block, error, message) {
-    baseThrows(false, block, error, message);
+  doesNotThrow: {
+    value: function doesNotThrow(block, error, message) {
+      $baseThrows(false, block, error, message);
+    }
   },
   /**
    * Tests shallow, coercive equality with the equal comparison
@@ -252,9 +237,12 @@ define.properties(assertIt, {
    * @param {*} expected - The expected value to compare against actual.
    * @param {string} [message] - Text description of test.
    */
-  equal: function _equal(actual, expected, message) {
-    if (actual != expected) { // eslint-disable-line eqeqeq
-      baseFail(actual, expected, message, '==');
+  equal: {
+    value: function _equal(actual, expected, message) {
+      // eslint-disable-next-line eqeqeq
+      if (actual != expected) {
+        $baseFail(actual, expected, message, '==');
+      }
     }
   },
   /**
@@ -267,7 +255,9 @@ define.properties(assertIt, {
    * @param {string} operator - The compare operator.
    * @throws {Error} Throws an `AssertionError`.
    */
-  fail: baseFail,
+  fail: {
+    value: $baseFail
+  },
   /**
    * Tests if value is not a falsy value, throws if it is a truthy value.
    * Useful when testing the first argument, error in callbacks.
@@ -275,9 +265,11 @@ define.properties(assertIt, {
    * @param {*} err - The value to be tested for truthiness.
    * @throws {*} The value `err` if truthy.
    */
-  ifError: function _ifError(err) {
-    if (err) {
-      throw err;
+  ifError: {
+    value: function ifError(err) {
+      if (err) {
+        throw err;
+      }
     }
   },
   /**
@@ -287,9 +279,11 @@ define.properties(assertIt, {
    * @param {*} expected - The expected value to compare against actual.
    * @param {string} [message] - Text description of test.
    */
-  notDeepEqual: function _notDeepEqual(actual, expected, message) {
-    if (deepEql(actual, expected)) {
-      baseFail(actual, expected, message, 'notDeepEqual');
+  notDeepEqual: {
+    value: function notDeepEqual(actual, expected, message) {
+      if (deepEql(actual, expected)) {
+        $baseFail(actual, expected, message, 'notDeepEqual');
+      }
     }
   },
   /**
@@ -299,9 +293,11 @@ define.properties(assertIt, {
    * @param {*} expected The expected value to compare against actual.
    * @param {string} [message] Text description of test.
    */
-  notDeepStrictEqual: function _notDeepStrictEqual(actual, expected, message) {
-    if (deepEql(actual, expected, true)) {
-      baseFail(actual, expected, message, 'notDeepStrictEqual');
+  notDeepStrictEqual: {
+    value: function notDeepStrictEqual(actual, expected, message) {
+      if (deepEql(actual, expected, true)) {
+        $baseFail(actual, expected, message, 'notDeepStrictEqual');
+      }
     }
   },
   /**
@@ -312,9 +308,12 @@ define.properties(assertIt, {
    * @param {*} expected - The expected value to compare against actual.
    * @param {string} [message] - Text description of test.
    */
-  notEqual: function _notEqual(actual, expected, message) {
-    if (actual == expected) { // eslint-disable-line eqeqeq
-      baseFail(actual, expected, message, '!=');
+  notEqual: {
+    value: function notEqual(actual, expected, message) {
+      // eslint-disable-next-line eqeqeq
+      if (actual == expected) {
+        $baseFail(actual, expected, message, '!=');
+      }
     }
   },
   /**
@@ -325,9 +324,11 @@ define.properties(assertIt, {
    * @param {*} expected - The expected value to compare against actual.
    * @param {string} [message] - Text description of test.
    */
-  notStrictEqual: function _notStrictEqual(actual, expected, message) {
-    if (actual === expected) {
-      baseFail(actual, expected, message, '!==');
+  notStrictEqual: {
+    value: function notStrictEqual(actual, expected, message) {
+      if (actual === expected) {
+        $baseFail(actual, expected, message, '!==');
+      }
     }
   },
   /**
@@ -337,8 +338,10 @@ define.properties(assertIt, {
    * @param {*} value - The value to be tested.
    * @param {string} [message] - Text description of test.
    */
-  ok: function _ok(value, message) {
-    baseAssert(value, message, 'ok');
+  ok: {
+    value: function ok(value, message) {
+      $baseAssert(value, message, 'ok');
+    }
   },
   /**
    * Tests strict equality, as determined by the strict equality
@@ -348,9 +351,11 @@ define.properties(assertIt, {
    * @param {*} expected - The expected value to compare against actual.
    * @param {string} [message] - Text description of test.
    */
-  strictEqual: function _strictEqual(actual, expected, message) {
-    if (actual !== expected) {
-      baseFail(actual, expected, message, '===');
+  strictEqual: {
+    value: function strictEqual(actual, expected, message) {
+      if (actual !== expected) {
+        $baseFail(actual, expected, message, '===');
+      }
     }
   },
   /**
@@ -361,10 +366,14 @@ define.properties(assertIt, {
    * @param {constructor|RegExp|Function} [error] - The comparator.
    * @param {string} [message] - Text description of test.
    */
-  'throws': function _throws(block, error, message) {
-    baseThrows(true, block, error, message);
+  'throws': {
+    value: function _throws(block, error, message) {
+      $baseThrows(true, block, error, message);
+    }
   },
-  truncate: {}
+  truncate: {
+    value: {}
+  }
 });
 /**
  * Allows `truncate` options of AssertionError to be modified. The
@@ -377,10 +386,19 @@ define.properties(assertIt, {
  * @property {RegExp|string} separator='' - The pattern to truncate to.
  * @see {@link https://github.com/Xotic750/truncate-x}
  */
-define.properties(assertIt.truncate, {
-  length: 128,
-  omission: '',
-  separator: ''
+defineProperties($assert.truncate, {
+  length: {
+    value: 128,
+    writable: true
+  },
+  omission: {
+    value: '',
+    writable: true
+  },
+  separator: {
+    value: '',
+    writable: true
+  }
 });
 
-module.exports = assertIt;
+module.exports = $assert;
