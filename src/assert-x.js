@@ -12,7 +12,7 @@ const errorx = require('error-x');
 
 const {AssertionError} = errorx;
 const isRegExp = require('is-regex');
-const safeToString = require('safe-to-string-x');
+const safeToString = require('to-string-symbols-supported-x');
 const isFunction = require('is-function-x');
 const isObjectLike = require('is-object-like-x');
 const reduce = require('reduce');
