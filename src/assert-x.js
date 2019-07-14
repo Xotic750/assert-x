@@ -8,25 +8,21 @@
  * @module assert-x
  */
 
-'use strict';
+const errorx = require('error-x');
 
-var errorx = require('error-x');
-var AssertionError = errorx.AssertionError;
-var isRegExp = require('is-regex');
-var safeToString = require('safe-to-string-x');
-var isFunction = require('is-function-x');
-var isObjectLike = require('is-object-like-x');
-var reduce = require('reduce');
-var defineProperties = require('object-define-properties-x');
-var deepEql = require('deep-equal-x');
-var truncOpts = [
-  'length',
-  'omission',
-  'separator'
-];
-var $assert;
+const {AssertionError} = errorx;
+const isRegExp = require('is-regex');
+const safeToString = require('safe-to-string-x');
+const isFunction = require('is-function-x');
+const isObjectLike = require('is-object-like-x');
+const reduce = require('reduce');
+const defineProperties = require('object-define-properties-x');
+const deepEql = require('deep-equal-x');
 
-var isStringType = function _isStringType(value) {
+const truncOpts = ['length', 'omission', 'separator'];
+let $assert;
+
+const isStringType = function _isStringType(value) {
   return typeof value === 'string';
 };
 
@@ -34,12 +30,13 @@ var isStringType = function _isStringType(value) {
  * Extends `arg` with the `truncate` options.
  *
  * @private
- * @param {Object} arg - The object to extend.
+ * @param {object} arg - The object to extend.
  * @param {string} name - The `truncate` option name.
- * @returns {Object} The `arg` object.
+ * @returns {object} The `arg` object.
  */
-var $extendOpts = function extendOpts(arg, name) {
+const $extendOpts = function extendOpts(arg, name) {
   arg[name] = $assert.truncate[name];
+
   return arg;
 };
 
@@ -55,12 +52,12 @@ var $extendOpts = function extendOpts(arg, name) {
  * @throws {Error} Throws an `AssertionError`.
  */
 // eslint-disable-next-line max-params
-var $baseFail = function baseFail(actual, expected, message, operator) {
-  var arg = {
-    actual: actual,
-    expected: expected,
-    message: message,
-    operator: operator
+const $baseFail = function baseFail(actual, expected, message, operator) {
+  const arg = {
+    actual,
+    expected,
+    message,
+    operator,
   };
 
   if (isObjectLike($assert.truncate)) {
@@ -78,7 +75,7 @@ var $baseFail = function baseFail(actual, expected, message, operator) {
  * @param {*} expected - The expected value to compare against actual.
  * @returns {boolean} True if exception expected, otherwise false.
  */
-var $expectedException = function expectedException(actual, expected) {
+const $expectedException = function expectedException(actual, expected) {
   if (Boolean(actual) === false || Boolean(expected) === false) {
     return false;
   }
@@ -109,35 +106,39 @@ var $expectedException = function expectedException(actual, expected) {
  * @param {string} [message] - Text description of test.
  */
 // eslint-disable-next-line max-params
-var $baseThrows = function baseThrows(shouldThrow, block, expected, message) {
-  var msg = message;
-  var clause1 = Boolean(msg) === false || isStringType(msg) === false;
+const $baseThrows = function baseThrows(shouldThrow, block, expected, message) {
+  let msg = message;
+  let clause1 = Boolean(msg) === false || isStringType(msg) === false;
+
   if (isFunction(block) === false) {
     throw new TypeError('block must be a function');
   }
 
-  var xpd = expected;
+  let xpd = expected;
+
   if (clause1 && isStringType(xpd)) {
     msg = xpd;
     xpd = void 0;
   }
 
-  var actual;
+  let actual;
   try {
     block();
   } catch (e) {
     actual = e;
   }
 
-  var wasExceptionExpected = $expectedException(actual, xpd);
+  const wasExceptionExpected = $expectedException(actual, xpd);
   clause1 = xpd && isStringType(xpd.name) && xpd.name;
-  msg = (clause1 ? ' (' + xpd.name + ').' : '.') + (msg ? ' ' + msg : '.');
+  msg = (clause1 ? ` (${xpd.name}).` : '.') + (msg ? ` ${msg}` : '.');
+
   if (shouldThrow && Boolean(actual) === false) {
-    $baseFail(actual, xpd, 'Missing expected exception' + msg);
+    $baseFail(actual, xpd, `Missing expected exception${msg}`);
   } else if (Boolean(shouldThrow) === false && wasExceptionExpected) {
-    $baseFail(actual, xpd, 'Got unwanted exception' + msg);
+    $baseFail(actual, xpd, `Got unwanted exception${msg}`);
   } else {
-    var clause2;
+    let clause2;
+
     if (shouldThrow) {
       clause1 = actual && xpd && Boolean(wasExceptionExpected) === false;
     } else {
@@ -159,7 +160,7 @@ var $baseThrows = function baseThrows(shouldThrow, block, expected, message) {
  * @param {string} message - Text description of test.
  * @param {string} operator - Text description of test operator.
  */
-var $baseAssert = function baseAssert(value, message, operator) {
+const $baseAssert = function baseAssert(value, message, operator) {
   if (Boolean(value) === false) {
     $baseFail(false, true, message, operator);
   }
@@ -182,10 +183,10 @@ defineProperties($assert, {
    *
    * @class
    * @augments Error
-   * @param {Object} [message] - Need to document the properties.
+   * @param {object} [message] - Need to document the properties.
    */
   AssertionError: {
-    value: AssertionError
+    value: AssertionError,
   },
   /**
    * Tests for deep equality, coercive equality with the equal comparison
@@ -200,7 +201,7 @@ defineProperties($assert, {
       if (deepEql(actual, expected) === false) {
         $baseFail(actual, expected, message, 'deepEqual');
       }
-    }
+    },
   },
   /**
    * Tests for deep equality, coercive equality with the equal comparison
@@ -215,7 +216,7 @@ defineProperties($assert, {
       if (deepEql(actual, expected, true) === false) {
         $baseFail(actual, expected, message, 'deepStrictEqual');
       }
-    }
+    },
   },
   /**
    * Expects block not to throw an error, see assert~throws for details.
@@ -227,7 +228,7 @@ defineProperties($assert, {
   doesNotThrow: {
     value: function doesNotThrow(block, error, message) {
       $baseThrows(false, block, error, message);
-    }
+    },
   },
   /**
    * Tests shallow, coercive equality with the equal comparison
@@ -243,7 +244,7 @@ defineProperties($assert, {
       if (actual != expected) {
         $baseFail(actual, expected, message, '==');
       }
-    }
+    },
   },
   /**
    * Throws an exception that displays the values for actual and expected
@@ -256,7 +257,7 @@ defineProperties($assert, {
    * @throws {Error} Throws an `AssertionError`.
    */
   fail: {
-    value: $baseFail
+    value: $baseFail,
   },
   /**
    * Tests if value is not a falsy value, throws if it is a truthy value.
@@ -270,7 +271,7 @@ defineProperties($assert, {
       if (err) {
         throw err;
       }
-    }
+    },
   },
   /**
    * Tests for any deep inequality. Opposite of `deepEqual`.
@@ -284,21 +285,21 @@ defineProperties($assert, {
       if (deepEql(actual, expected)) {
         $baseFail(actual, expected, message, 'notDeepEqual');
       }
-    }
+    },
   },
   /**
    * Tests for deep inequality. Opposite of `deepStrictEqual`.
    *
-   * @param {*} actual The actual value to be tested.
-   * @param {*} expected The expected value to compare against actual.
-   * @param {string} [message] Text description of test.
+   * @param {*} actual - The actual value to be tested.
+   * @param {*} expected - The expected value to compare against actual.
+   * @param {string} [message] - Text description of test.
    */
   notDeepStrictEqual: {
     value: function notDeepStrictEqual(actual, expected, message) {
       if (deepEql(actual, expected, true)) {
         $baseFail(actual, expected, message, 'notDeepStrictEqual');
       }
-    }
+    },
   },
   /**
    * Tests shallow, coercive non-equality with the not equal comparison
@@ -314,7 +315,7 @@ defineProperties($assert, {
       if (actual == expected) {
         $baseFail(actual, expected, message, '!=');
       }
-    }
+    },
   },
   /**
    * Tests strict non-equality, as determined by the strict not equal
@@ -329,7 +330,7 @@ defineProperties($assert, {
       if (actual === expected) {
         $baseFail(actual, expected, message, '!==');
       }
-    }
+    },
   },
   /**
    * Tests if value is truthy, it is equivalent to
@@ -341,7 +342,7 @@ defineProperties($assert, {
   ok: {
     value: function ok(value, message) {
       $baseAssert(value, message, 'ok');
-    }
+    },
   },
   /**
    * Tests strict equality, as determined by the strict equality
@@ -356,7 +357,7 @@ defineProperties($assert, {
       if (actual !== expected) {
         $baseFail(actual, expected, message, '===');
       }
-    }
+    },
   },
   /**
    * Expects block to throw an error. `error` can be constructor, regexp or
@@ -366,21 +367,21 @@ defineProperties($assert, {
    * @param {constructor|RegExp|Function} [error] - The comparator.
    * @param {string} [message] - Text description of test.
    */
-  'throws': {
+  throws: {
     value: function _throws(block, error, message) {
       $baseThrows(true, block, error, message);
-    }
+    },
   },
   truncate: {
-    value: {}
-  }
+    value: {},
+  },
 });
 /**
  * Allows `truncate` options of AssertionError to be modified. The
  * `truncate` used is the one from `lodash`.
  *
  * @name truncate
- * @type {Object}
+ * @type {object}
  * @property {number} length=128 - The maximum string length.
  * @property {string} omission='' - The string to indicate text is omitted.
  * @property {RegExp|string} separator='' - The pattern to truncate to.
@@ -389,16 +390,16 @@ defineProperties($assert, {
 defineProperties($assert.truncate, {
   length: {
     value: 128,
-    writable: true
+    writable: true,
   },
   omission: {
     value: '',
-    writable: true
+    writable: true,
   },
   separator: {
     value: '',
-    writable: true
-  }
+    writable: true,
+  },
 });
 
 module.exports = $assert;
