@@ -1,13 +1,3 @@
-/**
- * @file A Javascript assertion library.
- * @version 2.0.0
- * @author Xotic750 <Xotic750@gmail.com>
- * @copyright  Xotic750
- * @license {@link <https://opensource.org/licenses/MIT> MIT}
- * @see https://nodejs.org/api/assert.html
- * @module assert-x
- */
-
 import errorx from 'error-x';
 import isRegExp from 'is-regex';
 import safeToString from 'to-string-symbols-supported-x';
