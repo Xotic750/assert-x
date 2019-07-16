@@ -54,12 +54,12 @@
   "dependencies": {
     "deep-equal-x": "^1.9.0",
     "error-x": "^2.0.0",
-    "is-function-x": "^4.0.8",
-    "is-object-like-x": "^2.0.6",
+    "is-function-x": "^4.0.9",
+    "is-object-like-x": "^2.0.7",
     "is-regex": "^1.0.4",
     "object-define-properties-x": "^4.2.0",
     "reduce": "^1.0.2",
-    "to-string-symbols-supported-x": "^2.0.4"
+    "to-string-symbols-supported-x": "^2.0.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.0",
@@ -75,12 +75,12 @@
     "@babel/runtime": "^7.5.4",
     "@prorenata/eslint-config-vue": "^1.13.6",
     "@types/jest": "^24.0.15",
-    "@types/node": "^12.6.2",
+    "@types/node": "^12.6.3",
     "babel-core": "^7.0.0-0",
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
     "babel-plugin-lodash": "^3.3.4",
-    "caniuse-lite": "^1.0.30000983",
+    "caniuse-lite": "^1.0.30000984",
     "chalk": "^2.4.2",
     "concurrently": "^4.1.1",
     "cross-env": "^5.2.0",
@@ -126,7 +126,7 @@
     "typescript": "^3.5.3",
     "webpack": "^4.35.3",
     "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-cli": "^3.3.5",
+    "webpack-cli": "^3.3.6",
     "webpack-merge": "^4.2.1"
   },
   "engines": {
