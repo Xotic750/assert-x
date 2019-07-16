@@ -67,12 +67,10 @@ describe("node's test-assert", function() {
 
   it('assertionError', function() {
     expect.assertions(1);
-    expect.assertions(1);
     assert.ok(indirectInstanceOf(a.AssertionError.prototype, Error), 'a.AssertionError instanceof Error');
   });
 
   it('ok', function() {
-    expect.assertions(1);
     expect.assertions(1);
     assert.throws(makeBlock(a, false), a.AssertionError, 'ok(false)');
     assert.doesNotThrow(makeBlock(a, true), a.AssertionError, 'ok(true)');
@@ -84,7 +82,6 @@ describe("node's test-assert", function() {
 
   it('equal', function() {
     expect.assertions(1);
-    expect.assertions(1);
     assert.throws(makeBlock(a.equal, true, false), a.AssertionError, 'equal');
     assert.doesNotThrow(makeBlock(a.equal, null, null), 'equal');
     assert.doesNotThrow(makeBlock(a.equal, undefined, undefined), 'equal');
@@ -95,13 +92,11 @@ describe("node's test-assert", function() {
 
   it('notEqual', function() {
     expect.assertions(1);
-    expect.assertions(1);
     assert.doesNotThrow(makeBlock(a.notEqual, true, false), 'notEqual');
     assert.throws(makeBlock(a.notEqual, true, true), a.AssertionError, 'notEqual');
   });
 
   it('strictEqual', function() {
-    expect.assertions(1);
     expect.assertions(1);
     assert.throws(makeBlock(a.strictEqual, 2, '2'), a.AssertionError, 'strictEqual');
     assert.throws(makeBlock(a.strictEqual, null, undefined), a.AssertionError, 'strictEqual');
@@ -109,12 +104,10 @@ describe("node's test-assert", function() {
 
   it('notStrictEqual', function() {
     expect.assertions(1);
-    expect.assertions(1);
     assert.doesNotThrow(makeBlock(a.notStrictEqual, 2, '2'), 'notStrictEqual');
   });
 
   it('deepEqual', function() {
-    expect.assertions(1);
     expect.assertions(1); // deepEquals joy!
     // 7.2
     assert.doesNotThrow(makeBlock(a.deepEqual, new Date(2000, 3, 14), new Date(2000, 3, 14)), 'deepEqual date');
@@ -243,7 +236,6 @@ describe("node's test-assert", function() {
   });
 
   it('deepStrictEqual', function() {
-    expect.assertions(1);
     expect.assertions(1); // deepStrictEqual
     assert.doesNotThrow(makeBlock(a.deepStrictEqual, new Date(2000, 3, 14), new Date(2000, 3, 14)), 'deepStrictEqual date');
 
@@ -373,7 +365,6 @@ describe("node's test-assert", function() {
   });
 
   it('throwing', function() {
-    expect.assertions(1);
     expect.assertions(1); // Testing the throwing
     const thrower = function(ErrorConstructor) {
       throw new ErrorConstructor('test');
@@ -457,7 +448,6 @@ describe("node's test-assert", function() {
   });
 
   it('gH-207', function() {
-    expect.assertions(1);
     expect.assertions(1); // GH-207. Make sure deepEqual doesn't loop forever on circular refs
 
     const b = {};
@@ -477,7 +467,6 @@ describe("node's test-assert", function() {
   });
 
   it('gH-7178', function() {
-    expect.assertions(1);
     expect.assertions(1); // GH-7178. Ensure reflexivity of deepEqual with `arguments` objects.
     const args = (function() {
       return arguments;
@@ -534,7 +523,6 @@ describe("node's test-assert", function() {
   });
 
   it('#2893', function() {
-    expect.assertions(1);
     expect.assertions(1); // #2893
     let threw = false;
     try {
@@ -550,7 +538,6 @@ describe("node's test-assert", function() {
   });
 
   it('#5292', function() {
-    expect.assertions(1);
     expect.assertions(1); // #5292
     try {
       assert.equal(1, 2);
@@ -568,7 +555,6 @@ describe("node's test-assert", function() {
   });
 
   it('non-function block', function() {
-    expect.assertions(1);
     expect.assertions(1); // Verify that throws() and doesNotThrow() throw on non-function block
     const testBlockTypeError = function(method, block) {
       let threw = true;
@@ -604,7 +590,6 @@ describe("node's test-assert", function() {
   });
 
   it('https://github.com/nodejs/node/issues/3275', function() {
-    expect.assertions(1);
     expect.assertions(1); // https://github.com/nodejs/node/issues/3275
     assert.throws(
       function() {
