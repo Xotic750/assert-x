@@ -8,16 +8,16 @@
  * @module assert-x
  */
 
-const errorx = require('error-x');
+import errorx from 'error-x';
+import isRegExp from 'is-regex';
+import safeToString from 'to-string-symbols-supported-x';
+import isFunction from 'is-function-x';
+import isObjectLike from 'is-object-like-x';
+import reduce from 'reduce';
+import defineProperties from 'object-define-properties-x';
+import deepEql from 'deep-equal-x';
 
 const {AssertionError} = errorx;
-const isRegExp = require('is-regex');
-const safeToString = require('to-string-symbols-supported-x');
-const isFunction = require('is-function-x');
-const isObjectLike = require('is-object-like-x');
-const reduce = require('reduce');
-const defineProperties = require('object-define-properties-x');
-const deepEql = require('deep-equal-x');
 
 const truncOpts = ['length', 'omission', 'separator'];
 let $assert;
@@ -402,4 +402,4 @@ defineProperties($assert.truncate, {
   },
 });
 
-module.exports = $assert;
+export default $assert;
