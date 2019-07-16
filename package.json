@@ -57,7 +57,7 @@
     "is-function-x": "^4.0.10",
     "is-object-like-x": "^2.0.8",
     "is-regex": "^1.0.4",
-    "object-define-properties-x": "^4.2.0",
+    "object-define-properties-x": "^5.0.0",
     "reduce": "^1.0.2",
     "to-string-symbols-supported-x": "^2.0.5"
   },
