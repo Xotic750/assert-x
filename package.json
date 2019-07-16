@@ -54,12 +54,12 @@
   "dependencies": {
     "deep-equal-x": "^1.9.0",
     "error-x": "^2.0.0",
-    "is-function-x": "^4.0.10",
-    "is-object-like-x": "^2.0.8",
+    "is-function-x": "^4.0.11",
+    "is-object-like-x": "^2.0.9",
     "is-regex": "^1.0.4",
-    "object-define-properties-x": "^5.0.0",
+    "object-define-properties-x": "^5.0.1",
     "reduce": "^1.0.2",
-    "to-string-symbols-supported-x": "^2.0.5"
+    "to-string-symbols-supported-x": "^2.0.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.0",
