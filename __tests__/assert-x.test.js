@@ -1,4 +1,4 @@
-let assert;
+import assert from '../src/assert-x';
 
 const a = assert;
 const hasSymbols = typeof Symbol === 'function' && typeof Symbol('') === 'symbol';
@@ -16,14 +16,14 @@ describe("node's test-assert", function() {
     const args = Array.prototype.slice.call(arguments, 1);
 
     return function() {
-      // eslint-disable-next-line no-invalid-this
+      /* eslint-disable-next-line babel/no-invalid-this */
       return f.apply(this, args);
     };
   };
 
   const protoCtrChain = function(o) {
     const result = [];
-    // eslint-disable-next-line no-proto
+    /* eslint-disable-next-line no-proto */
     for (let x = o; x; x = x.__proto__) {
       result.push(x.constructor);
     }
@@ -45,6 +45,7 @@ describe("node's test-assert", function() {
   it('assertionError', function() {
     expect.assertions(1);
     assert.ok(indirectInstanceOf(a.AssertionError.prototype, Error), 'a.AssertionError instanceof Error');
+    expect(true).toBe(true);
   });
 
   it('ok', function() {
@@ -55,6 +56,7 @@ describe("node's test-assert", function() {
     assert.throws(makeBlock(a.ok, false), a.AssertionError, 'ok(false)');
     assert.doesNotThrow(makeBlock(a.ok, true), a.AssertionError, 'ok(true)');
     assert.doesNotThrow(makeBlock(a.ok, 'test'), "ok('test')");
+    expect(true).toBe(true);
   });
 
   it('equal', function() {
@@ -65,23 +67,27 @@ describe("node's test-assert", function() {
     assert.doesNotThrow(makeBlock(a.equal, null, undefined), 'equal');
     assert.doesNotThrow(makeBlock(a.equal, true, true), 'equal');
     assert.doesNotThrow(makeBlock(a.equal, 2, '2'), 'equal');
+    expect(true).toBe(true);
   });
 
   it('notEqual', function() {
     expect.assertions(1);
     assert.doesNotThrow(makeBlock(a.notEqual, true, false), 'notEqual');
     assert.throws(makeBlock(a.notEqual, true, true), a.AssertionError, 'notEqual');
+    expect(true).toBe(true);
   });
 
   it('strictEqual', function() {
     expect.assertions(1);
     assert.throws(makeBlock(a.strictEqual, 2, '2'), a.AssertionError, 'strictEqual');
     assert.throws(makeBlock(a.strictEqual, null, undefined), a.AssertionError, 'strictEqual');
+    expect(true).toBe(true);
   });
 
   it('notStrictEqual', function() {
     expect.assertions(1);
     assert.doesNotThrow(makeBlock(a.notStrictEqual, 2, '2'), 'notStrictEqual');
+    expect(true).toBe(true);
   });
 
   it('deepEqual', function() {
@@ -151,7 +157,6 @@ describe("node's test-assert", function() {
         },
         {
           b: '1',
-          // eslint-disable-next-line sort-keys
           a: 4,
         },
       ),
@@ -210,6 +215,7 @@ describe("node's test-assert", function() {
     assert.doesNotThrow(makeBlock(a.deepEqual, Object('a'), {0: 'a'}), a.AssertionError);
     assert.doesNotThrow(makeBlock(a.deepEqual, Object(1), {}), a.AssertionError);
     assert.doesNotThrow(makeBlock(a.deepEqual, Object(true), {}), a.AssertionError);
+    expect(true).toBe(true);
   });
 
   it('deepStrictEqual', function() {
@@ -280,7 +286,6 @@ describe("node's test-assert", function() {
         },
         {
           b: '1',
-          // eslint-disable-next-line sort-keys
           a: 4,
         },
       ),
@@ -339,6 +344,7 @@ describe("node's test-assert", function() {
     assert.throws(makeBlock(a.deepStrictEqual, Object('a'), {0: 'a'}), a.AssertionError);
     assert.throws(makeBlock(a.deepStrictEqual, Object(1), {}), a.AssertionError);
     assert.throws(makeBlock(a.deepStrictEqual, Object(true), {}), a.AssertionError);
+    expect(true).toBe(true);
   });
 
   it('throwing', function() {
@@ -402,7 +408,7 @@ describe("node's test-assert", function() {
     threw = false;
     try {
       assert.throws(function() {
-        // eslint-disable-next-line no-throw-literal
+        /* eslint-disable-next-line no-throw-literal */
         throw {};
       }, Array);
     } catch (e) {
@@ -416,12 +422,10 @@ describe("node's test-assert", function() {
 
     // use a fn to validate error object
     a.throws(makeBlock(thrower, TypeError), function(err) {
-      if (err instanceof TypeError && /test/.test(err)) {
-        return true;
-      }
-
-      return false;
+      return err instanceof TypeError && /test/.test(err);
     });
+
+    expect(true).toBe(true);
   });
 
   it('gH-207', function() {
@@ -441,6 +445,7 @@ describe("node's test-assert", function() {
     }
 
     assert.ok(gotError);
+    expect(true).toBe(true);
   });
 
   it('gH-7178', function() {
@@ -497,6 +502,7 @@ describe("node's test-assert", function() {
       },
       '{ a: NaN, b: Infinity, c: -Infinity }',
     );
+    expect(true).toBe(true);
   });
 
   it('#2893', function() {
@@ -512,6 +518,7 @@ describe("node's test-assert", function() {
     }
 
     assert.ok(threw);
+    expect(true).toBe(true);
   });
 
   it('#5292', function() {
@@ -529,6 +536,8 @@ describe("node's test-assert", function() {
       assert.equal(e.toString().split('\n')[0], 'AssertionError: oh no');
       assert.equal(e.generatedMessage, false, 'Message incorrectly marked as generated');
     }
+
+    expect(true).toBe(true);
   });
 
   it('non-function block', function() {
@@ -564,13 +573,14 @@ describe("node's test-assert", function() {
     testBlockTypeError(assert.doesNotThrow, null);
     testBlockTypeError(assert.throws, undefined);
     testBlockTypeError(assert.doesNotThrow, undefined);
+    expect(true).toBe(true);
   });
 
   it('https://github.com/nodejs/node/issues/3275', function() {
     expect.assertions(1); // https://github.com/nodejs/node/issues/3275
     assert.throws(
       function() {
-        // eslint-disable-next-line no-throw-literal
+        /* eslint-disable-next-line no-throw-literal */
         throw 'error';
       },
       function(err) {
@@ -585,5 +595,6 @@ describe("node's test-assert", function() {
         return err instanceof Error;
       },
     );
+    expect(true).toBe(true);
   });
 });
