@@ -1,15 +1,16 @@
 import {AssertionErrorConstructor} from 'error-x';
-import isRegExp from 'is-regex';
+import isRegExp from 'is-regexp-x';
 import safeToString from 'to-string-symbols-supported-x';
 import isFunction from 'is-function-x';
 import isObjectLike from 'is-object-like-x';
 import reduce from 'array-reduce-x';
 import defineProperties from 'object-define-properties-x';
-import deepEql from 'deep-equal-x';
+import {isDeepEqual, isDeepStrictEqual} from 'is-deep-strict-equal-x';
 
 /** @type {BooleanConstructor} */
 const castBoolean = true.constructor;
 const truncOpts = ['length', 'omission', 'separator'];
+const rxTest = /none/.test;
 
 /**
  * Tests if value is truthy, it is equivalent to `equal(!!value, true, message)`.
@@ -77,7 +78,7 @@ const $expectedException = function expectedException(actual, expected) {
   }
 
   if (isRegExp(expected)) {
-    return expected.test(safeToString(actual));
+    return rxTest.call(expected, safeToString(actual));
   }
 
   if (actual instanceof expected) {
@@ -188,7 +189,7 @@ defineProperties($assert, {
    */
   deepEqual: {
     value: function deepEqual(actual, expected, message) {
-      if (deepEql(actual, expected) === false) {
+      if (isDeepEqual(actual, expected) === false) {
         $baseFail(actual, expected, message, 'deepEqual');
       }
     },
@@ -203,7 +204,7 @@ defineProperties($assert, {
    */
   deepStrictEqual: {
     value: function deepStrictEqual(actual, expected, message) {
-      if (deepEql(actual, expected, true) === false) {
+      if (isDeepStrictEqual(actual, expected) === false) {
         $baseFail(actual, expected, message, 'deepStrictEqual');
       }
     },
@@ -229,7 +230,7 @@ defineProperties($assert, {
    * @param {string} [message] - Text description of test.
    */
   equal: {
-    value: function _equal(actual, expected, message) {
+    value: function equal(actual, expected, message) {
       // noinspection EqualityComparisonWithCoercionJS
       if (actual != expected /* eslint-disable-line eqeqeq */) {
         $baseFail(actual, expected, message, '==');
@@ -272,7 +273,7 @@ defineProperties($assert, {
    */
   notDeepEqual: {
     value: function notDeepEqual(actual, expected, message) {
-      if (deepEql(actual, expected)) {
+      if (isDeepEqual(actual, expected)) {
         $baseFail(actual, expected, message, 'notDeepEqual');
       }
     },
@@ -286,7 +287,7 @@ defineProperties($assert, {
    */
   notDeepStrictEqual: {
     value: function notDeepStrictEqual(actual, expected, message) {
-      if (deepEql(actual, expected, true)) {
+      if (isDeepStrictEqual(actual, expected)) {
         $baseFail(actual, expected, message, 'notDeepStrictEqual');
       }
     },
@@ -358,7 +359,7 @@ defineProperties($assert, {
    * @param {string} [message] - Text description of test.
    */
   throws: {
-    value: function _throws(block, error, message) {
+    value: function throws(block, error, message) {
       $baseThrows(true, block, error, message);
     },
   },
@@ -366,6 +367,7 @@ defineProperties($assert, {
     value: {},
   },
 });
+
 /**
  * Allows `truncate` options of AssertionError to be modified. The
  * `truncate` used is the one from `lodash`.
