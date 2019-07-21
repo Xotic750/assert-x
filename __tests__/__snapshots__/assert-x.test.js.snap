@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`node's test-assert fail 1`] = `[AssertionError [ERR_ASSERTION]: Failed]`;
+
+exports[`node's test-assert fail 2`] = `[AssertionError [ERR_ASSERTION]: boom]`;
+
+exports[`node's test-assert fail 3`] = `[TypeError: need array]`;
+
+exports[`node's test-assert fail 4`] = `[AssertionError [ERR_ASSERTION]: 'a' != 'b']`;
+
+exports[`node's test-assert fail 5`] = `[AssertionError [ERR_ASSERTION]: 1 > 2]`;
+
+exports[`node's test-assert fail 6`] = `[AssertionError [ERR_ASSERTION]: fail]`;
+
+exports[`node's test-assert fail 7`] = `[AssertionError [ERR_ASSERTION]: whoops]`;
+
+exports[`node's test-assert fail 8`] = `[TypeError: need array]`;

@@ -1,4 +1,4 @@
-import {AssertionErrorConstructor} from 'error-x';
+import {AssertionErrorConstructor, isError} from 'error-x';
 import isRegExp from 'is-regexp-x';
 import safeToString from 'to-string-symbols-supported-x';
 import isFunction from 'is-function-x';
@@ -136,7 +136,9 @@ const baseThrows = function baseThrows(shouldThrow, block, expected, message) {
 
   const wasExceptionExpected = expectedException(actual, xpd);
   clause1 = xpd && isStringType(xpd.name) && xpd.name;
-  msg = (clause1 ? ` (${xpd.name}).` : '.') + (msg ? ` ${msg}` : '.');
+  const part1 = clause1 ? ` (${xpd.name}).` : '.';
+  const part2 = msg ? ` ${msg}` : '.';
+  msg = (part1 === '.' ? '' : part1) + part2;
 
   if (shouldThrow && castBoolean(actual) === false) {
     baseFail(actual, xpd, `Missing expected exception${msg}`, '');
@@ -263,7 +265,22 @@ const assertMethods = {
    * @throws {Error} Throws an `AssertionError`.
    */
   fail: {
-    value: baseFail,
+    value: function fail(actual, expected, message, operator = '!=') {
+      if (arguments.length < 2) {
+        if (isError(actual)) {
+          throw actual;
+        }
+
+        /* eslint-disable-next-line no-void */
+        baseFail(actual, void 0, arguments.length ? actual : 'Failed', 'fail');
+      } else {
+        if (isError(message)) {
+          throw message;
+        }
+
+        baseFail(actual, expected, message, operator);
+      }
+    },
   },
   /**
    * Tests if value is not a falsy value, throws if it is a truthy value.

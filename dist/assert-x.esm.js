@@ -1,4 +1,4 @@
-import { AssertionErrorConstructor } from 'error-x';
+import { AssertionErrorConstructor, isError } from 'error-x';
 import isRegExp from 'is-regexp-x';
 import safeToString from 'to-string-symbols-supported-x';
 import isFunction from 'is-function-x';
@@ -135,7 +135,9 @@ var baseThrows = function baseThrows(shouldThrow, block, expected, message) {
 
   var wasExceptionExpected = expectedException(actual, xpd);
   clause1 = xpd && isStringType(xpd.name) && xpd.name;
-  msg = (clause1 ? " (".concat(xpd.name, ").") : '.') + (msg ? " ".concat(msg) : '.');
+  var part1 = clause1 ? " (".concat(xpd.name, ").") : '.';
+  var part2 = msg ? " ".concat(msg) : '.';
+  msg = (part1 === '.' ? '' : part1) + part2;
 
   if (shouldThrow && castBoolean(actual) === false) {
     baseFail(actual, xpd, "Missing expected exception".concat(msg), '');
@@ -271,7 +273,25 @@ var assertMethods = {
    * @throws {Error} Throws an `AssertionError`.
    */
   fail: {
-    value: baseFail
+    value: function fail(actual, expected, message) {
+      var operator = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '!=';
+
+      if (arguments.length < 2) {
+        if (isError(actual)) {
+          throw actual;
+        }
+        /* eslint-disable-next-line no-void */
+
+
+        baseFail(actual, void 0, arguments.length ? actual : 'Failed', 'fail');
+      } else {
+        if (isError(message)) {
+          throw message;
+        }
+
+        baseFail(actual, expected, message, operator);
+      }
+    }
   },
 
   /**

@@ -492,7 +492,7 @@ describe("node's test-assert", function() {
       try {
         assert.equal(actual, '');
       } catch (e) {
-        assert.equal(e.toString(), `AssertionError: ${expected} == ''`);
+        assert.equal(e.toString(), `AssertionError [ERR_ASSERTION]: ${expected} == ''`);
         assert.ok(e.generatedMessage, 'Message not marked as generated');
       }
     };
@@ -543,7 +543,7 @@ describe("node's test-assert", function() {
       });
     } catch (e) {
       threw = true;
-      assert.equal(e.message, 'Missing expected exception..');
+      assert.equal(e.message, 'Missing expected exception.');
     }
 
     assert.ok(threw);
@@ -555,14 +555,14 @@ describe("node's test-assert", function() {
     try {
       assert.equal(1, 2);
     } catch (e) {
-      assert.equal(e.toString().split('\n')[0], 'AssertionError: 1 == 2');
+      assert.equal(e.toString().split('\n')[0], 'AssertionError [ERR_ASSERTION]: 1 == 2');
       assert.ok(e.generatedMessage, 'Message not marked as generated');
     }
 
     try {
       assert.equal(1, 2, 'oh no');
     } catch (e) {
-      assert.equal(e.toString().split('\n')[0], 'AssertionError: oh no');
+      assert.equal(e.toString().split('\n')[0], 'AssertionError [ERR_ASSERTION]: oh no');
       assert.equal(e.generatedMessage, false, 'Message incorrectly marked as generated');
     }
 
@@ -625,5 +625,62 @@ describe("node's test-assert", function() {
       },
     );
     expect(true).toBe(true);
+  });
+
+  it('fail', function() {
+    expect.assertions(8);
+    try {
+      assert.fail();
+    } catch (e) {
+      expect(e).toMatchSnapshot();
+    }
+
+    try {
+      assert.fail('boom');
+    } catch (e) {
+      expect(e).toMatchSnapshot();
+    }
+
+    try {
+      assert.fail(new TypeError('need array'));
+    } catch (e) {
+      expect(e).toMatchSnapshot();
+    }
+
+    // legacy
+    // AssertionError [ERR_ASSERTION]: 'a' != 'b'
+    try {
+      assert.fail('a', 'b');
+    } catch (e) {
+      expect(e).toMatchSnapshot();
+    }
+
+    // AssertionError [ERR_ASSERTION]: 1 > 2
+    try {
+      assert.fail(1, 2, undefined, '>');
+    } catch (e) {
+      expect(e).toMatchSnapshot();
+    }
+
+    // AssertionError [ERR_ASSERTION]: fail
+    try {
+      assert.fail(1, 2, 'fail');
+    } catch (e) {
+      expect(e).toMatchSnapshot();
+    }
+
+    // AssertionError [ERR_ASSERTION]: whoops
+    try {
+      assert.fail(1, 2, 'whoops', '>');
+    } catch (e) {
+      expect(e).toMatchSnapshot();
+    }
+
+    // TypeError: need array
+    try {
+      assert.fail(1, 2, new TypeError('need array'));
+    } catch (e) {
+      expect(e).toMatchSnapshot();
+    }
   });
 });
