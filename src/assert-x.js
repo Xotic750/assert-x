@@ -107,16 +107,16 @@ const expectedException = function expectedException(actual, expected) {
  *
  * @private
  * @param {boolean} shouldThrow - True if it should throw, otherwise false.
- * @param {Function} block - The function block to be executed in testing.
+ * @param {Function} fn - The function block to be executed in testing.
  * @param {*} expected - The expected value to compare against actual.
  * @param {string} [message] - Text description of test.
  */
-const baseThrows = function baseThrows(shouldThrow, block, expected, message) {
+const baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
   let msg = message;
   let clause1 = castBoolean(msg) === false || isStringType(msg) === false;
 
-  if (isFunction(block) === false) {
-    throw new TypeError('block must be a function');
+  if (isFunction(fn) === false) {
+    throw new TypeError(`The "fn" argument must be of type Function. Received type ${typeof fn}`);
   }
 
   let xpd = expected;
@@ -129,7 +129,7 @@ const baseThrows = function baseThrows(shouldThrow, block, expected, message) {
 
   let actual;
   try {
-    block();
+    fn();
   } catch (e) {
     actual = e;
   }
@@ -229,13 +229,13 @@ const assertMethods = {
   /**
    * Expects block not to throw an error, see assert~throws for details.
    *
-   * @param {Function} block - The function block to be executed in testing.
+   * @param {Function} fn - The function block to be executed in testing.
    * @param {constructor} [error] - The comparator.
    * @param {string} [message] - Text description of test.
    */
   doesNotThrow: {
-    value: function doesNotThrow(block, error, message) {
-      baseThrows(false, block, error, message);
+    value: function doesNotThrow(fn, error, message) {
+      baseThrows(false, fn, error, message);
     },
   },
   /**
@@ -351,7 +351,7 @@ const assertMethods = {
   notStrictEqual: {
     value: function notStrictEqual(actual, expected, message) {
       if (actual === expected) {
-        baseFail(actual, expected, message, '!==');
+        baseFail(actual, expected, message, 'notStrictEqual');
       }
     },
   },
@@ -378,7 +378,7 @@ const assertMethods = {
   strictEqual: {
     value: function strictEqual(actual, expected, message) {
       if (actual !== expected) {
-        baseFail(actual, expected, message, '===');
+        baseFail(actual, expected, message, 'strictEqual');
       }
     },
   },
@@ -386,13 +386,13 @@ const assertMethods = {
    * Expects block to throw an error. `error` can be constructor, regexp or
    * validation function.
    *
-   * @param {Function} block - The function block to be executed in testing.
+   * @param {Function} fn - The function block to be executed in testing.
    * @param {constructor|RegExp|Function} [error] - The comparator.
    * @param {string} [message] - Text description of test.
    */
   throws: {
-    value: function throws(block, error, message) {
-      baseThrows(true, block, error, message);
+    value: function throws(fn, error, message) {
+      baseThrows(true, fn, error, message);
     },
   },
 };

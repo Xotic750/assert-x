@@ -1,4 +1,5 @@
-import assert from '../src/assert-x';
+import stripAnsi from 'strip-ansi';
+import {strict as assert} from '../src/assert-x';
 
 const a = assert;
 const hasSymbols = typeof Symbol === 'function' && typeof Symbol('') === 'symbol';
@@ -61,12 +62,12 @@ describe("node's test-assert", function() {
 
   it('equal', function() {
     expect.assertions(1);
-    assert.throws(makeBlock(a.equal, true, false), a.AssertionError, 'equal');
+    assert.throws(makeBlock(a.equal, true, false), a.AssertionError, 'notEqual');
     assert.doesNotThrow(makeBlock(a.equal, null, null), 'equal');
     assert.doesNotThrow(makeBlock(a.equal, undefined, undefined), 'equal');
-    assert.doesNotThrow(makeBlock(a.equal, null, undefined), 'equal');
+    assert.throws(makeBlock(a.equal, null, undefined), 'notEqual');
     assert.doesNotThrow(makeBlock(a.equal, true, true), 'equal');
-    assert.doesNotThrow(makeBlock(a.equal, 2, '2'), 'equal');
+    assert.throws(makeBlock(a.equal, 2, '2'), 'notEqual');
     expect(true).toBe(true);
   });
 
@@ -123,9 +124,9 @@ describe("node's test-assert", function() {
     it('7.4', function() {
       expect.assertions(1);
       // 7.4
-      assert.doesNotThrow(makeBlock(a.deepEqual, 4, '4'), 'deepEqual == check');
-      assert.doesNotThrow(makeBlock(a.deepEqual, true, 1), 'deepEqual == check');
-      assert.throws(makeBlock(a.deepEqual, 4, '5'), a.AssertionError, 'deepEqual == check');
+      assert.throws(makeBlock(a.deepEqual, 4, '4'), 'deepEqual === check');
+      assert.throws(makeBlock(a.deepEqual, true, 1), 'deepEqual === check');
+      assert.throws(makeBlock(a.deepEqual, 4, '5'), a.AssertionError, 'deepEqual === check');
       expect(true).toBe(true);
     });
 
@@ -147,7 +148,7 @@ describe("node's test-assert", function() {
           },
         ),
       );
-      assert.doesNotThrow(makeBlock(a.deepEqual, [4], ['4']));
+      assert.throws(makeBlock(a.deepEqual, [4], ['4']));
       assert.throws(
         makeBlock(
           a.deepEqual,
@@ -209,7 +210,7 @@ describe("node's test-assert", function() {
 
       NameBuilder2.prototype = Object;
       nb2 = new NameBuilder2('Ryan', 'Dahl');
-      assert.doesNotThrow(makeBlock(a.deepEqual, nb1, nb2));
+      assert.throws(makeBlock(a.deepEqual, nb1, nb2));
 
       // primitives and object
       assert.throws(makeBlock(a.deepEqual, null, {}), a.AssertionError);
@@ -379,7 +380,11 @@ describe("node's test-assert", function() {
   it('throwing', function() {
     expect.assertions(1); // Testing the throwing
     const thrower = function(ErrorConstructor) {
-      throw new ErrorConstructor('test');
+      if (ErrorConstructor === a.AssertionError) {
+        throw new ErrorConstructor({message: 'test'});
+      } else {
+        throw new ErrorConstructor('test');
+      }
     };
 
     // the basic calls work
@@ -478,7 +483,7 @@ describe("node's test-assert", function() {
   });
 
   it('gH-7178', function() {
-    expect.assertions(1); // GH-7178. Ensure reflexivity of deepEqual with `arguments` objects.
+    expect.assertions(43); // GH-7178. Ensure reflexivity of deepEqual with `arguments` objects.
     const args = (function() {
       return arguments;
     })();
@@ -492,8 +497,32 @@ describe("node's test-assert", function() {
       try {
         assert.equal(actual, '');
       } catch (e) {
-        assert.equal(e.toString(), `AssertionError [ERR_ASSERTION]: ${expected} == ''`);
-        assert.ok(e.generatedMessage, 'Message not marked as generated');
+        expect(stripAnsi(e.toString())).toBe(
+          `AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n${expected} !== ''\n`,
+        );
+        expect(e.generatedMessage).toBe(true, 'Message not marked as generated');
+      }
+    };
+
+    const testAssertionMessage2 = function(actual, expected) {
+      try {
+        assert.notEqual(actual, actual);
+      } catch (e) {
+        expect(stripAnsi(e.toString())).toBe(
+          `AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to: ${expected}`,
+        );
+        expect(e.generatedMessage).toBe(true, 'Message not marked as generated');
+      }
+    };
+
+    const testAssertionMessage3 = function(actual, expected) {
+      try {
+        assert.equal(actual, '');
+      } catch (e) {
+        expect(stripAnsi(e.toString())).toBe(
+          `AssertionError [${e.code}]: Expected values to be strictly equal:\n+ actual - expected\n\n+ ${expected}\n- ''`,
+        );
+        expect(e.generatedMessage).toBe(true, 'Message not marked as generated');
       }
     };
 
@@ -506,24 +535,24 @@ describe("node's test-assert", function() {
     testAssertionMessage(NaN, 'NaN');
     testAssertionMessage(Infinity, 'Infinity');
     testAssertionMessage(-Infinity, '-Infinity');
-    testAssertionMessage('', '""');
+    testAssertionMessage2('', "''");
     testAssertionMessage('foo', "'foo'");
-    testAssertionMessage([], '[]');
-    testAssertionMessage([1, 2, 3], '[ 1, 2, 3 ]');
-    testAssertionMessage(/a/, '/a/');
-    testAssertionMessage(/abc/gim, '/abc/gim');
-    testAssertionMessage(function f() {}, '[Function: f]');
+    testAssertionMessage3([], '[]');
+    testAssertionMessage3([1, 2, 3], '[ 1, 2, 3 ]');
+    testAssertionMessage3(/a/, '/a/');
+    testAssertionMessage3(/abc/gim, '/abc/gim');
+    testAssertionMessage3(function f() {}, '[Function: f]');
     testAssertionMessage(function() {}, '[Function]');
-    testAssertionMessage({}, '{}');
-    testAssertionMessage(circular, '{ y: 1, x: [Circular] }');
-    testAssertionMessage(
+    testAssertionMessage3({}, '{}');
+    testAssertionMessage3(circular, '{ y: 1, x: [Circular] }');
+    testAssertionMessage3(
       {
         a: undefined,
         b: null,
       },
       '{ a: undefined, b: null }',
     );
-    testAssertionMessage(
+    testAssertionMessage3(
       {
         a: NaN,
         b: Infinity,
@@ -551,26 +580,26 @@ describe("node's test-assert", function() {
   });
 
   it('#5292', function() {
-    expect.assertions(1); // #5292
+    expect.assertions(5); // #5292
     try {
       assert.equal(1, 2);
     } catch (e) {
-      assert.equal(e.toString().split('\n')[0], 'AssertionError [ERR_ASSERTION]: 1 == 2');
-      assert.ok(e.generatedMessage, 'Message not marked as generated');
+      expect(e.toString()).toBe('AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 2\n');
+      expect(e.generatedMessage).toBe(true, 'Message not marked as generated');
     }
 
     try {
       assert.equal(1, 2, 'oh no');
     } catch (e) {
-      assert.equal(e.toString().split('\n')[0], 'AssertionError [ERR_ASSERTION]: oh no');
-      assert.equal(e.generatedMessage, false, 'Message incorrectly marked as generated');
+      expect(e.toString()).toBe('AssertionError [ERR_ASSERTION]: oh no');
+      expect(e.generatedMessage).toBe(false, 'Message incorrectly marked as generated');
     }
 
     expect(true).toBe(true);
   });
 
   it('non-function block', function() {
-    expect.assertions(1); // Verify that throws() and doesNotThrow() throw on non-function block
+    expect.assertions(37); // Verify that throws() and doesNotThrow() throw on non-function block
     const testBlockTypeError = function(method, block) {
       let threw = true;
 
@@ -578,10 +607,10 @@ describe("node's test-assert", function() {
         method(block);
         threw = false;
       } catch (e) {
-        assert.equal(e.toString(), 'TypeError: block must be a function');
+        expect(e.toString()).toBe(`TypeError: The "fn" argument must be of type Function. Received type ${typeof block}`);
       }
 
-      assert.ok(threw);
+      expect(threw).toBe(true);
     };
 
     testBlockTypeError(assert.throws, 'string');
