@@ -1,6 +1,6 @@
 {
   "name": "assert-x",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "A Javascript assertion library.",
   "homepage": "http://xotic750.github.io/assert-x/",
   "author": {
@@ -54,7 +54,7 @@
   "dependencies": {
     "array-reduce-x": "^3.0.7",
     "error-x": "^3.0.5",
-    "is-deep-strict-equal-x": "^1.0.3",
+    "is-deep-strict-equal-x": "^1.0.4",
     "is-function-x": "^4.0.18",
     "is-object-like-x": "^2.0.16",
     "is-regexp-x": "^3.0.9",
