@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-22T17:44:03.705Z",
+  "date": "2019-07-22T21:33:02.003Z",
   "describe": "",
   "description": "A Javascript assertion library.",
   "file": "assert-x.js",
-  "hash": "1f5636f8d7c059cc317a",
+  "hash": "cc2b64b22ca0e4ecf0d5",
   "license": "MIT",
-  "version": "3.1.7"
+  "version": "3.1.8"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -9722,11 +9722,11 @@ if (nativeEndsWith) {
 
   if (isWorking) {
     res = attempt_x__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].call('abc', nativeEndsWith, 'c', -1 / 0);
-    isWorking = res.threw === false && res.value === true;
+    isWorking = res.threw === false && res.value === false;
   }
 
   if (isWorking) {
-    res = attempt_x__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].call(123, nativeEndsWith, '1');
+    res = attempt_x__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].call(123, nativeEndsWith, '3');
     isWorking = res.threw === false && res.value === true;
   }
 
@@ -10360,8 +10360,7 @@ var $repeat;
 
 if (hasNative) {
   $repeat = function repeat(value, count) {
-    var result = nativeRepeat.call(Object(require_object_coercible_x__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(value), count);
-    return typeof result === 'string' ? result : EMPTY_STRING;
+    return nativeRepeat.call(Object(require_object_coercible_x__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(value), count) || EMPTY_STRING;
   };
 } else {
   $repeat = function repeat(value, count) {
