@@ -1,6 +1,6 @@
 {
   "name": "assert-x",
-  "version": "3.1.4",
+  "version": "3.1.5",
   "description": "A Javascript assertion library.",
   "homepage": "http://xotic750.github.io/assert-x/",
   "author": {
@@ -52,16 +52,16 @@
     "url": "https://github.com/Xotic750/assert-x/issues"
   },
   "dependencies": {
-    "array-reduce-x": "^3.0.8",
-    "error-x": "^3.0.13",
-    "is-deep-strict-equal-x": "^1.0.5",
-    "is-function-x": "^4.0.19",
-    "is-object-like-x": "^2.0.17",
-    "is-regexp-x": "^3.0.10",
-    "object-assign-x": "^2.0.5",
-    "object-define-properties-x": "^5.0.6",
-    "object-define-property-x": "^5.0.9",
-    "to-string-symbols-supported-x": "^2.0.13"
+    "array-reduce-x": "^3.0.9",
+    "error-x": "^3.0.14",
+    "is-deep-strict-equal-x": "^1.0.6",
+    "is-function-x": "^4.0.20",
+    "is-object-like-x": "^2.0.18",
+    "is-regexp-x": "^3.0.11",
+    "object-assign-x": "^2.0.6",
+    "object-define-properties-x": "^5.0.7",
+    "object-define-property-x": "^5.0.10",
+    "to-string-symbols-supported-x": "^2.0.14"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -75,7 +75,7 @@
     "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/runtime": "^7.5.5",
-    "@prorenata/eslint-config-vue": "^1.13.9",
+    "@prorenata/eslint-config-vue": "^1.13.10",
     "@types/jest": "^24.0.15",
     "@types/node": "^12.6.8",
     "babel-core": "^7.0.0-0",
@@ -99,7 +99,7 @@
     "eslint-plugin-html": "^6.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^22.13.0",
-    "eslint-plugin-jsdoc": "^15.6.0",
+    "eslint-plugin-jsdoc": "^15.6.1",
     "eslint-plugin-json": "^1.4.0",
     "eslint-plugin-lodash": "^5.1.0",
     "eslint-plugin-no-use-extend-native": "^0.4.1",
@@ -134,7 +134,7 @@
   },
   "engines": {
     "node": ">=8.11.4",
-    "npm": "6.4.1"
+    "npm": "6.10.1"
   },
   "browserslist": [
     "> 1%",
