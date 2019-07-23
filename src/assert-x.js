@@ -2,51 +2,16 @@ import {AssertionErrorConstructor, isError} from 'error-x';
 import isRegExp from 'is-regexp-x';
 import safeToString from 'to-string-symbols-supported-x';
 import isFunction from 'is-function-x';
-import reduce from 'array-reduce-x';
-import defineProperty from 'object-define-property-x';
 import defineProperties from 'object-define-properties-x';
 import {isDeepEqual, isDeepStrictEqual} from 'is-deep-strict-equal-x';
 import assign from 'object-assign-x';
 
 /** @type {BooleanConstructor} */
 const castBoolean = true.constructor;
-const truncOpts = ['length', 'omission', 'separator'];
 const rxTest = /none/.test;
-
-const assertTruncate = defineProperties(
-  {},
-  {
-    length: {
-      value: 128,
-      writable: true,
-    },
-    omission: {
-      value: '',
-      writable: true,
-    },
-    separator: {
-      value: '',
-      writable: true,
-    },
-  },
-);
 
 const isStringType = function isStringType(value) {
   return typeof value === 'string';
-};
-
-/**
- * Extends `arg` with the `truncate` options.
- *
- * @private
- * @param {object} arg - The object to extend.
- * @param {string} name - The `truncate` option name.
- * @returns {object} The `arg` object.
- */
-const extendOpts = function extendOpts(arg, name) {
-  arg[name] = assertTruncate[name];
-
-  return arg;
 };
 
 /**
@@ -67,8 +32,6 @@ const baseFail = function baseFail(actual, expected, message, operator) {
     message,
     operator,
   };
-
-  reduce(truncOpts, extendOpts, arg);
 
   throw new AssertionErrorConstructor(arg);
 };
@@ -399,22 +362,6 @@ const assertMethods = {
 
 defineProperties(assert, assertMethods);
 
-/**
- * Allows `truncate` options of AssertionError to be modified. The
- * `truncate` used is the one from `lodash`.
- *
- * @name truncate
- * @type {object}
- * @property {number} length=128 - The maximum string length.
- * @property {string} omission='' - The string to indicate text is omitted.
- * @property {RegExp|string} separator='' - The pattern to truncate to.
- * @see {@link https://github.com/Xotic750/truncate-x}
- */
-defineProperty(assert, 'truncate', {
-  enumerable: true,
-  value: assertTruncate,
-});
-
 export default assert;
 
 // Expose a strict only variant of assert
@@ -430,8 +377,3 @@ const strictMethods = assign({}, assertMethods, {
 });
 
 defineProperties(strict, strictMethods);
-
-defineProperty(strict, 'truncate', {
-  enumerable: true,
-  value: assertTruncate,
-});

@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-23T20:16:52.962Z",
+  "date": "2019-07-23T21:28:43.864Z",
   "describe": "",
   "description": "A Javascript assertion library.",
   "file": "assert-x.js",
-  "hash": "c94eb8982a62ffe1c57b",
+  "hash": "0dcec1cba9fb2e2e96c2",
   "license": "MIT",
-  "version": "3.1.13"
+  "version": "3.1.14"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -13088,44 +13088,13 @@ function assert_x_esm_typeof(obj) { if (typeof Symbol === "function" && typeof S
 
 
 
-
-
 /** @type {BooleanConstructor} */
 
 var assert_x_esm_castBoolean = true.constructor;
-var truncOpts = ['length', 'omission', 'separator'];
 var assert_x_esm_rxTest = /none/.test;
-var assertTruncate = object_define_properties_x_esm({}, {
-  length: {
-    value: 128,
-    writable: true
-  },
-  omission: {
-    value: '',
-    writable: true
-  },
-  separator: {
-    value: '',
-    writable: true
-  }
-});
 
 var assert_x_esm_isStringType = function isStringType(value) {
   return typeof value === 'string';
-};
-/**
- * Extends `arg` with the `truncate` options.
- *
- * @private
- * @param {object} arg - The object to extend.
- * @param {string} name - The `truncate` option name.
- * @returns {object} The `arg` object.
- */
-
-
-var extendOpts = function extendOpts(arg, name) {
-  arg[name] = assertTruncate[name];
-  return arg;
 };
 /**
  * Throws an exception that displays the values for actual and expected
@@ -13147,7 +13116,6 @@ var assert_x_esm_baseFail = function baseFail(actual, expected, message, operato
     message: message,
     operator: operator
   };
-  array_reduce_x_esm(truncOpts, extendOpts, arg);
   throw new AssertionErrorConstructor(arg);
 };
 /**
@@ -13501,22 +13469,6 @@ var assertMethods = {
   }
 };
 object_define_properties_x_esm(assert, assertMethods);
-/**
- * Allows `truncate` options of AssertionError to be modified. The
- * `truncate` used is the one from `lodash`.
- *
- * @name truncate
- * @type {object}
- * @property {number} length=128 - The maximum string length.
- * @property {string} omission='' - The string to indicate text is omitted.
- * @property {RegExp|string} separator='' - The pattern to truncate to.
- * @see {@link https://github.com/Xotic750/truncate-x}
- */
-
-object_define_property_x_esm(assert, 'truncate', {
-  enumerable: true,
-  value: assertTruncate
-});
 /* harmony default export */ var assert_x_esm = __webpack_exports__["default"] = (assert); // Expose a strict only variant of assert
 
 function assert_x_esm_strict(value, message) {
@@ -13529,10 +13481,6 @@ var strictMethods = object_assign_x_esm({}, assertMethods, {
   notDeepEqual: assertMethods.notDeepStrictEqual
 });
 object_define_properties_x_esm(assert_x_esm_strict, strictMethods);
-object_define_property_x_esm(assert_x_esm_strict, 'truncate', {
-  enumerable: true,
-  value: assertTruncate
-});
 
 
 

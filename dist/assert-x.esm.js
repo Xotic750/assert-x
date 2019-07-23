@@ -4,47 +4,16 @@ import { AssertionErrorConstructor, isError } from 'error-x';
 import isRegExp from 'is-regexp-x';
 import safeToString from 'to-string-symbols-supported-x';
 import isFunction from 'is-function-x';
-import reduce from 'array-reduce-x';
-import defineProperty from 'object-define-property-x';
 import defineProperties from 'object-define-properties-x';
 import { isDeepEqual, isDeepStrictEqual } from 'is-deep-strict-equal-x';
 import assign from 'object-assign-x';
 /** @type {BooleanConstructor} */
 
 var castBoolean = true.constructor;
-var truncOpts = ['length', 'omission', 'separator'];
 var rxTest = /none/.test;
-var assertTruncate = defineProperties({}, {
-  length: {
-    value: 128,
-    writable: true
-  },
-  omission: {
-    value: '',
-    writable: true
-  },
-  separator: {
-    value: '',
-    writable: true
-  }
-});
 
 var isStringType = function isStringType(value) {
   return typeof value === 'string';
-};
-/**
- * Extends `arg` with the `truncate` options.
- *
- * @private
- * @param {object} arg - The object to extend.
- * @param {string} name - The `truncate` option name.
- * @returns {object} The `arg` object.
- */
-
-
-var extendOpts = function extendOpts(arg, name) {
-  arg[name] = assertTruncate[name];
-  return arg;
 };
 /**
  * Throws an exception that displays the values for actual and expected
@@ -66,7 +35,6 @@ var baseFail = function baseFail(actual, expected, message, operator) {
     message: message,
     operator: operator
   };
-  reduce(truncOpts, extendOpts, arg);
   throw new AssertionErrorConstructor(arg);
 };
 /**
@@ -420,22 +388,6 @@ var assertMethods = {
   }
 };
 defineProperties(assert, assertMethods);
-/**
- * Allows `truncate` options of AssertionError to be modified. The
- * `truncate` used is the one from `lodash`.
- *
- * @name truncate
- * @type {object}
- * @property {number} length=128 - The maximum string length.
- * @property {string} omission='' - The string to indicate text is omitted.
- * @property {RegExp|string} separator='' - The pattern to truncate to.
- * @see {@link https://github.com/Xotic750/truncate-x}
- */
-
-defineProperty(assert, 'truncate', {
-  enumerable: true,
-  value: assertTruncate
-});
 export default assert; // Expose a strict only variant of assert
 
 export function strict(value, message) {
@@ -448,9 +400,5 @@ var strictMethods = assign({}, assertMethods, {
   notDeepEqual: assertMethods.notDeepStrictEqual
 });
 defineProperties(strict, strictMethods);
-defineProperty(strict, 'truncate', {
-  enumerable: true,
-  value: assertTruncate
-});
 
 //# sourceMappingURL=assert-x.esm.js.map

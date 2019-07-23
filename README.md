@@ -24,34 +24,41 @@
 
 A Javascript assertion library.
 
-**See**: https://nodejs.org/api/assert.html  
+**See**: https://nodejs.org/dist/latest-v12.x/docs/api/assert.html
+
+This is legacy mode by default.
+
+**See**:https://nodejs.org/dist/latest-v12.x/docs/api/assert.html#assert_legacy_mode
 
 - [assert-x](#module_assert-x)
-  - [~AssertionError](#module_assert-x..AssertionError) ⇐ <code>Error</code>
-    - [`new AssertionError([message])`](#new_module_assert-x..AssertionError_new)
-  - [`~deepEqual`](#module_assert-x..deepEqual)
-  - [`~deepStrictEqual`](#module_assert-x..deepStrictEqual)
-  - [`~doesNotThrow`](#module_assert-x..doesNotThrow)
-  - [`~equal`](#module_assert-x..equal)
-  - [`~fail`](#module_assert-x..fail)
-  - [`~ifError`](#module_assert-x..ifError)
-  - [`~notDeepEqual`](#module_assert-x..notDeepEqual)
-  - [`~notDeepStrictEqual`](#module_assert-x..notDeepStrictEqual)
-  - [`~notEqual`](#module_assert-x..notEqual)
-  - [`~notStrictEqual`](#module_assert-x..notStrictEqual)
-  - [`~ok`](#module_assert-x..ok)
-  - [`~strictEqual`](#module_assert-x..strictEqual)
-  - [`~throws`](#module_assert-x..throws)
-  - [`~truncate`](#module_assert-x..truncate) : <code>Object</code>
-  - [`~$assert(value, message)`](#module_assert-x..$assert)
+  - [~AssertionError](#module_assert-x.AssertionError) ⇐ <code>Error</code>
+    - [`new AssertionError([message])`](#new_module_assert-x.AssertionError_new)
+  - [`~deepEqual`](#module_assert-x.deepEqual)
+  - [`~deepStrictEqual`](#module_assert-x.deepStrictEqual)
+  - [`~doesNotThrow`](#module_assert-x.doesNotThrow)
+  - [`~equal`](#module_assert-x.equal)
+  - [`~fail`](#module_assert-x.fail)
+  - [`~ifError`](#module_assert-x.ifError)
+  - [`~notDeepEqual`](#module_assert-x.notDeepEqual)
+  - [`~notDeepStrictEqual`](#module_assert-x.notDeepStrictEqual)
+  - [`~notEqual`](#module_assert-x.notEqual)
+  - [`~notStrictEqual`](#module_assert-x.notStrictEqual)
+  - [`~ok`](#module_assert-x.ok)
+  - [`~strictEqual`](#module_assert-x.strictEqual)
+  - [`~throws`](#module_assert-x.throws)
+  - [`~$assert(value, message)`](#module_assert-x.$assert)
 
-<a name="module_assert-x..AssertionError"></a>
+Strict mode is available.
+
+**See**: https://nodejs.org/dist/latest-v12.x/docs/api/assert.html#assert_strict_mode
+
+<a name="module_assert-x.AssertionError"></a>
 
 ### assert-x~AssertionError ⇐ <code>Error</code>
 
 **Kind**: inner class of [<code>assert-x</code>](#module_assert-x)  
 **Extends**: <code>Error</code>  
-<a name="new_module_assert-x..AssertionError_new"></a>
+<a name="new_module_assert-x.AssertionError_new"></a>
 
 #### `new AssertionError([message])`
 
@@ -62,7 +69,7 @@ standardized AssertionError specification.
 | --------- | ------------------- | -------------------------------- |
 | [message] | <code>Object</code> | Need to document the properties. |
 
-<a name="module_assert-x..deepEqual"></a>
+<a name="module_assert-x.deepEqual"></a>
 
 ### `assert-x~deepEqual`
 
@@ -77,7 +84,7 @@ operator ( == ) and equivalent.
 | expected  | <code>\*</code>     | The expected value to compare against actual. |
 | [message] | <code>string</code> | Text description of test.                     |
 
-<a name="module_assert-x..deepStrictEqual"></a>
+<a name="module_assert-x.deepStrictEqual"></a>
 
 ### `assert-x~deepStrictEqual`
 
@@ -92,7 +99,7 @@ operator ( === ) and equivalent.
 | expected  | <code>\*</code>     | The expected value to compare against actual. |
 | [message] | <code>string</code> | Text description of test.                     |
 
-<a name="module_assert-x..doesNotThrow"></a>
+<a name="module_assert-x.doesNotThrow"></a>
 
 ### `assert-x~doesNotThrow`
 
@@ -106,7 +113,7 @@ Expects block not to throw an error, see assert~throws for details.
 | [error]   | <code>constructor</code> | The comparator.                               |
 | [message] | <code>string</code>      | Text description of test.                     |
 
-<a name="module_assert-x..equal"></a>
+<a name="module_assert-x.equal"></a>
 
 ### `assert-x~equal`
 
@@ -121,7 +128,7 @@ operator ( == ).
 | expected  | <code>\*</code>     | The expected value to compare against actual. |
 | [message] | <code>string</code> | Text description of test.                     |
 
-<a name="module_assert-x..fail"></a>
+<a name="module_assert-x.fail"></a>
 
 ### `assert-x~fail`
 
@@ -140,7 +147,7 @@ separated by the provided operator.
 | [message] | <code>string</code> | Text description of test.                     |
 | operator  | <code>string</code> | The compare operator.                         |
 
-<a name="module_assert-x..ifError"></a>
+<a name="module_assert-x.ifError"></a>
 
 ### `assert-x~ifError`
 
@@ -156,7 +163,7 @@ Useful when testing the first argument, error in callbacks.
 | ----- | --------------- | -------------------------------------- |
 | err   | <code>\*</code> | The value to be tested for truthiness. |
 
-<a name="module_assert-x..notDeepEqual"></a>
+<a name="module_assert-x.notDeepEqual"></a>
 
 ### `assert-x~notDeepEqual`
 
@@ -170,7 +177,7 @@ Tests for any deep inequality. Opposite of `deepEqual`.
 | expected  | <code>\*</code>     | The expected value to compare against actual. |
 | [message] | <code>string</code> | Text description of test.                     |
 
-<a name="module_assert-x..notDeepStrictEqual"></a>
+<a name="module_assert-x.notDeepStrictEqual"></a>
 
 ### `assert-x~notDeepStrictEqual`
 
@@ -184,7 +191,7 @@ Tests for deep inequality. Opposite of `deepStrictEqual`.
 | expected  | <code>\*</code>     | The expected value to compare against actual. |
 | [message] | <code>string</code> | Text description of test.                     |
 
-<a name="module_assert-x..notEqual"></a>
+<a name="module_assert-x.notEqual"></a>
 
 ### `assert-x~notEqual`
 
@@ -199,7 +206,7 @@ operator ( != ).
 | expected  | <code>\*</code>     | The expected value to compare against actual. |
 | [message] | <code>string</code> | Text description of test.                     |
 
-<a name="module_assert-x..notStrictEqual"></a>
+<a name="module_assert-x.notStrictEqual"></a>
 
 ### `assert-x~notStrictEqual`
 
@@ -214,7 +221,7 @@ operator ( !== ).
 | expected  | <code>\*</code>     | The expected value to compare against actual. |
 | [message] | <code>string</code> | Text description of test.                     |
 
-<a name="module_assert-x..ok"></a>
+<a name="module_assert-x.ok"></a>
 
 ### `assert-x~ok`
 
@@ -228,7 +235,7 @@ Tests if value is truthy, it is equivalent to
 | value     | <code>\*</code>     | The value to be tested.   |
 | [message] | <code>string</code> | Text description of test. |
 
-<a name="module_assert-x..strictEqual"></a>
+<a name="module_assert-x.strictEqual"></a>
 
 ### `assert-x~strictEqual`
 
@@ -243,7 +250,7 @@ operator ( === ).
 | expected  | <code>\*</code>     | The expected value to compare against actual. |
 | [message] | <code>string</code> | Text description of test.                     |
 
-<a name="module_assert-x..throws"></a>
+<a name="module_assert-x.throws"></a>
 
 ### `assert-x~throws`
 
@@ -258,24 +265,7 @@ validation function.
 | [error]   | <code>constructor</code> \| <code>RegExp</code> \| <code>function</code> | The comparator.                               |
 | [message] | <code>string</code>                                                      | Text description of test.                     |
 
-<a name="module_assert-x..truncate"></a>
-
-### `assert-x~truncate` : <code>Object</code>
-
-Allows `truncate` options of AssertionError to be modified. The
-`truncate` used is the one from `lodash`.
-
-**Kind**: inner property of [<code>assert-x</code>](#module_assert-x)  
-**See**: [https://github.com/Xotic750/truncate-x](https://github.com/Xotic750/truncate-x)  
-**Properties**
-
-| Name      | Type                                       | Default                               | Description                             |
-| --------- | ------------------------------------------ | ------------------------------------- | --------------------------------------- |
-| length    | <code>number</code>                        | <code>128</code>                      | The maximum string length.              |
-| omission  | <code>string</code>                        | <code>&quot;&#x27;&#x27;&quot;</code> | The string to indicate text is omitted. |
-| separator | <code>RegExp</code> \| <code>string</code> | <code>&#x27;&#x27;</code>             | The pattern to truncate to.             |
-
-<a name="module_assert-x..$assert"></a>
+<a name="module_assert-x.$assert"></a>
 
 ### `assert-x~$assert(value, message)`
 
