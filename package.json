@@ -1,6 +1,6 @@
 {
   "name": "assert-x",
-  "version": "3.1.16",
+  "version": "3.1.17",
   "description": "A Javascript assertion library.",
   "homepage": "http://xotic750.github.io/assert-x/",
   "author": {
@@ -53,13 +53,13 @@
     "url": "https://github.com/Xotic750/assert-x/issues"
   },
   "dependencies": {
-    "error-x": "^3.0.24",
-    "is-deep-strict-equal-x": "^1.0.8",
-    "is-function-x": "^4.0.23",
-    "is-regexp-x": "^3.0.13",
-    "object-assign-x": "^2.0.8",
-    "object-define-properties-x": "^5.0.9",
-    "to-string-symbols-supported-x": "^2.0.17"
+    "error-x": "^3.0.25",
+    "is-deep-strict-equal-x": "^1.0.9",
+    "is-function-x": "^4.0.24",
+    "is-regexp-x": "^3.0.14",
+    "object-assign-x": "^2.0.9",
+    "object-define-properties-x": "^5.0.10",
+    "to-string-symbols-supported-x": "^2.0.18"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -73,7 +73,7 @@
     "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/runtime": "^7.5.5",
-    "@prorenata/eslint-config-vue": "^1.13.11",
+    "@prorenata/eslint-config-vue": "^1.13.12",
     "@types/jest": "^24.0.15",
     "@types/node": "^12.6.8",
     "babel-core": "^7.0.0-0",
