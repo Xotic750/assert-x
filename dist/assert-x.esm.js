@@ -7,9 +7,7 @@ import isFunction from 'is-function-x';
 import defineProperties from 'object-define-properties-x';
 import { isDeepEqual, isDeepStrictEqual } from 'is-deep-strict-equal-x';
 import assign from 'object-assign-x';
-/** @type {BooleanConstructor} */
-
-var castBoolean = true.constructor;
+import toBoolean from 'to-boolean-x';
 var rxTest = /none/.test;
 
 var isStringType = function isStringType(value) {
@@ -48,7 +46,7 @@ var baseFail = function baseFail(actual, expected, message, operator) {
 
 
 var expectedException = function expectedException(actual, expected) {
-  if (castBoolean(actual) === false || castBoolean(expected) === false) {
+  if (toBoolean(actual) === false || toBoolean(expected) === false) {
     return false;
   }
 
@@ -80,7 +78,7 @@ var expectedException = function expectedException(actual, expected) {
 
 var baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
   var msg = message;
-  var clause1 = castBoolean(msg) === false || isStringType(msg) === false;
+  var clause1 = toBoolean(msg) === false || isStringType(msg) === false;
 
   if (isFunction(fn) === false) {
     throw new TypeError("The \"fn\" argument must be of type Function. Received type ".concat(_typeof(fn)));
@@ -109,15 +107,15 @@ var baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
   var part2 = msg ? " ".concat(msg) : '.';
   msg = (part1 === '.' ? '' : part1) + part2;
 
-  if (shouldThrow && castBoolean(actual) === false) {
+  if (shouldThrow && toBoolean(actual) === false) {
     baseFail(actual, xpd, "Missing expected exception".concat(msg), '');
-  } else if (castBoolean(shouldThrow) === false && wasExceptionExpected) {
+  } else if (toBoolean(shouldThrow) === false && wasExceptionExpected) {
     baseFail(actual, xpd, "Got unwanted exception".concat(msg), '');
   } else {
     var clause2;
 
     if (shouldThrow) {
-      clause1 = actual && xpd && castBoolean(wasExceptionExpected) === false;
+      clause1 = actual && xpd && toBoolean(wasExceptionExpected) === false;
     } else {
       clause1 = false;
       clause2 = actual;
@@ -139,7 +137,7 @@ var baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
 
 
 var baseAssert = function baseAssert(value, message, operator) {
-  if (castBoolean(value) === false) {
+  if (toBoolean(value) === false) {
     baseFail(false, true, message, operator);
   }
 };

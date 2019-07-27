@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-27T15:31:45.292Z",
+  "date": "2019-07-27T19:23:23.402Z",
   "describe": "",
   "description": "A Javascript assertion library.",
   "file": "assert-x.js",
-  "hash": "b79d9aa9356c28d30b3f",
+  "hash": "e7711aa345e4c6688c0d",
   "license": "MIT",
   "version": "3.1.19"
 }
@@ -12798,9 +12798,7 @@ function assert_x_esm_typeof(obj) { if (typeof Symbol === "function" && typeof S
 
 
 
-/** @type {BooleanConstructor} */
 
-var assert_x_esm_castBoolean = true.constructor;
 var assert_x_esm_rxTest = /none/.test;
 
 var assert_x_esm_isStringType = function isStringType(value) {
@@ -12839,7 +12837,7 @@ var assert_x_esm_baseFail = function baseFail(actual, expected, message, operato
 
 
 var assert_x_esm_expectedException = function expectedException(actual, expected) {
-  if (assert_x_esm_castBoolean(actual) === false || assert_x_esm_castBoolean(expected) === false) {
+  if (to_boolean_x_esm(actual) === false || to_boolean_x_esm(expected) === false) {
     return false;
   }
 
@@ -12871,7 +12869,7 @@ var assert_x_esm_expectedException = function expectedException(actual, expected
 
 var assert_x_esm_baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
   var msg = message;
-  var clause1 = assert_x_esm_castBoolean(msg) === false || assert_x_esm_isStringType(msg) === false;
+  var clause1 = to_boolean_x_esm(msg) === false || assert_x_esm_isStringType(msg) === false;
 
   if (is_function_x_esm(fn) === false) {
     throw new TypeError("The \"fn\" argument must be of type Function. Received type ".concat(assert_x_esm_typeof(fn)));
@@ -12900,15 +12898,15 @@ var assert_x_esm_baseThrows = function baseThrows(shouldThrow, fn, expected, mes
   var part2 = msg ? " ".concat(msg) : '.';
   msg = (part1 === '.' ? '' : part1) + part2;
 
-  if (shouldThrow && assert_x_esm_castBoolean(actual) === false) {
+  if (shouldThrow && to_boolean_x_esm(actual) === false) {
     assert_x_esm_baseFail(actual, xpd, "Missing expected exception".concat(msg), '');
-  } else if (assert_x_esm_castBoolean(shouldThrow) === false && wasExceptionExpected) {
+  } else if (to_boolean_x_esm(shouldThrow) === false && wasExceptionExpected) {
     assert_x_esm_baseFail(actual, xpd, "Got unwanted exception".concat(msg), '');
   } else {
     var clause2;
 
     if (shouldThrow) {
-      clause1 = actual && xpd && assert_x_esm_castBoolean(wasExceptionExpected) === false;
+      clause1 = actual && xpd && to_boolean_x_esm(wasExceptionExpected) === false;
     } else {
       clause1 = false;
       clause2 = actual;
@@ -12929,8 +12927,8 @@ var assert_x_esm_baseThrows = function baseThrows(shouldThrow, fn, expected, mes
  */
 
 
-var baseAssert = function baseAssert(value, message, operator) {
-  if (assert_x_esm_castBoolean(value) === false) {
+var assert_x_esm_baseAssert = function baseAssert(value, message, operator) {
+  if (to_boolean_x_esm(value) === false) {
     assert_x_esm_baseFail(false, true, message, operator);
   }
 };
@@ -12943,7 +12941,7 @@ var baseAssert = function baseAssert(value, message, operator) {
 
 
 var assert = function assert(value, message) {
-  baseAssert(value, message, 'ok');
+  assert_x_esm_baseAssert(value, message, 'ok');
 };
 
 var assertMethods = {
@@ -13144,7 +13142,7 @@ var assertMethods = {
    */
   ok: {
     value: function ok(value, message) {
-      baseAssert(value, message, 'ok');
+      assert_x_esm_baseAssert(value, message, 'ok');
     }
   },
 
@@ -13182,7 +13180,7 @@ object_define_properties_x_esm(assert, assertMethods);
 /* harmony default export */ var assert_x_esm = __webpack_exports__["default"] = (assert); // Expose a strict only variant of assert
 
 function assert_x_esm_strict(value, message) {
-  baseAssert(value, message, 'ok');
+  assert_x_esm_baseAssert(value, message, 'ok');
 }
 var strictMethods = object_assign_x_esm({}, assertMethods, {
   equal: assertMethods.strictEqual,

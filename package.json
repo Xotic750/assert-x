@@ -59,6 +59,7 @@
     "is-regexp-x": "^3.0.17",
     "object-assign-x": "^2.0.11",
     "object-define-properties-x": "^5.0.13",
+    "to-boolean-x": "^2.0.24",
     "to-string-symbols-supported-x": "^2.0.21"
   },
   "devDependencies": {

@@ -5,9 +5,8 @@ import isFunction from 'is-function-x';
 import defineProperties from 'object-define-properties-x';
 import {isDeepEqual, isDeepStrictEqual} from 'is-deep-strict-equal-x';
 import assign from 'object-assign-x';
+import toBoolean from 'to-boolean-x';
 
-/** @type {BooleanConstructor} */
-const castBoolean = true.constructor;
 const rxTest = /none/.test;
 
 const isStringType = function isStringType(value) {
@@ -45,7 +44,7 @@ const baseFail = function baseFail(actual, expected, message, operator) {
  * @returns {boolean} True if exception expected, otherwise false.
  */
 const expectedException = function expectedException(actual, expected) {
-  if (castBoolean(actual) === false || castBoolean(expected) === false) {
+  if (toBoolean(actual) === false || toBoolean(expected) === false) {
     return false;
   }
 
@@ -76,7 +75,7 @@ const expectedException = function expectedException(actual, expected) {
  */
 const baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
   let msg = message;
-  let clause1 = castBoolean(msg) === false || isStringType(msg) === false;
+  let clause1 = toBoolean(msg) === false || isStringType(msg) === false;
 
   if (isFunction(fn) === false) {
     throw new TypeError(`The "fn" argument must be of type Function. Received type ${typeof fn}`);
@@ -103,15 +102,15 @@ const baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
   const part2 = msg ? ` ${msg}` : '.';
   msg = (part1 === '.' ? '' : part1) + part2;
 
-  if (shouldThrow && castBoolean(actual) === false) {
+  if (shouldThrow && toBoolean(actual) === false) {
     baseFail(actual, xpd, `Missing expected exception${msg}`, '');
-  } else if (castBoolean(shouldThrow) === false && wasExceptionExpected) {
+  } else if (toBoolean(shouldThrow) === false && wasExceptionExpected) {
     baseFail(actual, xpd, `Got unwanted exception${msg}`, '');
   } else {
     let clause2;
 
     if (shouldThrow) {
-      clause1 = actual && xpd && castBoolean(wasExceptionExpected) === false;
+      clause1 = actual && xpd && toBoolean(wasExceptionExpected) === false;
     } else {
       clause1 = false;
       clause2 = actual;
@@ -132,7 +131,7 @@ const baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
  * @param {string} operator - Text description of test operator.
  */
 const baseAssert = function baseAssert(value, message, operator) {
-  if (castBoolean(value) === false) {
+  if (toBoolean(value) === false) {
     baseFail(false, true, message, operator);
   }
 };
