@@ -677,35 +677,35 @@ describe("node's test-assert", function() {
     }
 
     // legacy
-    // AssertionError [ERR_ASSERTION]: 'a' != 'b'
+    // "AssertionError [ERR_ASSERTION]: 'a' != 'b'"
     try {
       assert.fail('a', 'b');
     } catch (e) {
       expect(e).toMatchSnapshot();
     }
 
-    // AssertionError [ERR_ASSERTION]: 1 > 2
+    // "AssertionError [ERR_ASSERTION]: 1 > 2"
     try {
       assert.fail(1, 2, undefined, '>');
     } catch (e) {
       expect(e).toMatchSnapshot();
     }
 
-    // AssertionError [ERR_ASSERTION]: fail
+    // "AssertionError [ERR_ASSERTION]: fail"
     try {
       assert.fail(1, 2, 'fail');
     } catch (e) {
       expect(e).toMatchSnapshot();
     }
 
-    // AssertionError [ERR_ASSERTION]: whoops
+    // "AssertionError [ERR_ASSERTION]: whoops"
     try {
       assert.fail(1, 2, 'whoops', '>');
     } catch (e) {
       expect(e).toMatchSnapshot();
     }
 
-    // TypeError: need array
+    // "TypeError: need array"
     try {
       assert.fail(1, 2, new TypeError('need array'));
     } catch (e) {
