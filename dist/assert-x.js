@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-29T09:07:01.379Z",
+  "date": "2019-07-29T20:23:51.482Z",
   "describe": "",
   "description": "A Javascript assertion library.",
   "file": "assert-x.js",
-  "hash": "a16a9157638a92ea815d",
+  "hash": "0f4c1467b2bb01bf3710",
   "license": "MIT",
   "version": "3.1.19"
 }
@@ -20,7 +20,7 @@
 		exports["assertX"] = factory();
 	else
 		root["assertX"] = factory();
-})((function() {
+})((function () {
   'use strict';
 
   if (typeof self !== 'undefined') {
@@ -12900,6 +12900,14 @@ var assert_x_esm_throwerBaseThrows = function throwerBaseThrows(obj) {
     throw actual;
   }
 };
+
+var getBaseThrowsActual = function getBaseThrowsActual(fn) {
+  try {
+    return fn();
+  } catch (e) {
+    return e;
+  }
+};
 /**
  * Returns whether an exception is expected. Used by assertx~throws and
  * assertx~doesNotThrow.
@@ -12914,13 +12922,7 @@ var assert_x_esm_throwerBaseThrows = function throwerBaseThrows(obj) {
 
 var assert_x_esm_baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
   assert_x_esm_assertBaseThrowsFnArg(fn);
-  var actual;
-
-  try {
-    fn();
-  } catch (e) {
-    actual = e;
-  }
+  var actual = getBaseThrowsActual(fn);
 
   var _getBaseThrowsMsg = assert_x_esm_getBaseThrowsMsg(message, expected),
       msg = _getBaseThrowsMsg.msg,
