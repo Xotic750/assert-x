@@ -105,6 +105,14 @@ const throwerBaseThrows = function throwerBaseThrows(obj) {
   }
 };
 
+const getBaseThrowsActual = function getBaseThrowsActual(fn) {
+  try {
+    return fn();
+  } catch (e) {
+    return e;
+  }
+};
+
 /**
  * Returns whether an exception is expected. Used by assertx~throws and
  * assertx~doesNotThrow.
@@ -118,13 +126,7 @@ const throwerBaseThrows = function throwerBaseThrows(obj) {
 const baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
   assertBaseThrowsFnArg(fn);
 
-  let actual;
-  try {
-    fn();
-  } catch (e) {
-    actual = e;
-  }
-
+  const actual = getBaseThrowsActual(fn);
   const {msg, xpd} = getBaseThrowsMsg(message, expected);
   const wasExceptionExpected = expectedException(actual, xpd);
 
