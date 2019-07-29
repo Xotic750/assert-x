@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-27T22:21:05.056Z",
+  "date": "2019-07-29T09:07:01.379Z",
   "describe": "",
   "description": "A Javascript assertion library.",
   "file": "assert-x.js",
-  "hash": "e7711aa345e4c6688c0d",
+  "hash": "a16a9157638a92ea815d",
   "license": "MIT",
   "version": "3.1.19"
 }
@@ -20,7 +20,7 @@
 		exports["assertX"] = factory();
 	else
 		root["assertX"] = factory();
-})((function () {
+})((function() {
   'use strict';
 
   if (typeof self !== 'undefined') {
@@ -12855,6 +12855,51 @@ var assert_x_esm_expectedException = function expectedException(actual, expected
 
   return false;
 };
+
+var assert_x_esm_assertBaseThrowsFnArg = function assertBaseThrowsFnArg(fn) {
+  if (is_function_x_esm(fn) === false) {
+    throw new TypeError("The \"fn\" argument must be of type Function. Received type ".concat(assert_x_esm_typeof(fn)));
+  }
+};
+
+var assert_x_esm_getBaseThrowsMsg = function getBaseThrowsMsg(message, expected) {
+  var msg = message;
+  var xpd = expected;
+
+  if ((to_boolean_x_esm(msg) === false || assert_x_esm_isStringType(msg) === false) && assert_x_esm_isStringType(xpd)) {
+    msg = xpd;
+    /* eslint-disable-next-line no-void */
+
+    xpd = void 0;
+  }
+
+  var part1 = xpd && assert_x_esm_isStringType(xpd.name) && xpd.name ? " (".concat(xpd.name, ").") : '.';
+  var part2 = msg ? " ".concat(msg) : '.';
+  return {
+    msg: (part1 === '.' ? '' : part1) + part2,
+    xpd: xpd
+  };
+};
+
+var assert_x_esm_throwerBaseThrows = function throwerBaseThrows(obj) {
+  var shouldThrow = obj.shouldThrow,
+      actual = obj.actual,
+      xpd = obj.xpd,
+      wasExceptionExpected = obj.wasExceptionExpected;
+  var clause1;
+  var clause2;
+
+  if (shouldThrow) {
+    clause1 = actual && xpd && to_boolean_x_esm(wasExceptionExpected) === false;
+  } else {
+    clause1 = false;
+    clause2 = actual;
+  }
+
+  if (clause1 || clause2) {
+    throw actual;
+  }
+};
 /**
  * Returns whether an exception is expected. Used by assertx~throws and
  * assertx~doesNotThrow.
@@ -12868,22 +12913,7 @@ var assert_x_esm_expectedException = function expectedException(actual, expected
 
 
 var assert_x_esm_baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
-  var msg = message;
-  var clause1 = to_boolean_x_esm(msg) === false || assert_x_esm_isStringType(msg) === false;
-
-  if (is_function_x_esm(fn) === false) {
-    throw new TypeError("The \"fn\" argument must be of type Function. Received type ".concat(assert_x_esm_typeof(fn)));
-  }
-
-  var xpd = expected;
-
-  if (clause1 && assert_x_esm_isStringType(xpd)) {
-    msg = xpd;
-    /* eslint-disable-next-line no-void */
-
-    xpd = void 0;
-  }
-
+  assert_x_esm_assertBaseThrowsFnArg(fn);
   var actual;
 
   try {
@@ -12892,29 +12922,23 @@ var assert_x_esm_baseThrows = function baseThrows(shouldThrow, fn, expected, mes
     actual = e;
   }
 
+  var _getBaseThrowsMsg = assert_x_esm_getBaseThrowsMsg(message, expected),
+      msg = _getBaseThrowsMsg.msg,
+      xpd = _getBaseThrowsMsg.xpd;
+
   var wasExceptionExpected = assert_x_esm_expectedException(actual, xpd);
-  clause1 = xpd && assert_x_esm_isStringType(xpd.name) && xpd.name;
-  var part1 = clause1 ? " (".concat(xpd.name, ").") : '.';
-  var part2 = msg ? " ".concat(msg) : '.';
-  msg = (part1 === '.' ? '' : part1) + part2;
 
   if (shouldThrow && to_boolean_x_esm(actual) === false) {
     assert_x_esm_baseFail(actual, xpd, "Missing expected exception".concat(msg), '');
   } else if (to_boolean_x_esm(shouldThrow) === false && wasExceptionExpected) {
     assert_x_esm_baseFail(actual, xpd, "Got unwanted exception".concat(msg), '');
   } else {
-    var clause2;
-
-    if (shouldThrow) {
-      clause1 = actual && xpd && to_boolean_x_esm(wasExceptionExpected) === false;
-    } else {
-      clause1 = false;
-      clause2 = actual;
-    }
-
-    if (clause1 || clause2) {
-      throw actual;
-    }
+    assert_x_esm_throwerBaseThrows({
+      shouldThrow: shouldThrow,
+      actual: actual,
+      xpd: xpd,
+      wasExceptionExpected: wasExceptionExpected
+    });
   }
 };
 /**

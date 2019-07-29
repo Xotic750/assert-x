@@ -64,6 +64,51 @@ var expectedException = function expectedException(actual, expected) {
 
   return false;
 };
+
+var assertBaseThrowsFnArg = function assertBaseThrowsFnArg(fn) {
+  if (isFunction(fn) === false) {
+    throw new TypeError("The \"fn\" argument must be of type Function. Received type ".concat(_typeof(fn)));
+  }
+};
+
+var getBaseThrowsMsg = function getBaseThrowsMsg(message, expected) {
+  var msg = message;
+  var xpd = expected;
+
+  if ((toBoolean(msg) === false || isStringType(msg) === false) && isStringType(xpd)) {
+    msg = xpd;
+    /* eslint-disable-next-line no-void */
+
+    xpd = void 0;
+  }
+
+  var part1 = xpd && isStringType(xpd.name) && xpd.name ? " (".concat(xpd.name, ").") : '.';
+  var part2 = msg ? " ".concat(msg) : '.';
+  return {
+    msg: (part1 === '.' ? '' : part1) + part2,
+    xpd: xpd
+  };
+};
+
+var throwerBaseThrows = function throwerBaseThrows(obj) {
+  var shouldThrow = obj.shouldThrow,
+      actual = obj.actual,
+      xpd = obj.xpd,
+      wasExceptionExpected = obj.wasExceptionExpected;
+  var clause1;
+  var clause2;
+
+  if (shouldThrow) {
+    clause1 = actual && xpd && toBoolean(wasExceptionExpected) === false;
+  } else {
+    clause1 = false;
+    clause2 = actual;
+  }
+
+  if (clause1 || clause2) {
+    throw actual;
+  }
+};
 /**
  * Returns whether an exception is expected. Used by assertx~throws and
  * assertx~doesNotThrow.
@@ -77,22 +122,7 @@ var expectedException = function expectedException(actual, expected) {
 
 
 var baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
-  var msg = message;
-  var clause1 = toBoolean(msg) === false || isStringType(msg) === false;
-
-  if (isFunction(fn) === false) {
-    throw new TypeError("The \"fn\" argument must be of type Function. Received type ".concat(_typeof(fn)));
-  }
-
-  var xpd = expected;
-
-  if (clause1 && isStringType(xpd)) {
-    msg = xpd;
-    /* eslint-disable-next-line no-void */
-
-    xpd = void 0;
-  }
-
+  assertBaseThrowsFnArg(fn);
   var actual;
 
   try {
@@ -101,29 +131,23 @@ var baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
     actual = e;
   }
 
+  var _getBaseThrowsMsg = getBaseThrowsMsg(message, expected),
+      msg = _getBaseThrowsMsg.msg,
+      xpd = _getBaseThrowsMsg.xpd;
+
   var wasExceptionExpected = expectedException(actual, xpd);
-  clause1 = xpd && isStringType(xpd.name) && xpd.name;
-  var part1 = clause1 ? " (".concat(xpd.name, ").") : '.';
-  var part2 = msg ? " ".concat(msg) : '.';
-  msg = (part1 === '.' ? '' : part1) + part2;
 
   if (shouldThrow && toBoolean(actual) === false) {
     baseFail(actual, xpd, "Missing expected exception".concat(msg), '');
   } else if (toBoolean(shouldThrow) === false && wasExceptionExpected) {
     baseFail(actual, xpd, "Got unwanted exception".concat(msg), '');
   } else {
-    var clause2;
-
-    if (shouldThrow) {
-      clause1 = actual && xpd && toBoolean(wasExceptionExpected) === false;
-    } else {
-      clause1 = false;
-      clause2 = actual;
-    }
-
-    if (clause1 || clause2) {
-      throw actual;
-    }
+    throwerBaseThrows({
+      shouldThrow: shouldThrow,
+      actual: actual,
+      xpd: xpd,
+      wasExceptionExpected: wasExceptionExpected
+    });
   }
 };
 /**

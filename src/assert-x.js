@@ -63,6 +63,48 @@ const expectedException = function expectedException(actual, expected) {
   return false;
 };
 
+const assertBaseThrowsFnArg = function assertBaseThrowsFnArg(fn) {
+  if (isFunction(fn) === false) {
+    throw new TypeError(`The "fn" argument must be of type Function. Received type ${typeof fn}`);
+  }
+};
+
+const getBaseThrowsMsg = function getBaseThrowsMsg(message, expected) {
+  let msg = message;
+  let xpd = expected;
+
+  if ((toBoolean(msg) === false || isStringType(msg) === false) && isStringType(xpd)) {
+    msg = xpd;
+    /* eslint-disable-next-line no-void */
+    xpd = void 0;
+  }
+
+  const part1 = xpd && isStringType(xpd.name) && xpd.name ? ` (${xpd.name}).` : '.';
+  const part2 = msg ? ` ${msg}` : '.';
+
+  return {
+    msg: (part1 === '.' ? '' : part1) + part2,
+    xpd,
+  };
+};
+
+const throwerBaseThrows = function throwerBaseThrows(obj) {
+  const {shouldThrow, actual, xpd, wasExceptionExpected} = obj;
+  let clause1;
+  let clause2;
+
+  if (shouldThrow) {
+    clause1 = actual && xpd && toBoolean(wasExceptionExpected) === false;
+  } else {
+    clause1 = false;
+    clause2 = actual;
+  }
+
+  if (clause1 || clause2) {
+    throw actual;
+  }
+};
+
 /**
  * Returns whether an exception is expected. Used by assertx~throws and
  * assertx~doesNotThrow.
@@ -74,20 +116,7 @@ const expectedException = function expectedException(actual, expected) {
  * @param {string} [message] - Text description of test.
  */
 const baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
-  let msg = message;
-  let clause1 = toBoolean(msg) === false || isStringType(msg) === false;
-
-  if (isFunction(fn) === false) {
-    throw new TypeError(`The "fn" argument must be of type Function. Received type ${typeof fn}`);
-  }
-
-  let xpd = expected;
-
-  if (clause1 && isStringType(xpd)) {
-    msg = xpd;
-    /* eslint-disable-next-line no-void */
-    xpd = void 0;
-  }
+  assertBaseThrowsFnArg(fn);
 
   let actual;
   try {
@@ -96,29 +125,15 @@ const baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
     actual = e;
   }
 
+  const {msg, xpd} = getBaseThrowsMsg(message, expected);
   const wasExceptionExpected = expectedException(actual, xpd);
-  clause1 = xpd && isStringType(xpd.name) && xpd.name;
-  const part1 = clause1 ? ` (${xpd.name}).` : '.';
-  const part2 = msg ? ` ${msg}` : '.';
-  msg = (part1 === '.' ? '' : part1) + part2;
 
   if (shouldThrow && toBoolean(actual) === false) {
     baseFail(actual, xpd, `Missing expected exception${msg}`, '');
   } else if (toBoolean(shouldThrow) === false && wasExceptionExpected) {
     baseFail(actual, xpd, `Got unwanted exception${msg}`, '');
   } else {
-    let clause2;
-
-    if (shouldThrow) {
-      clause1 = actual && xpd && toBoolean(wasExceptionExpected) === false;
-    } else {
-      clause1 = false;
-      clause2 = actual;
-    }
-
-    if (clause1 || clause2) {
-      throw actual;
-    }
+    throwerBaseThrows({shouldThrow, actual, xpd, wasExceptionExpected});
   }
 };
 
