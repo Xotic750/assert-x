@@ -1,5 +1,13 @@
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 import { AssertionErrorConstructor, isError } from 'error-x';
 import isRegExp from 'is-regexp-x';
 import safeToString from 'to-string-symbols-supported-x';
@@ -8,11 +16,8 @@ import defineProperties from 'object-define-properties-x';
 import { isDeepEqual, isDeepStrictEqual } from 'is-deep-strict-equal-x';
 import assign from 'object-assign-x';
 import toBoolean from 'to-boolean-x';
-var rxTest = /none/.test;
+var rxTest = /none/.test; // eslint-disable jsdoc/check-param-names
 
-var isStringType = function isStringType(value) {
-  return typeof value === 'string';
-};
 /**
  * Throws an exception that displays the values for actual and expected
  * separated by the provided operator.
@@ -24,16 +29,21 @@ var isStringType = function isStringType(value) {
  * @param {string} operator - The compare operator.
  * @throws {Error} Throws an `AssertionError`.
  */
+// eslint-enable jsdoc/check-param-names
 
+var baseFail = function baseFail(args) {
+  var _args = _slicedToArray(args, 4),
+      actual = _args[0],
+      expected = _args[1],
+      message = _args[2],
+      operator = _args[3];
 
-var baseFail = function baseFail(actual, expected, message, operator) {
-  var arg = {
+  throw new AssertionErrorConstructor({
     actual: actual,
     expected: expected,
     message: message,
     operator: operator
-  };
-  throw new AssertionErrorConstructor(arg);
+  });
 };
 /**
  * Returns whether an exception is expected. Used by throws.
@@ -75,14 +85,14 @@ var getBaseThrowsMsg = function getBaseThrowsMsg(message, expected) {
   var msg = message;
   var xpd = expected;
 
-  if ((toBoolean(msg) === false || isStringType(msg) === false) && isStringType(xpd)) {
+  if ((toBoolean(msg) === false || typeof msg !== 'string') && typeof xpd === 'string') {
     msg = xpd;
     /* eslint-disable-next-line no-void */
 
     xpd = void 0;
   }
 
-  var part1 = xpd && isStringType(xpd.name) && xpd.name ? " (".concat(xpd.name, ").") : '.';
+  var part1 = xpd && typeof xpd.name === 'string' && xpd.name ? " (".concat(xpd.name, ").") : '.';
   var part2 = msg ? " ".concat(msg) : '.';
   return {
     msg: (part1 === '.' ? '' : part1) + part2,
@@ -90,11 +100,13 @@ var getBaseThrowsMsg = function getBaseThrowsMsg(message, expected) {
   };
 };
 
-var throwerBaseThrows = function throwerBaseThrows(obj) {
-  var shouldThrow = obj.shouldThrow,
-      actual = obj.actual,
-      xpd = obj.xpd,
-      wasExceptionExpected = obj.wasExceptionExpected;
+var throwerBaseThrows = function throwerBaseThrows(args) {
+  var _args2 = _slicedToArray(args, 4),
+      shouldThrow = _args2[0],
+      actual = _args2[1],
+      xpd = _args2[2],
+      wasExceptionExpected = _args2[3];
+
   var clause1;
   var clause2;
 
@@ -116,7 +128,8 @@ var getBaseThrowsActual = function getBaseThrowsActual(fn) {
   } catch (e) {
     return e;
   }
-};
+}; // eslint-disable jsdoc/check-param-names
+
 /**
  * Returns whether an exception is expected. Used by assertx~throws and
  * assertx~doesNotThrow.
@@ -127,9 +140,16 @@ var getBaseThrowsActual = function getBaseThrowsActual(fn) {
  * @param {*} expected - The expected value to compare against actual.
  * @param {string} [message] - Text description of test.
  */
+// eslint-enable jsdoc/check-param-names
 
 
-var baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
+var baseThrows = function baseThrows(args) {
+  var _args3 = _slicedToArray(args, 4),
+      shouldThrow = _args3[0],
+      fn = _args3[1],
+      expected = _args3[2],
+      message = _args3[3];
+
   assertBaseThrowsFnArg(fn);
   var actual = getBaseThrowsActual(fn);
 
@@ -140,18 +160,14 @@ var baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
   var wasExceptionExpected = expectedException(actual, xpd);
 
   if (shouldThrow && toBoolean(actual) === false) {
-    baseFail(actual, xpd, "Missing expected exception".concat(msg), '');
+    baseFail([actual, xpd, "Missing expected exception".concat(msg), '']);
   } else if (toBoolean(shouldThrow) === false && wasExceptionExpected) {
-    baseFail(actual, xpd, "Got unwanted exception".concat(msg), '');
+    baseFail([actual, xpd, "Got unwanted exception".concat(msg), '']);
   } else {
-    throwerBaseThrows({
-      shouldThrow: shouldThrow,
-      actual: actual,
-      xpd: xpd,
-      wasExceptionExpected: wasExceptionExpected
-    });
+    throwerBaseThrows([shouldThrow, actual, xpd, wasExceptionExpected]);
   }
-};
+}; // eslint-disable jsdoc/check-param-names
+
 /**
  * Common function for `assert` and `assert~ok`.
  *
@@ -160,11 +176,17 @@ var baseThrows = function baseThrows(shouldThrow, fn, expected, message) {
  * @param {string} message - Text description of test.
  * @param {string} operator - Text description of test operator.
  */
+// eslint-enable jsdoc/check-param-names
 
 
-var baseAssert = function baseAssert(value, message, operator) {
+var baseAssert = function baseAssert(args) {
+  var _args4 = _slicedToArray(args, 3),
+      value = _args4[0],
+      message = _args4[1],
+      operator = _args4[2];
+
   if (toBoolean(value) === false) {
-    baseFail(false, true, message, operator);
+    baseFail([false, true, message, operator]);
   }
 };
 /**
@@ -176,7 +198,7 @@ var baseAssert = function baseAssert(value, message, operator) {
 
 
 var assert = function assert(value, message) {
-  baseAssert(value, message, 'ok');
+  baseAssert([value, message, 'ok']);
 };
 
 var assertMethods = {
@@ -203,7 +225,7 @@ var assertMethods = {
   deepEqual: {
     value: function deepEqual(actual, expected, message) {
       if (isDeepEqual(actual, expected) === false) {
-        baseFail(actual, expected, message, 'deepEqual');
+        baseFail([actual, expected, message, 'deepEqual']);
       }
     }
   },
@@ -219,7 +241,7 @@ var assertMethods = {
   deepStrictEqual: {
     value: function deepStrictEqual(actual, expected, message) {
       if (isDeepStrictEqual(actual, expected) === false) {
-        baseFail(actual, expected, message, 'deepStrictEqual');
+        baseFail([actual, expected, message, 'deepStrictEqual']);
       }
     }
   },
@@ -233,7 +255,7 @@ var assertMethods = {
    */
   doesNotThrow: {
     value: function doesNotThrow(fn, error, message) {
-      baseThrows(false, fn, error, message);
+      baseThrows([false, fn, error, message]);
     }
   },
 
@@ -251,7 +273,7 @@ var assertMethods = {
       if (actual != expected
       /* eslint-disable-line eqeqeq */
       ) {
-          baseFail(actual, expected, message, '==');
+          baseFail([actual, expected, message, '==']);
         }
     }
   },
@@ -277,13 +299,13 @@ var assertMethods = {
         /* eslint-disable-next-line no-void */
 
 
-        baseFail(actual, void 0, arguments.length ? actual : 'Failed', 'fail');
+        baseFail([actual, void 0, arguments.length ? actual : 'Failed', 'fail']);
       } else {
         if (isError(message)) {
           throw message;
         }
 
-        baseFail(actual, expected, message, operator);
+        baseFail([actual, expected, message, operator]);
       }
     }
   },
@@ -313,7 +335,7 @@ var assertMethods = {
   notDeepEqual: {
     value: function notDeepEqual(actual, expected, message) {
       if (isDeepEqual(actual, expected)) {
-        baseFail(actual, expected, message, 'notDeepEqual');
+        baseFail([actual, expected, message, 'notDeepEqual']);
       }
     }
   },
@@ -328,7 +350,7 @@ var assertMethods = {
   notDeepStrictEqual: {
     value: function notDeepStrictEqual(actual, expected, message) {
       if (isDeepStrictEqual(actual, expected)) {
-        baseFail(actual, expected, message, 'notDeepStrictEqual');
+        baseFail([actual, expected, message, 'notDeepStrictEqual']);
       }
     }
   },
@@ -347,7 +369,7 @@ var assertMethods = {
       if (actual == expected
       /* eslint-disable-line eqeqeq */
       ) {
-          baseFail(actual, expected, message, '!=');
+          baseFail([actual, expected, message, '!=']);
         }
     }
   },
@@ -363,7 +385,7 @@ var assertMethods = {
   notStrictEqual: {
     value: function notStrictEqual(actual, expected, message) {
       if (actual === expected) {
-        baseFail(actual, expected, message, 'notStrictEqual');
+        baseFail([actual, expected, message, 'notStrictEqual']);
       }
     }
   },
@@ -377,7 +399,7 @@ var assertMethods = {
    */
   ok: {
     value: function ok(value, message) {
-      baseAssert(value, message, 'ok');
+      baseAssert([value, message, 'ok']);
     }
   },
 
@@ -392,7 +414,7 @@ var assertMethods = {
   strictEqual: {
     value: function strictEqual(actual, expected, message) {
       if (actual !== expected) {
-        baseFail(actual, expected, message, 'strictEqual');
+        baseFail([actual, expected, message, 'strictEqual']);
       }
     }
   },
@@ -407,7 +429,7 @@ var assertMethods = {
    */
   throws: {
     value: function throws(fn, error, message) {
-      baseThrows(true, fn, error, message);
+      baseThrows([true, fn, error, message]);
     }
   }
 };
@@ -415,7 +437,7 @@ defineProperties(assert, assertMethods);
 export default assert; // Expose a strict only variant of assert
 
 export function strict(value, message) {
-  baseAssert(value, message, 'ok');
+  baseAssert([value, message, 'ok']);
 }
 var strictMethods = assign({}, assertMethods, {
   equal: assertMethods.strictEqual,
