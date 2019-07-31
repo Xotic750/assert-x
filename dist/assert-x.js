@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-31T00:30:39.336Z",
+  "date": "2019-07-31T00:56:55.642Z",
   "describe": "",
   "description": "A Javascript assertion library.",
   "file": "assert-x.js",
-  "hash": "846496f4fb89d6f66320",
+  "hash": "065a01e955cd1e63ca6c",
   "license": "MIT",
   "version": "3.1.19"
 }
@@ -12807,7 +12807,11 @@ function assert_x_esm_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; 
 
 
 
+/* eslint-disable-next-line no-void */
+
+var assert_x_esm_UNDEFINED = void 0;
 var assert_x_esm_rxTest = /none/.test; // eslint-disable jsdoc/check-param-names
+// noinspection JSCommentMatchesSignature
 
 /**
  * Throws an exception that displays the values for actual and expected
@@ -12872,19 +12876,30 @@ var assert_x_esm_assertBaseThrowsFnArg = function assertBaseThrowsFnArg(fn) {
   }
 };
 
-var assert_x_esm_getBaseThrowsMsg = function getBaseThrowsMsg(message, expected) {
+var assert_x_esm_conditonal1 = function conditonal1(msg, xpd) {
+  return (to_boolean_x_esm(msg) === false || typeof msg !== 'string') && typeof xpd === 'string';
+};
+
+var getParts = function getParts(msg, xpd) {
+  return {
+    part1: xpd && typeof xpd.name === 'string' && xpd.name ? " (".concat(xpd.name, ").") : '.',
+    part2: msg ? " ".concat(msg) : '.'
+  };
+};
+
+var getBaseThrowsMsg = function getBaseThrowsMsg(message, expected) {
   var msg = message;
   var xpd = expected;
 
-  if ((to_boolean_x_esm(msg) === false || typeof msg !== 'string') && typeof xpd === 'string') {
+  if (assert_x_esm_conditonal1(msg, xpd)) {
     msg = xpd;
-    /* eslint-disable-next-line no-void */
-
-    xpd = void 0;
+    xpd = assert_x_esm_UNDEFINED;
   }
 
-  var part1 = xpd && typeof xpd.name === 'string' && xpd.name ? " (".concat(xpd.name, ").") : '.';
-  var part2 = msg ? " ".concat(msg) : '.';
+  var _getParts = getParts(msg, xpd),
+      part1 = _getParts.part1,
+      part2 = _getParts.part2;
+
   return {
     msg: (part1 === '.' ? '' : part1) + part2,
     xpd: xpd
@@ -12920,6 +12935,7 @@ var getBaseThrowsActual = function getBaseThrowsActual(fn) {
     return e;
   }
 }; // eslint-disable jsdoc/check-param-names
+// noinspection JSCommentMatchesSignature
 
 /**
  * Returns whether an exception is expected. Used by assertx~throws and
@@ -12944,7 +12960,7 @@ var assert_x_esm_baseThrows = function baseThrows(args) {
   assert_x_esm_assertBaseThrowsFnArg(fn);
   var actual = getBaseThrowsActual(fn);
 
-  var _getBaseThrowsMsg = assert_x_esm_getBaseThrowsMsg(message, expected),
+  var _getBaseThrowsMsg = getBaseThrowsMsg(message, expected),
       msg = _getBaseThrowsMsg.msg,
       xpd = _getBaseThrowsMsg.xpd;
 
@@ -12958,6 +12974,7 @@ var assert_x_esm_baseThrows = function baseThrows(args) {
     assert_x_esm_throwerBaseThrows([shouldThrow, actual, xpd, wasExceptionExpected]);
   }
 }; // eslint-disable jsdoc/check-param-names
+// noinspection JSCommentMatchesSignature
 
 /**
  * Common function for `assert` and `assert~ok`.
@@ -12979,17 +12996,21 @@ var assert_x_esm_baseAssert = function baseAssert(args) {
   if (to_boolean_x_esm(value) === false) {
     assert_x_esm_baseFail([false, true, message, operator]);
   }
-};
+}; // eslint-disable jsdoc/check-param-names
+// noinspection JSCommentMatchesSignature
+
 /**
  * Tests if value is truthy, it is equivalent to `equal(!!value, true, message)`.
  *
  * @param {*} value - The value to be tested.
- * @param {string} message - Text description of test.
+ * @param {string} [message] - Text description of test.
  */
+// eslint-enable jsdoc/check-param-names
 
 
-var assert = function assert(value, message) {
-  assert_x_esm_baseAssert([value, message, 'ok']);
+var assert = function assert(value) {
+  /* eslint-disable-next-line prefer-rest-params */
+  assert_x_esm_baseAssert([value, arguments[1], 'ok']);
 };
 
 var assertMethods = {
@@ -13014,9 +13035,10 @@ var assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   deepEqual: {
-    value: function deepEqual(actual, expected, message) {
+    value: function deepEqual(actual, expected) {
       if (isDeepEqual(actual, expected) === false) {
-        assert_x_esm_baseFail([actual, expected, message, 'deepEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        assert_x_esm_baseFail([actual, expected, arguments[2], 'deepEqual']);
       }
     }
   },
@@ -13030,9 +13052,10 @@ var assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   deepStrictEqual: {
-    value: function deepStrictEqual(actual, expected, message) {
+    value: function deepStrictEqual(actual, expected) {
       if (isDeepStrictEqual(actual, expected) === false) {
-        assert_x_esm_baseFail([actual, expected, message, 'deepStrictEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        assert_x_esm_baseFail([actual, expected, arguments[2], 'deepStrictEqual']);
       }
     }
   },
@@ -13045,8 +13068,9 @@ var assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   doesNotThrow: {
-    value: function doesNotThrow(fn, error, message) {
-      assert_x_esm_baseThrows([false, fn, error, message]);
+    value: function doesNotThrow(fn, error) {
+      /* eslint-disable-next-line prefer-rest-params */
+      assert_x_esm_baseThrows([false, fn, error, arguments[2]]);
     }
   },
 
@@ -13059,13 +13083,13 @@ var assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   equal: {
-    value: function equal(actual, expected, message) {
+    value: function equal(actual, expected) {
+      /* eslint-disable-next-line eqeqeq */
       // noinspection EqualityComparisonWithCoercionJS
-      if (actual != expected
-      /* eslint-disable-line eqeqeq */
-      ) {
-          assert_x_esm_baseFail([actual, expected, message, '==']);
-        }
+      if (actual != expected) {
+        /* eslint-disable-next-line prefer-rest-params */
+        assert_x_esm_baseFail([actual, expected, arguments[2], '==']);
+      }
     }
   },
 
@@ -13073,30 +13097,31 @@ var assertMethods = {
    * Throws an exception that displays the values for actual and expected
    * separated by the provided operator.
    *
-   * @param {*} actual - The actual value to be tested.
-   * @param {*} expected - The expected value to compare against actual.
-   * @param {string} [message] - Text description of test.
-   * @param {string} operator - The compare operator.
+   * @param {string|Error} [message] - Text description of test.
    * @throws {Error} Throws an `AssertionError`.
    */
   fail: {
-    value: function fail(actual, expected, message) {
-      var operator = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '!=';
-
+    value: function fail(actual) {
       if (arguments.length < 2) {
         if (error_x_esm_isError(actual)) {
           throw actual;
         }
-        /* eslint-disable-next-line no-void */
 
-
-        assert_x_esm_baseFail([actual, void 0, arguments.length ? actual : 'Failed', 'fail']);
+        assert_x_esm_baseFail([assert_x_esm_UNDEFINED, assert_x_esm_UNDEFINED, arguments.length ? actual : 'Failed', 'fail']);
       } else {
+        /* eslint-disable-next-line prefer-rest-params */
+        var message = arguments[2];
+
         if (error_x_esm_isError(message)) {
           throw message;
         }
+        /* eslint-disable-next-line prefer-rest-params */
 
-        assert_x_esm_baseFail([actual, expected, message, operator]);
+
+        var operator = arguments.length > 3 ? arguments[3] : '!=';
+        /* eslint-disable-next-line prefer-rest-params */
+
+        assert_x_esm_baseFail([actual, arguments[1], message, operator]);
       }
     }
   },
@@ -13124,9 +13149,10 @@ var assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   notDeepEqual: {
-    value: function notDeepEqual(actual, expected, message) {
+    value: function notDeepEqual(actual, expected) {
       if (isDeepEqual(actual, expected)) {
-        assert_x_esm_baseFail([actual, expected, message, 'notDeepEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        assert_x_esm_baseFail([actual, expected, arguments[2], 'notDeepEqual']);
       }
     }
   },
@@ -13139,9 +13165,10 @@ var assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   notDeepStrictEqual: {
-    value: function notDeepStrictEqual(actual, expected, message) {
+    value: function notDeepStrictEqual(actual, expected) {
       if (isDeepStrictEqual(actual, expected)) {
-        assert_x_esm_baseFail([actual, expected, message, 'notDeepStrictEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        assert_x_esm_baseFail([actual, expected, arguments[2], 'notDeepStrictEqual']);
       }
     }
   },
@@ -13155,13 +13182,13 @@ var assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   notEqual: {
-    value: function notEqual(actual, expected, message) {
+    value: function notEqual(actual, expected) {
+      /* eslint-disable-next-line eqeqeq */
       // noinspection EqualityComparisonWithCoercionJS
-      if (actual == expected
-      /* eslint-disable-line eqeqeq */
-      ) {
-          assert_x_esm_baseFail([actual, expected, message, '!=']);
-        }
+      if (actual == expected) {
+        /* eslint-disable-next-line prefer-rest-params */
+        assert_x_esm_baseFail([actual, expected, arguments[2], '!=']);
+      }
     }
   },
 
@@ -13174,9 +13201,10 @@ var assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   notStrictEqual: {
-    value: function notStrictEqual(actual, expected, message) {
+    value: function notStrictEqual(actual, expected) {
       if (actual === expected) {
-        assert_x_esm_baseFail([actual, expected, message, 'notStrictEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        assert_x_esm_baseFail([actual, expected, arguments[2], 'notStrictEqual']);
       }
     }
   },
@@ -13189,8 +13217,9 @@ var assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   ok: {
-    value: function ok(value, message) {
-      assert_x_esm_baseAssert([value, message, 'ok']);
+    value: function ok(value) {
+      /* eslint-disable-next-line prefer-rest-params */
+      assert_x_esm_baseAssert([value, arguments[1], 'ok']);
     }
   },
 
@@ -13203,9 +13232,10 @@ var assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   strictEqual: {
-    value: function strictEqual(actual, expected, message) {
+    value: function strictEqual(actual, expected) {
       if (actual !== expected) {
-        assert_x_esm_baseFail([actual, expected, message, 'strictEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        assert_x_esm_baseFail([actual, expected, arguments[2], 'strictEqual']);
       }
     }
   },
@@ -13219,16 +13249,18 @@ var assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   throws: {
-    value: function throws(fn, error, message) {
-      assert_x_esm_baseThrows([true, fn, error, message]);
+    value: function throws(fn, error) {
+      /* eslint-disable-next-line prefer-rest-params */
+      assert_x_esm_baseThrows([true, fn, error, arguments[2]]);
     }
   }
 };
 object_define_properties_x_esm(assert, assertMethods);
 /* harmony default export */ var assert_x_esm = __webpack_exports__["default"] = (assert); // Expose a strict only variant of assert
 
-function assert_x_esm_strict(value, message) {
-  assert_x_esm_baseAssert([value, message, 'ok']);
+function assert_x_esm_strict(value) {
+  /* eslint-disable-next-line prefer-rest-params */
+  assert_x_esm_baseAssert([value, arguments[1], 'ok']);
 }
 var strictMethods = object_assign_x_esm({}, assertMethods, {
   equal: assertMethods.strictEqual,

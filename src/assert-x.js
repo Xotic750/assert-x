@@ -7,9 +7,12 @@ import {isDeepEqual, isDeepStrictEqual} from 'is-deep-strict-equal-x';
 import assign from 'object-assign-x';
 import toBoolean from 'to-boolean-x';
 
+/* eslint-disable-next-line no-void */
+const UNDEFINED = void 0;
 const rxTest = /none/.test;
 
 // eslint-disable jsdoc/check-param-names
+// noinspection JSCommentMatchesSignature
 /**
  * Throws an exception that displays the values for actual and expected
  * separated by the provided operator.
@@ -62,18 +65,27 @@ const assertBaseThrowsFnArg = function assertBaseThrowsFnArg(fn) {
   }
 };
 
+const conditonal1 = function conditonal1(msg, xpd) {
+  return (toBoolean(msg) === false || typeof msg !== 'string') && typeof xpd === 'string';
+};
+
+const getParts = function getParts(msg, xpd) {
+  return {
+    part1: xpd && typeof xpd.name === 'string' && xpd.name ? ` (${xpd.name}).` : '.',
+    part2: msg ? ` ${msg}` : '.',
+  };
+};
+
 const getBaseThrowsMsg = function getBaseThrowsMsg(message, expected) {
   let msg = message;
   let xpd = expected;
 
-  if ((toBoolean(msg) === false || typeof msg !== 'string') && typeof xpd === 'string') {
+  if (conditonal1(msg, xpd)) {
     msg = xpd;
-    /* eslint-disable-next-line no-void */
-    xpd = void 0;
+    xpd = UNDEFINED;
   }
 
-  const part1 = xpd && typeof xpd.name === 'string' && xpd.name ? ` (${xpd.name}).` : '.';
-  const part2 = msg ? ` ${msg}` : '.';
+  const {part1, part2} = getParts(msg, xpd);
 
   return {
     msg: (part1 === '.' ? '' : part1) + part2,
@@ -107,6 +119,7 @@ const getBaseThrowsActual = function getBaseThrowsActual(fn) {
 };
 
 // eslint-disable jsdoc/check-param-names
+// noinspection JSCommentMatchesSignature
 /**
  * Returns whether an exception is expected. Used by assertx~throws and
  * assertx~doesNotThrow.
@@ -136,6 +149,7 @@ const baseThrows = function baseThrows(args) {
 };
 
 // eslint-disable jsdoc/check-param-names
+// noinspection JSCommentMatchesSignature
 /**
  * Common function for `assert` and `assert~ok`.
  *
@@ -153,14 +167,18 @@ const baseAssert = function baseAssert(args) {
   }
 };
 
+// eslint-disable jsdoc/check-param-names
+// noinspection JSCommentMatchesSignature
 /**
  * Tests if value is truthy, it is equivalent to `equal(!!value, true, message)`.
  *
  * @param {*} value - The value to be tested.
- * @param {string} message - Text description of test.
+ * @param {string} [message] - Text description of test.
  */
-const assert = function assert(value, message) {
-  baseAssert([value, message, 'ok']);
+// eslint-enable jsdoc/check-param-names
+const assert = function assert(value) {
+  /* eslint-disable-next-line prefer-rest-params */
+  baseAssert([value, arguments[1], 'ok']);
 };
 
 const assertMethods = {
@@ -184,9 +202,10 @@ const assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   deepEqual: {
-    value: function deepEqual(actual, expected, message) {
+    value: function deepEqual(actual, expected) {
       if (isDeepEqual(actual, expected) === false) {
-        baseFail([actual, expected, message, 'deepEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        baseFail([actual, expected, arguments[2], 'deepEqual']);
       }
     },
   },
@@ -199,9 +218,10 @@ const assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   deepStrictEqual: {
-    value: function deepStrictEqual(actual, expected, message) {
+    value: function deepStrictEqual(actual, expected) {
       if (isDeepStrictEqual(actual, expected) === false) {
-        baseFail([actual, expected, message, 'deepStrictEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        baseFail([actual, expected, arguments[2], 'deepStrictEqual']);
       }
     },
   },
@@ -213,8 +233,9 @@ const assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   doesNotThrow: {
-    value: function doesNotThrow(fn, error, message) {
-      baseThrows([false, fn, error, message]);
+    value: function doesNotThrow(fn, error) {
+      /* eslint-disable-next-line prefer-rest-params */
+      baseThrows([false, fn, error, arguments[2]]);
     },
   },
   /**
@@ -226,10 +247,11 @@ const assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   equal: {
-    value: function equal(actual, expected, message) {
-      // noinspection EqualityComparisonWithCoercionJS
-      if (actual != expected /* eslint-disable-line eqeqeq */) {
-        baseFail([actual, expected, message, '==']);
+    value: function equal(actual, expected) {
+      /* eslint-disable-next-line eqeqeq */ // noinspection EqualityComparisonWithCoercionJS
+      if (actual != expected) {
+        /* eslint-disable-next-line prefer-rest-params */
+        baseFail([actual, expected, arguments[2], '==']);
       }
     },
   },
@@ -237,27 +259,29 @@ const assertMethods = {
    * Throws an exception that displays the values for actual and expected
    * separated by the provided operator.
    *
-   * @param {*} actual - The actual value to be tested.
-   * @param {*} expected - The expected value to compare against actual.
-   * @param {string} [message] - Text description of test.
-   * @param {string} operator - The compare operator.
+   * @param {string|Error} [message] - Text description of test.
    * @throws {Error} Throws an `AssertionError`.
    */
   fail: {
-    value: function fail(actual, expected, message, operator = '!=') {
+    value: function fail(actual) {
       if (arguments.length < 2) {
         if (isError(actual)) {
           throw actual;
         }
 
-        /* eslint-disable-next-line no-void */
-        baseFail([actual, void 0, arguments.length ? actual : 'Failed', 'fail']);
+        baseFail([UNDEFINED, UNDEFINED, arguments.length ? actual : 'Failed', 'fail']);
       } else {
+        /* eslint-disable-next-line prefer-rest-params */
+        const message = arguments[2];
+
         if (isError(message)) {
           throw message;
         }
 
-        baseFail([actual, expected, message, operator]);
+        /* eslint-disable-next-line prefer-rest-params */
+        const operator = arguments.length > 3 ? arguments[3] : '!=';
+        /* eslint-disable-next-line prefer-rest-params */
+        baseFail([actual, arguments[1], message, operator]);
       }
     },
   },
@@ -283,9 +307,10 @@ const assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   notDeepEqual: {
-    value: function notDeepEqual(actual, expected, message) {
+    value: function notDeepEqual(actual, expected) {
       if (isDeepEqual(actual, expected)) {
-        baseFail([actual, expected, message, 'notDeepEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        baseFail([actual, expected, arguments[2], 'notDeepEqual']);
       }
     },
   },
@@ -297,9 +322,10 @@ const assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   notDeepStrictEqual: {
-    value: function notDeepStrictEqual(actual, expected, message) {
+    value: function notDeepStrictEqual(actual, expected) {
       if (isDeepStrictEqual(actual, expected)) {
-        baseFail([actual, expected, message, 'notDeepStrictEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        baseFail([actual, expected, arguments[2], 'notDeepStrictEqual']);
       }
     },
   },
@@ -312,10 +338,11 @@ const assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   notEqual: {
-    value: function notEqual(actual, expected, message) {
-      // noinspection EqualityComparisonWithCoercionJS
-      if (actual == expected /* eslint-disable-line eqeqeq */) {
-        baseFail([actual, expected, message, '!=']);
+    value: function notEqual(actual, expected) {
+      /* eslint-disable-next-line eqeqeq */ // noinspection EqualityComparisonWithCoercionJS
+      if (actual == expected) {
+        /* eslint-disable-next-line prefer-rest-params */
+        baseFail([actual, expected, arguments[2], '!=']);
       }
     },
   },
@@ -328,9 +355,10 @@ const assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   notStrictEqual: {
-    value: function notStrictEqual(actual, expected, message) {
+    value: function notStrictEqual(actual, expected) {
       if (actual === expected) {
-        baseFail([actual, expected, message, 'notStrictEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        baseFail([actual, expected, arguments[2], 'notStrictEqual']);
       }
     },
   },
@@ -342,8 +370,9 @@ const assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   ok: {
-    value: function ok(value, message) {
-      baseAssert([value, message, 'ok']);
+    value: function ok(value) {
+      /* eslint-disable-next-line prefer-rest-params */
+      baseAssert([value, arguments[1], 'ok']);
     },
   },
   /**
@@ -355,9 +384,10 @@ const assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   strictEqual: {
-    value: function strictEqual(actual, expected, message) {
+    value: function strictEqual(actual, expected) {
       if (actual !== expected) {
-        baseFail([actual, expected, message, 'strictEqual']);
+        /* eslint-disable-next-line prefer-rest-params */
+        baseFail([actual, expected, arguments[2], 'strictEqual']);
       }
     },
   },
@@ -370,8 +400,9 @@ const assertMethods = {
    * @param {string} [message] - Text description of test.
    */
   throws: {
-    value: function throws(fn, error, message) {
-      baseThrows([true, fn, error, message]);
+    value: function throws(fn, error) {
+      /* eslint-disable-next-line prefer-rest-params */
+      baseThrows([true, fn, error, arguments[2]]);
     },
   },
 };
@@ -381,8 +412,9 @@ defineProperties(assert, assertMethods);
 export default assert;
 
 // Expose a strict only variant of assert
-export function strict(value, message) {
-  baseAssert([value, message, 'ok']);
+export function strict(value) {
+  /* eslint-disable-next-line prefer-rest-params */
+  baseAssert([value, arguments[1], 'ok']);
 }
 
 const strictMethods = assign({}, assertMethods, {
