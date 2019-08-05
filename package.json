@@ -1,6 +1,6 @@
 {
   "name": "assert-x",
-  "version": "3.1.21",
+  "version": "3.1.22",
   "description": "A Javascript assertion library.",
   "homepage": "http://xotic750.github.io/assert-x/",
   "author": {
@@ -53,12 +53,12 @@
     "url": "https://github.com/Xotic750/assert-x/issues"
   },
   "dependencies": {
-    "error-x": "^3.0.29",
-    "is-deep-strict-equal-x": "^1.0.13",
+    "error-x": "^3.0.30",
+    "is-deep-strict-equal-x": "^1.0.14",
     "is-function-x": "^4.0.28",
-    "is-regexp-x": "^3.0.18",
-    "object-assign-x": "^2.0.12",
-    "object-define-properties-x": "^5.0.14",
+    "is-regexp-x": "^3.0.19",
+    "object-assign-x": "^2.0.13",
+    "object-define-properties-x": "^5.0.15",
     "to-boolean-x": "^2.0.25",
     "to-string-symbols-supported-x": "^2.0.22"
   },
