@@ -2,7 +2,7 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-08-13T12:17:12.640Z",
+  "date": "2019-08-13T15:57:02.970Z",
   "describe": "",
   "description": "A Javascript assertion library.",
   "file": "assert-x.js",
