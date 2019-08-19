@@ -16,10 +16,12 @@ import defineProperties from 'object-define-properties-x';
 import { isDeepEqual, isDeepStrictEqual } from 'is-deep-strict-equal-x';
 import assign from 'object-assign-x';
 import toBoolean from 'to-boolean-x';
+import methodize from 'simple-methodize-x';
+import call from 'simple-call-x';
 /* eslint-disable-next-line no-void */
 
 var UNDEFINED = void 0;
-var rxTest = /none/.test; // eslint-disable jsdoc/check-param-names
+var rxTest = methodize(/none/.test); // eslint-disable jsdoc/check-param-names
 // noinspection JSCommentMatchesSignature
 
 /**
@@ -65,7 +67,7 @@ var expectedException = function expectedException(actual, expected) {
   }
 
   if (isRegExp(expected)) {
-    return rxTest.call(expected, safeToString(actual));
+    return rxTest(expected, safeToString(actual));
   }
 
   if (actual instanceof expected) {
@@ -73,7 +75,7 @@ var expectedException = function expectedException(actual, expected) {
   }
 
   if (isFunction(expected)) {
-    return expected.call({}, actual) === true;
+    return call(expected, {}, [actual]) === true;
   }
 
   return false;

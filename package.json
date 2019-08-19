@@ -60,6 +60,8 @@
     "is-regexp-x": "^3.1.0",
     "object-assign-x": "^2.1.0",
     "object-define-properties-x": "^5.1.0",
+    "simple-call-x": "^1.0.1",
+    "simple-methodize-x": "^1.0.2",
     "to-boolean-x": "^2.1.0",
     "to-string-symbols-supported-x": "^2.1.0"
   },
