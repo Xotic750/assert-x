@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-08-28T16:14:11.491Z",
+  "date": "2019-08-28T18:20:53.613Z",
   "describe": "",
   "description": "A Javascript assertion library.",
   "file": "assert-x.js",
   "hash": "ce8a7e44ac058e983505",
   "license": "MIT",
-  "version": "3.2.1"
+  "version": "3.2.2"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
