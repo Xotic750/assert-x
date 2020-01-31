@@ -23,6 +23,7 @@ const rxTest = methodize(/none/.test);
  * @param {*} actual - The actual value to be tested.
  * @param {*} expected - The expected value to compare against actual.
  * @param {string} message - Text description of test.
+ * @param args
  * @param {string} operator - The compare operator.
  * @throws {Error} Throws an `AssertionError`.
  */
@@ -130,6 +131,7 @@ const getBaseThrowsActual = function getBaseThrowsActual(fn) {
  * @param {boolean} shouldThrow - True if it should throw, otherwise false.
  * @param {Function} fn - The function block to be executed in testing.
  * @param {*} expected - The expected value to compare against actual.
+ * @param args
  * @param {string} [message] - Text description of test.
  */
 // eslint-enable jsdoc/check-param-names
@@ -158,6 +160,7 @@ const baseThrows = function baseThrows(args) {
  * @private
  * @param {*} value - The value to be tested.
  * @param {string} message - Text description of test.
+ * @param args
  * @param {string} operator - Text description of test operator.
  */
 // eslint-enable jsdoc/check-param-names

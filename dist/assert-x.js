@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-09-05T20:48:23.970Z",
+  "date": "2020-01-31T11:49:55.525Z",
   "describe": "",
   "description": "A Javascript assertion library.",
   "file": "assert-x.js",
-  "hash": "ce8a7e44ac058e983505",
+  "hash": "ef7bf1fe039d759a1f68",
   "license": "MIT",
   "version": "3.2.2"
 }
@@ -13444,13 +13444,13 @@ function isDeepStrictEqual(val1, val2) {
 
 // CONCATENATED MODULE: ./dist/assert-x.esm.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "strict", function() { return assert_x_esm_strict; });
-function assert_x_esm_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { assert_x_esm_typeof = function _typeof(obj) { return typeof obj; }; } else { assert_x_esm_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return assert_x_esm_typeof(obj); }
+function assert_x_esm_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { assert_x_esm_typeof = function _typeof(obj) { return typeof obj; }; } else { assert_x_esm_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return assert_x_esm_typeof(obj); }
 
 function assert_x_esm_slicedToArray(arr, i) { return assert_x_esm_arrayWithHoles(arr) || assert_x_esm_iterableToArrayLimit(arr, i) || assert_x_esm_nonIterableRest(); }
 
 function assert_x_esm_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-function assert_x_esm_iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function assert_x_esm_iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function assert_x_esm_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -13478,6 +13478,7 @@ var assert_x_esm_rxTest = simple_methodize_x_esm(/none/.test); // eslint-disable
  * @param {*} actual - The actual value to be tested.
  * @param {*} expected - The expected value to compare against actual.
  * @param {string} message - Text description of test.
+ * @param args
  * @param {string} operator - The compare operator.
  * @throws {Error} Throws an `AssertionError`.
  */
@@ -13602,6 +13603,7 @@ var getBaseThrowsActual = function getBaseThrowsActual(fn) {
  * @param {boolean} shouldThrow - True if it should throw, otherwise false.
  * @param {Function} fn - The function block to be executed in testing.
  * @param {*} expected - The expected value to compare against actual.
+ * @param args
  * @param {string} [message] - Text description of test.
  */
 // eslint-enable jsdoc/check-param-names
@@ -13639,6 +13641,7 @@ var assert_x_esm_baseThrows = function baseThrows(args) {
  * @private
  * @param {*} value - The value to be tested.
  * @param {string} message - Text description of test.
+ * @param args
  * @param {string} operator - Text description of test operator.
  */
 // eslint-enable jsdoc/check-param-names
